@@ -147,10 +147,10 @@ public class WebDuplicator : MonoBehaviour
     /// <param name="targetCell">Целевая клетка для создания копии.</param>
     void DuplicateOn(Cell targetCell)
     {
-        if (!targetCell.GetCurContent() && targetCell.GetCurDomino() != null)
+        if (targetCell.GetCurContent() == null && targetCell.GetCurDomino() != null)
         {
             ItemsPlacer.CreateItem(gameObject, (int)targetCell.transform.position.x, (int)targetCell.transform.position.y);
-            targetCell.SetCurItem(gameObject);
+            // ?? targetCell.SetCurContent(gameObject);
         }
     }
 

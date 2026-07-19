@@ -111,9 +111,9 @@ public class CellsPlacer : MonoBehaviour
     {
         foreach (DominoData d in DominoManager.Instance.available)
         {
-            if (!uniqueImages.Contains(d.image))
+            if (!uniqueImages.Contains(d.characteristics.image))
             {
-                uniqueImages.Add(d.image);
+                uniqueImages.Add(d.characteristics.image);
             }
         }
     }

@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 /// </summary>
 public interface Interactable
 {
-    public void Break();
     public void PutInCell(Cell cell);
     public void PutInCell();
 }
@@ -18,17 +17,16 @@ public interface Interactable
 /// </summary>
 public class Item : PauseBehaviour, Interactable, ICellContent
 {
-    [SerializeField] string ID;
-    public ObjectType type { get; private set; } = ObjectType.Any;
+    public ItemData data { get; private set; }
     [SerializeField] Cell curCell;
     bool isPlaced = true;
     public event Action OnItemPlaced;
 
     public virtual void OnMouseDown()
     {
-        if (isPlaced && (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(ID)) || !Inventory.Instance.IsFull()))
+        if (isPlaced && (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !Inventory.Instance.IsFull()))
         {
-            Break();
+            Remove();
         }
 
         else if (Input.GetKeyDown(KeyCode.Mouse0) && curCell)
@@ -103,7 +101,7 @@ public class Item : PauseBehaviour, Interactable, ICellContent
     }
     public string GetID()
     {
-        return ID;
+        return data.ID;
     }
   
     public void PutInCell(Cell cell)
@@ -116,13 +114,12 @@ public class Item : PauseBehaviour, Interactable, ICellContent
     /// </summary>
     public virtual void PutInCell()
     {
-        curCell.SetCurItem(gameObject);
-        curCell.SetFree(false);
+        curCell.SetCurContent(this);
         isPlaced = true;
         InvokeAction();
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
-        Inventory.Instance.RemoveItem(ItemManager.Instance.GetItemByID(ID));
+        Inventory.Instance.RemoveItem(ItemManager.Instance.GetItemByID(data.ID));
         GameManager.Instance.PutInHand(null);
     }
 
@@ -139,22 +136,24 @@ public class Item : PauseBehaviour, Interactable, ICellContent
 
     ObjectType ICellContent.GetType()
     {
-        return type;
+        return data.type;
     }
 
-    public virtual bool CanBeBrokenBy(DominoPart cur, DominoPart other)
+    public virtual bool CanBeBrokenBy(Domino d)
     {
-        return cur.data.characteristics.tool == toolToDestroy || other.data.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
+        DominoPart p1 = d.part1;
+        DominoPart p2 = d.part2;
+        return p1.data.characteristics.tool == data.toolToDestroy || p2.data.characteristics.tool == data.toolToDestroy || data.toolToDestroy == ToolType.Any;
     }
 
     /// <summary>
     /// —бор предмета в инвентарь
     /// </summary>
-    public void Break()
+    public void Remove()
     {
-        if (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(ID)) || !Inventory.Instance.IsFull())
+        if (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !Inventory.Instance.IsFull())
         {
-            Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(ID));
+            Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(data.ID));
             Destroy(gameObject);
         }
     }

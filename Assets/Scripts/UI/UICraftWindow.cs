@@ -91,7 +91,7 @@ public class UICraftWindow : Menu
             {
                 Inventory.Instance.RemoveItem(i);
             }
-            spawnedObj.GetComponent<Item>().Break();
+            spawnedObj.GetComponent<Item>().Remove();
             CheckInventoryAfterRemove();
         }
         else Debug.Log("You don't have all items to craft it!");

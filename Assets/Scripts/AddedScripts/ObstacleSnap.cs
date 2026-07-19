@@ -26,10 +26,11 @@ public class ObstacleSnap : MonoBehaviour
                     interactableInterface.PutInCell(curCell);
                 }
             }
-            else
-            {
-                curCell.SetFree(false);
-            }
+            //
+            //else
+            //{
+            //    curCell.SetFree(false);
+            //}
         }
     }
 }

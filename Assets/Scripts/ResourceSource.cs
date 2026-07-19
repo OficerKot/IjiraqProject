@@ -7,13 +7,14 @@ using UnityEngine;
 public class ResourceSource : MonoBehaviour, Interactable, ICellContent
 {
     [SerializeField] public ItemData resource;
+    [SerializeField] ObjectType type;
     [SerializeField] ToolType toolToDestroy;
     [SerializeField] public Cell curCell;
 
     /// <summary>
     /// Подбирает ресурс, добавляет его в инвентарь и уничтожает объект.
     /// </summary>
-    public virtual void Break()
+    public virtual void Remove()
     {
         if (resource)
         {
@@ -34,14 +35,16 @@ public class ResourceSource : MonoBehaviour, Interactable, ICellContent
     }
 
     /// <summary>
-    /// Проверяет, можно ли сломать источник с помощью указанных частей домино.
+    /// Проверяет, можно ли сломать источник с помощью переданного домино.
     /// </summary>
-    /// <param name="cur">Первая часть домино.</param>
-    /// <param name="other">Вторая часть домино.</param>
+    /// <param name="d">Домино.</param>
     /// <returns>True если есть подходящий инструмент или любой инструмент подходит.</returns>
-    public virtual bool CanBeBrokenBy(DominoPart cur, DominoPart other)
+
+    public virtual bool CanBeBrokenBy(Domino d)
     {
-        return cur.data.characteristics.tool == toolToDestroy || other.data.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
+        DominoPart p1 = d.part1;
+        DominoPart p2 = d.part2;
+        return p1.data.characteristics.tool == toolToDestroy || p2.data.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
     }
 
     /// <summary>
@@ -49,8 +52,13 @@ public class ResourceSource : MonoBehaviour, Interactable, ICellContent
     /// </summary>
     public virtual void PutInCell()
     {
-        curCell.SetCurItem(ItemManager.Instance.GetItemByID(resource.));
+        curCell.SetCurContent(this);
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
+    }
+
+    ObjectType ICellContent.GetType()
+    {
+        return type;
     }
 }

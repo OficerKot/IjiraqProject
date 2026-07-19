@@ -19,7 +19,7 @@ public class PlacementRequirements
     {
         if (emptyCell && !cell.IsFree()) return false;
 
-        if (objectType != ObjectType.Any && cell.GetCurContent(). != objectType) return false;
+        if (objectType != ObjectType.Any && cell.GetCurContent().GetType() != objectType) return false;
 
         if ( (number != 0 && number != cell.GetCurDomino().data.characteristics.number) &&
             (image != ImageEnumerator.any && cell.GetCurDomino().data.characteristics.image != image)) return false;

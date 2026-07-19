@@ -11,7 +11,8 @@ public class ItemData : ScriptableObject
     public GameObject prefab;
     public GameObject UIprefab;
 
-    public ToolType toolDoDestroy {  get; private set; }
+    public ToolType toolToDestroy {  get; private set; }
+    public ObjectType type { get; private set; } = ObjectType.Any;
 
     public ItemData[] itemsForCraft;
     public HashSet<ItemData> craftSet = new HashSet<ItemData>();

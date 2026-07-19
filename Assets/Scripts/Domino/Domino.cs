@@ -129,82 +129,10 @@ public class Domino : PauseBehaviour
     /// </summary>
     bool CellIsOK(Cell cell1, Cell cell2)
     {
-        if (IsSameRotationAngle(cell2.transform.position, curCell1.transform.position))
-        {
-            return cell2.IsFreeForDomino() && CheckCells(cell1, cell2);
-        }
-        return false;
-    }
+        if (!IsSameRotationAngle(cell2.transform.position, curCell1.transform.position)) return false;
+        if (!DominoPlacementValidator.ValidatePlacement(this)) return false;
 
-    /// <summary>
-    /// ѕровер€ет услови€ размещени€ домино в двух клетках.
-    /// </summary>
-    bool CheckCells(Cell cell1, Cell cell2)
-    {
-        ICellContent itemInCell;
-        Cell[] sortedCells = GetCellsInOrder(cell2);
-        Cell cellWithBiggerCoords = sortedCells[0];
-        Cell cellWithLowerCoords = sortedCells[1];
-
-        bool part1CoordsAreBigger = part1.GetLocation() == Location.up || part1.GetLocation() == Location.right;
-        DominoPart partWithBiggerCoords = part1CoordsAreBigger ? part1 : part2;
-        DominoPart partWithLowerCoords = part1CoordsAreBigger ? part2 : part1;
-
-        bool image1IsOK = cellWithBiggerCoords.GetImage() == ImageEnumerator.any ||
-            (partWithBiggerCoords.data.neighboursImage == cellWithBiggerCoords.GetImage() || partWithBiggerCoords.data.neighboursImage == ImageEnumerator.any);
-        bool image2IsOK = cellWithLowerCoords.GetImage() == ImageEnumerator.any ||
-            (partWithLowerCoords.data.neighboursImage == cellWithLowerCoords.GetImage() || partWithLowerCoords.data.neighboursImage == ImageEnumerator.any);
-        bool image1IsOK = cellWithBiggerCoords == ImageEnumerator.any ||
-            (partWithBiggerCoords.data.neighboursRequirments.i == cellWithBiggerCoords.GetImage() || partWithBiggerCoords.data.neighboursImage == ImageEnumerator.any);
-        bool image2IsOK = cellWithLowerCoords.GetImage() == ImageEnumerator.any ||
-            (partWithLowerCoords.data.neighboursImage == cellWithLowerCoords.GetImage() || partWithLowerCoords.data.neighboursImage == ImageEnumerator.any);
-
-        bool number1IsOK = cellWithBiggerCoords.GetNumber() == 0 || (partWithBiggerCoords.data.neighboursNumber == cellWithBiggerCoords.GetNumber());
-        bool number2IsOK = cellWithLowerCoords.GetNumber() == 0 || (partWithLowerCoords.data.neighboursNumber == cellWithLowerCoords.GetNumber());
-
-        bool item1IsOK = cellWithBiggerCoords.GetCurContent() == null;
-        bool item2IsOK = cellWithLowerCoords.GetCurContent() == null;
-
-        if (!item1IsOK)
-        {
-            itemInCell = cellWithBiggerCoords.GetCurContent().GetComponent<ICellContent>();
-            if (itemInCell != null)
-            {
-                item1IsOK = itemInCell.CanBreak(partWithBiggerCoords, partWithLowerCoords);
-            }
-        }
-        if (!item2IsOK)
-        {
-            itemInCell = cellWithLowerCoords.GetCurContent().GetComponent<ICellContent>();
-            if (itemInCell != null)
-            {
-                item2IsOK = itemInCell.CanBreak(partWithLowerCoords, partWithBiggerCoords);
-            }
-        }
-
-        return (image1IsOK || number1IsOK) && (image2IsOK || number2IsOK) && item1IsOK && item2IsOK;
-    }
-
-    /// <summary>
-    /// —ортирует две клетки по координатам.
-    /// </summary>
-    Cell[] GetCellsInOrder(Cell cell)
-    {
-        Cell[] output = new Cell[2];
-        bool horizontal = Mathf.Abs(curCell1.transform.position.x - cell.transform.position.x) > 0.5f;
-        bool cell1CoordsAreBigger = horizontal && (curCell1.transform.position.x > cell.transform.position.x) || !horizontal && (curCell1.transform.position.y > cell.transform.position.y);
-
-        if (cell1CoordsAreBigger)
-        {
-            output[0] = curCell1;
-            output[1] = cell;
-        }
-        else
-        {
-            output[0] = cell;
-            output[1] = curCell1;
-        }
-        return output;
+        return true;
     }
 
     /// <summary>
@@ -248,8 +176,8 @@ public class Domino : PauseBehaviour
         isBeingGrabbed = false;
         GameManager.Instance.PutInHand(null);
 
-        curCell1.GetCurContent()?.Break();
-        curCell2.GetCurContent()?.Break();
+        curCell1.GetCurContent()?.Remove();
+        curCell2.GetCurContent()?.Remove();
 
         LayerSorter.Instance.PutBack(gameObject, SortingOrder.domino);
 

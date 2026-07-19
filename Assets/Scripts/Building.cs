@@ -97,8 +97,7 @@ public class Building : Item
         foreach (Cell cell in curCells)
         {
             cell.NoHighlight();
-            cell.SetCurItem(gameObject);
-            cell.SetFree(false);
+            cell.SetCurContent(this);
         }
         transform.position = cornerPoint;
         SetIsPlaced(true);

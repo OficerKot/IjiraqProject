@@ -81,13 +81,13 @@ public class SigilsMenu : Menu
         {
             int curIndx = 0;
             sortedDominoList = DominoManager.Instance.available.ToList();
-            sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.image].CompareTo(DominoManager.Instance.order[b.image]));
-            sortedDominoList.Sort((a, b) => a.number.CompareTo(b.number));
+            sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.image].CompareTo(DominoManager.Instance.order[b.characteristics.image]));
+            sortedDominoList.Sort((a, b) => a.characteristics.number.CompareTo(b.characteristics.number));
 
             foreach (DominoData d in sortedDominoList)
             {
-                bool isImageOk = imageFilters.Count == 0 || imageFilters.Contains(d.image);
-                bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.number);
+                bool isImageOk = imageFilters.Count == 0 || imageFilters.Contains(d.characteristics.image);
+                bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);
                 if (isImageOk && isNumberOk)
                 {
                     cells[curIndx].gameObject.SetActive(true);
