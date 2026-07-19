@@ -34,12 +34,12 @@ public class Inventory : MonoBehaviour
         if (Contains(i) || itemsID.Count < MAX_SIZE)
         {
             AudioManager.Play(SoundType.Pickup);
-            if (!itemsID.ContainsKey(i.Id))
+            if (!itemsID.ContainsKey(i.ID))
             {
-                itemsID.Add(i.Id, 0);
+                itemsID.Add(i.ID, 0);
                 UIInventory.Instance.AddNewItem(i);
             }
-            itemsID[i.Id]++;
+            itemsID[i.ID]++;
             UIInventory.Instance.AddOneMoreItem(i);
             UICraftWindow.Instance.CheckInventory(i);
         }
@@ -58,14 +58,14 @@ public class Inventory : MonoBehaviour
         if (Contains(i) || itemsID.Count < MAX_SIZE)
         {
             AudioManager.Play(SoundType.Pickup);
-            if (!itemsID.ContainsKey(i.Id))
+            if (!itemsID.ContainsKey(i.ID))
             {
-                itemsID.Add(i.Id, 0);
+                itemsID.Add(i.ID, 0);
                 UIInventory.Instance.AddNewItem(i);
             }
             for (int j = 0; j < count; j++)
             {
-                itemsID[i.Id]++;
+                itemsID[i.ID]++;
                 UIInventory.Instance.AddOneMoreItem(i);
             }
             UICraftWindow.Instance.CheckInventory(i);
@@ -78,15 +78,15 @@ public class Inventory : MonoBehaviour
     /// <param name="i">Данные предмета</param>
     public void RemoveItem(ItemData i)
     {
-        if (itemsID.ContainsKey(i.Id))
+        if (itemsID.ContainsKey(i.ID))
         {
-            itemsID[i.Id]--;
+            itemsID[i.ID]--;
             UIInventory.Instance.RemoveOneItem(i);
 
-            if (itemsID[i.Id] < 1)
+            if (itemsID[i.ID] < 1)
             {
                 UIInventory.Instance.RemoveItemIcon(i);
-                itemsID.Remove(i.Id);
+                itemsID.Remove(i.ID);
             }
             UICraftWindow.Instance.CheckInventory(i);
         }
@@ -100,7 +100,7 @@ public class Inventory : MonoBehaviour
     /// <returns></returns>
     public bool Contains(ItemData i)
     {
-        return itemsID.ContainsKey(i.Id);
+        return itemsID.ContainsKey(i.ID);
     }
 
     /// <summary>

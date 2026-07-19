@@ -2,22 +2,21 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// ScriptableObject содержащий данные о предмете для системы инвентаря и крафта.
+/// Данные предмета
 /// </summary>
-[CreateAssetMenu(fileName = "New item", menuName = "Inventory/ItemData")]
+[CreateAssetMenu(fileName = "New item", menuName = "Items/ItemData")]
 public class ItemData : ScriptableObject
 {
-    public string Id;
+    public string ID { get; private set; }
     public GameObject prefab;
     public GameObject UIprefab;
 
-    /// <summary>
-    /// Компоненты для крафта данного предмета
-    /// </summary>
+    public ToolType toolDoDestroy {  get; private set; }
+
     public ItemData[] itemsForCraft;
     public HashSet<ItemData> craftSet = new HashSet<ItemData>();
 
-    private void OnEnable()
+    private void OnEnable() 
     {
         if (itemsForCraft.Length != 0)
         {

@@ -4,22 +4,22 @@ using UnityEngine;
 /// <summary>
 /// Источник ресурсов. В отличие от других объектов может быть разрушен постановкой соответствующего ему домино.
 /// </summary>
-public class ResourceSource : MonoBehaviour, Interactable, IBreakableObject
+public class ResourceSource : MonoBehaviour, Interactable, ICellContent
 {
     [SerializeField] public ItemData resource;
-    [SerializeField] ImageEnumerator toolToDestroy;
+    [SerializeField] ToolType toolToDestroy;
     [SerializeField] public Cell curCell;
 
     /// <summary>
     /// Подбирает ресурс, добавляет его в инвентарь и уничтожает объект.
     /// </summary>
-    public virtual void Pick()
+    public virtual void Break()
     {
         if (resource)
         {
             Inventory.Instance.AddItem(resource);
         }
-        curCell.SetCurItem(null);
+        curCell.SetCurContent(null);
         Destroy(gameObject);
     }
 
@@ -39,14 +39,9 @@ public class ResourceSource : MonoBehaviour, Interactable, IBreakableObject
     /// <param name="cur">Первая часть домино.</param>
     /// <param name="other">Вторая часть домино.</param>
     /// <returns>True если есть подходящий инструмент или любой инструмент подходит.</returns>
-    public virtual bool CanBreak(DominoPart cur, DominoPart other)
+    public virtual bool CanBeBrokenBy(DominoPart cur, DominoPart other)
     {
-        return cur.data.image == toolToDestroy || other.data.image == toolToDestroy || toolToDestroy == ImageEnumerator.any;
-    }
-
-    public void Break()
-    {
-        Pick();
+        return cur.data.characteristics.tool == toolToDestroy || other.data.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
     }
 
     /// <summary>
@@ -54,9 +49,7 @@ public class ResourceSource : MonoBehaviour, Interactable, IBreakableObject
     /// </summary>
     public virtual void PutInCell()
     {
-        curCell.SetNumber(0);
-        curCell.SetImage(toolToDestroy);
-        curCell.SetCurItem(gameObject);
+        curCell.SetCurItem(ItemManager.Instance.GetItemByID(resource.));
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
     }

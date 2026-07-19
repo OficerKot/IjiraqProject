@@ -46,6 +46,6 @@ public class ItemManager : ScriptableObject
     /// <returns>Данные предмета или null, если предмет не найден.</returns>
     public ItemData GetItemByID(string id)
     {
-        return System.Array.Find(allItems, item => item.Id == id);
+        return System.Array.Find(allItems, item => item.ID == id);
     }
 }

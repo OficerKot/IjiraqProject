@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public interface Interactable
 {
-    public void Pick();
+    public void Break();
     public void PutInCell(Cell cell);
     public void PutInCell();
 }
@@ -16,9 +16,10 @@ public interface Interactable
 /// <summary>
 /// Класс для объектов, которые могут находиться в инвентаре, подбираться с поля и размещаться на поле с определёнными условиями
 /// </summary>
-public class Item : PauseBehaviour, Interactable
+public class Item : PauseBehaviour, Interactable, ICellContent
 {
     [SerializeField] string ID;
+    public ObjectType type { get; private set; } = ObjectType.Any;
     [SerializeField] Cell curCell;
     bool isPlaced = true;
     public event Action OnItemPlaced;
@@ -27,7 +28,7 @@ public class Item : PauseBehaviour, Interactable
     {
         if (isPlaced && (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(ID)) || !Inventory.Instance.IsFull()))
         {
-            Pick();
+            Break();
         }
 
         else if (Input.GetKeyDown(KeyCode.Mouse0) && curCell)
@@ -104,17 +105,7 @@ public class Item : PauseBehaviour, Interactable
     {
         return ID;
     }
-    /// <summary>
-    /// Сбор предмета в инвентарь
-    /// </summary>
-    public void Pick()
-    {
-        if(Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(ID)) || !Inventory.Instance.IsFull())
-        { 
-            Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(ID));
-            Destroy(gameObject);
-        }
-    }
+  
     public void PutInCell(Cell cell)
     {
         curCell = cell;
@@ -145,4 +136,27 @@ public class Item : PauseBehaviour, Interactable
         targetPos.z = 0;
         transform.position = Vector3.Lerp(transform.position, targetPos, 1);
     }
+
+    ObjectType ICellContent.GetType()
+    {
+        return type;
+    }
+
+    public virtual bool CanBeBrokenBy(DominoPart cur, DominoPart other)
+    {
+        return cur.data.characteristics.tool == toolToDestroy || other.data.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
+    }
+
+    /// <summary>
+    /// Сбор предмета в инвентарь
+    /// </summary>
+    public void Break()
+    {
+        if (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(ID)) || !Inventory.Instance.IsFull())
+        {
+            Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(ID));
+            Destroy(gameObject);
+        }
+    }
+  
 }

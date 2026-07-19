@@ -56,7 +56,7 @@ public class DominoManager : ScriptableObject
     /// <returns>Данные домино или null, если не найдено.</returns>
     public DominoData GetDominoByID(string id)
     {
-        return allDomino.Find(domino => domino.dominoId == id);
+        return allDomino.Find(domino => domino.sigilId == id);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public class DominoManager : ScriptableObject
     /// <returns>Данные домино или null, если не найдено.</returns>
     public DominoData GetDomino(ImageEnumerator image, int number)
     {
-        return allDomino.Find(d => d.image == image && (d.number == 0 || d.number == number));
+        return allDomino.Find(d => d.characteristics.image == image && (d.characteristics.number == 0 || d.characteristics.number == number));
     }
 
     /// <summary>
@@ -92,10 +92,3 @@ public class DominoManager : ScriptableObject
     }
 }
 
-/// <summary>
-/// Все сигилы, реализованные в игре.
-/// </summary>
-public enum ImageEnumerator
-{
-    any, bone, fireflies, leaves, flowers, axe, pickaxe
-}

@@ -1,12 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
-/// <summary>
-/// Скрипт передвижения персонажа, устанавливается на него. 
-/// Связан со скриптом GameManager - для подчинения его командам.
-/// Дополнительная настройка: Передать скрипту один пустой объект TargetPosition, дочерний персонажу и имеющий нулевые локальные координаты.
-/// </summary>
 public class CharacterMovement : PauseBehaviour
 {
     [SerializeField] float walkSpeed = 7f;
@@ -14,67 +9,19 @@ public class CharacterMovement : PauseBehaviour
     bool isActive = true, movementIsAlloved = true;
     [SerializeField] public Transform targetPosition;
     public LayerMask whatAllowsMovement;
-    public static event Action<bool> OnMovementAttempted;
+    public static event Action <bool> OnMovementAttempted;
     private CharacterStates charStates;
 
 
     private void Awake()
     {
-        int x = UnityEngine.Random.Range(-50, 51);
-        int y = UnityEngine.Random.Range(-50, 51);
-        transform.position = new Vector3(x, y, 0);
         targetPosition.parent = null;
-        charStates = GetComponent<CharacterStates>();
     }
     public override void OnGamePaused(bool isGamePaused)
     {
         isActive = !isGamePaused;
     }
-    //public void OnWalk_Up()
-    //{
-    //    if (!isActive) return;
-    //    if (!isMoving && !GameManager.Instance.WhatInHand() && 
-    //        Physics2D.OverlapCircle(targetPosition.position + new Vector3(0, 1, 0), .01f, whatAllowsMovement))
-    //    {
-    //        Clock.Instance.TimeTick();
-    //        targetPosition.position += new Vector3(0, 1, 0);
-    //        isMoving = true;
-    //    }
-    //}
-
-    //public void OnWalk_Down()
-    //{
-    //    if (!isActive) return;
-    //    if (!isMoving && !GameManager.Instance.WhatInHand() &&
-    //        Physics2D.OverlapCircle(targetPosition.position + new Vector3(0, -1, 0), .01f, whatAllowsMovement))
-    //    {
-    //        Clock.Instance.TimeTick();
-    //        targetPosition.position += new Vector3(0, -1, 0);
-    //        isMoving = true;
-    //    }
-    //}
-
-    //public void OnWalk_Left()
-    //{
-    //    if(CanMove(Vector3.left))
-    //    {
-    //        Clock.Instance.TimeTick();
-    //        targetPosition.position += new Vector3(-1, 0, 0);
-    //        isMoving = true;
-    //    }
-    //}
-
-    //public void OnWalk_Right()
-    //{
-    //    if(CanMove(Vector3.right))
-    //    {
-    //        Clock.Instance.TimeTick();
-    //        targetPosition.position += Vector3.right;
-    //        isMoving = true;
-    //    }
-    //} 
-    
-    //
+   
     public void OnWalk(InputValue inputValue) //Ничего не меняла, только вынесла в 1 метод
     {
         if (!isActive || isMoving) return;

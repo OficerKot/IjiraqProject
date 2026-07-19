@@ -10,19 +10,8 @@ public interface ICell
     public void Highlight();
     public void NoHighlight();
     public bool IsNeighbour(Cell obj);
-    public bool IsFreeForDomino();
     public DominoPart GetCurDomino();
-    public void SetFree(bool val);
     public void SetFree();
-}
-
-/// <summary>
-/// Интерфейс для разрушаемых объектов на поле.
-/// </summary>
-public interface IBreakableObject
-{
-    public bool CanBreak(DominoPart cur, DominoPart other);
-    public void Break();
 }
 
 /// <summary>
@@ -30,22 +19,22 @@ public interface IBreakableObject
 /// </summary>
 public class Cell : MonoBehaviour, ICell
 {
-    [SerializeField] bool isFreeForDomino = true;
-    SpriteRenderer cellSprite;
-    Color previousColor;
+
     [SerializeField] DominoPart curDomino;
-    [SerializeField] GameObject curItem;
-    [SerializeField] ImageEnumerator image = ImageEnumerator.any;
-    [SerializeField] int number = 0;
+    [SerializeField] ICellContent curContent;
     [SerializeField] public List<Cell> neighbourCells = new List<Cell>();
+
+    //--- ВЫНЕСТИ -------------------------------
     public event Action<Cell> OnDuplicationAllowed;
     public int duplicationBlockers = 0;
+    SpriteRenderer cellSprite;
+    Color previousColor;
+    // ------------------------------------------
 
     void Start()
     {
         CheckForDuplications();
-        curDomino = null;
-        number = 0;
+
         cellSprite = gameObject.GetComponent<SpriteRenderer>();
         previousColor = cellSprite.color;
     }
@@ -58,14 +47,6 @@ public class Cell : MonoBehaviour, ICell
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (curDomino)
-        {
-            SetImageToAllNeighbours();
-        }
-    }
-
     /// <summary>
     /// Возвращает текущее домино в клетке.
     /// </summary>
@@ -75,11 +56,11 @@ public class Cell : MonoBehaviour, ICell
     }
 
     /// <summary>
-    /// Возвращает текущий предмет в клетке.
+    /// Возвращает содержимое клетки.
     /// </summary>
-    public GameObject GetCurItem()
+    public ICellContent GetCurContent()
     {
-        return curItem;
+        return curContent;
     }
 
     /// <summary>
@@ -89,8 +70,7 @@ public class Cell : MonoBehaviour, ICell
     public void SetCurDomino(DominoPart domino)
     {
         curDomino = domino;
-        image = domino.data.image;
-        number = domino.data.number;
+
         CheckForDuplications();
         ClearThePond();
     }
@@ -99,30 +79,25 @@ public class Cell : MonoBehaviour, ICell
     /// Устанавливает предмет в клетку.
     /// </summary>
     /// <param name="i">Предмет для размещения.</param>
-    public void SetCurItem(GameObject i)
+    public void SetCurContent(ICellContent i)
     {
         CheckForDuplications();
-        curItem = i;
+        curContent = i;
         if (i == null)
         {
-            UnsetImageToAllNeighbours();
-            image = ImageEnumerator.any;
-            number = 0;
             return;
         }
     }
 
     /// <summary>
-    /// Освобождает клетку, удаляя домино и предмет.
+    /// Освобождает клетку, удаляя домино и содержимое.
     /// </summary>
     public void SetFree()
     {
-        isFreeForDomino = true;
         curDomino = null;
-        curItem = null;
-        UnsetImageToAllNeighbours();
-        image = ImageEnumerator.any;
-        number = 0;
+        curContent = null;
+
+
         CheckForDuplications();
         SmudgeThePond();
     }
@@ -135,67 +110,6 @@ public class Cell : MonoBehaviour, ICell
         return Mathf.Abs(pos1.position.x - transform.position.x) < 0.5f || Mathf.Abs(pos1.position.y - transform.position.y) < 0.5f;
     }
 
-    /// <summary>
-    /// Устанавливает изображение сигила всем соседним клеткам.
-    /// </summary>
-    void SetImageToAllNeighbours()
-    {
-        foreach (Cell neighbour in neighbourCells)
-        {
-            if (neighbour && neighbour.GetImage() == ImageEnumerator.any)
-            {
-                neighbour.SetImage(curDomino.data.neighboursImage);
-                neighbour.SetNumber(number);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Сбрасывает изображение сигила со всех соседних клеток.
-    /// </summary>
-    void UnsetImageToAllNeighbours()
-    {
-        foreach (Cell neighbour in neighbourCells)
-        {
-            if (neighbour && neighbour.GetImage() == image && !neighbour.GetCurDomino())
-            {
-                neighbour.SetImage(ImageEnumerator.any);
-                neighbour.SetNumber(0);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Устанавливает изображение сигила для клетки.
-    /// </summary>
-    public void SetImage(ImageEnumerator i)
-    {
-        image = i;
-    }
-
-    /// <summary>
-    /// Возвращает текущее изображение сигила для клетки.
-    /// </summary>
-    public ImageEnumerator GetImage()
-    {
-        return image;
-    }
-
-    /// <summary>
-    /// Возвращает текущее число клетки.
-    /// </summary>
-    public int GetNumber()
-    {
-        return number;
-    }
-
-    /// <summary>
-    /// Устанавливает число клетки.
-    /// </summary>
-    public void SetNumber(int n)
-    {
-        number = n;
-    }
 
     /// <summary>
     /// Подсвечивает клетку.
@@ -216,8 +130,7 @@ public class Cell : MonoBehaviour, ICell
         }
     }
 
-    
-    
+
     /// <summary>
     /// Проверяет, является ли текущая клетка соседней с проверяемой.
     /// </summary>
@@ -232,36 +145,28 @@ public class Cell : MonoBehaviour, ICell
         return false;
     }
 
+
     /// <summary>
     /// Проверяет, свободна ли клетка для размещения домино.
     /// </summary>
     public bool IsFreeForDomino()
     {
-        return isFreeForDomino;
+    return !curDomino;
     }
-
+       
     /// <summary>
     /// Проверяет, полностью ли свободна клетка.
     /// </summary>
-    public bool IsFree()
-    {
-        return curDomino == null && curItem == null;
+    public bool IsFree() { 
+        return curDomino == null && curContent == null;
     }
-
-    /// <summary>
-    /// Устанавливает статус доступности клетки для домино.
-    /// </summary>
-    public void SetFree(bool val)
-    {
-        isFreeForDomino = val;
-    }
-
+  
     /// <summary>
     /// Проверяет, разрешено ли дублирование объектов в этой клетке.
     /// </summary>
     public bool CheckDuplicationAllowed()
     {
-        if (curItem == null && curDomino != null && duplicationBlockers == 0)
+        if (curContent == null && curDomino != null && duplicationBlockers == 0)
         {
             return true;
         }
@@ -296,6 +201,8 @@ public class Cell : MonoBehaviour, ICell
         duplicationBlockers = Mathf.Max(0, duplicationBlockers - 1);
         CheckForDuplications();
     }
+
+    // ------------------------------------------------------------------------------------------------------------
     void ClearThePond()
     {
         if (Physics2D.OverlapCircle(this.transform.position, .01f, LayerMask.GetMask("Pond")))
@@ -318,4 +225,5 @@ public class Cell : MonoBehaviour, ICell
             pondCol.gameObject.GetComponent<SpriteRenderer>().color = alpha;
         }
     }
+    // ------------------------------------------------------------------------------------------------------------
 }

@@ -16,10 +16,10 @@ public class Rockies : ResourceSource
     /// <summary>
     /// Подбирает камешки с учетом сгенерированного количества.
     /// </summary>
-    public override void Pick()
+    public override void Break()
     {
         Inventory.Instance.AddItem(resource, generator.GetCount());
-        curCell.SetCurItem(null);
+        curCell.SetCurContent(null);
         Destroy(gameObject);
     }
 
@@ -30,7 +30,6 @@ public class Rockies : ResourceSource
     public override void PutInCell(Cell cell)
     {
         base.PutInCell(cell);
-        curCell.SetNumber(generator.GetCount());
     }
 
     /// <summary>
@@ -39,8 +38,8 @@ public class Rockies : ResourceSource
     /// <param name="cur">Часть домино для проверки.</param>
     /// <param name="other">Вторая часть домино (пока не используется).</param>
     /// <returns>True если число на домино совпадает с сгенерированным числом камней.</returns>
-    public override bool CanBreak(DominoPart cur, DominoPart other)
+    public override bool CanBeBrokenBy(DominoPart cur, DominoPart other)
     {
-        return cur.data.number == generator.GetCount();
+        return cur.data.characteristics.number == generator.GetCount();
     }
 }

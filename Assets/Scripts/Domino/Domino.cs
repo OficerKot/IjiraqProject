@@ -7,23 +7,25 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Domino : PauseBehaviour
 {
-    DominoPart part1Playable, part2Playable;
-    [SerializeField] DominoData part1, part2;
+    public DominoPart part1 { get; private set; }
+    public DominoPart part2 { get; private set; }
+
+    public Cell curCell1 { get; private set; }
+    public Cell curCell2 { get; private set; }
+
     public GameObject pivot;
     bool isBeingGrabbed = false;
-    Cell curCell1, curCell2;
-    [SerializeField] float offsetY = 2f;
+
+    [SerializeField] const float OFFSET_Y = 2f;
 
     /// <summary>
     /// Инициализирует домино с указанными данными частей.
     /// </summary>
-    /// <param name="p1">Данные первой части домино.</param>
-    /// <param name="p2">Данные второй части домино.</param>
-    public void Initialize(DominoData p1, DominoData p2)
+    /// <param name="d1">Данные первой части домино.</param>
+    /// <param name="d2">Данные второй части домино.</param>
+    public void Initialize(DominoData d1, DominoData d2)
     {
-        part1 = p1;
-        part2 = p2;
-        GenerateParts();
+        GenerateParts(d1,d2);
         SpawnPivot();
     }
 
@@ -37,8 +39,8 @@ public class Domino : PauseBehaviour
 
         if (curCell1 && curCell2)
         {
-            part1Playable.ClearAllNeighbors();
-            part2Playable.ClearAllNeighbors();
+            part1.ClearAllNeighbors();
+            part2.ClearAllNeighbors();
 
             ClearCellData();
         }
@@ -65,12 +67,11 @@ public class Domino : PauseBehaviour
             Interact();
         }
 
-        if (part1Playable && part2Playable)
+        if (part1 && part2)
         {
             CheckPartRotation();
         }
     }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (isBeingGrabbed && collision.gameObject.layer == 6 && !EventSystem.current.IsPointerOverGameObject())
@@ -97,7 +98,6 @@ public class Domino : PauseBehaviour
             }
         }
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (isBeingGrabbed) ClearCellData();
@@ -141,29 +141,33 @@ public class Domino : PauseBehaviour
     /// </summary>
     bool CheckCells(Cell cell1, Cell cell2)
     {
-        IBreakableObject itemInCell;
+        ICellContent itemInCell;
         Cell[] sortedCells = GetCellsInOrder(cell2);
         Cell cellWithBiggerCoords = sortedCells[0];
         Cell cellWithLowerCoords = sortedCells[1];
 
-        bool part1CoordsAreBigger = part1Playable.GetLocation() == Location.up || part1Playable.GetLocation() == Location.right;
-        DominoPart partWithBiggerCoords = part1CoordsAreBigger ? part1Playable : part2Playable;
-        DominoPart partWithLowerCoords = part1CoordsAreBigger ? part2Playable : part1Playable;
+        bool part1CoordsAreBigger = part1.GetLocation() == Location.up || part1.GetLocation() == Location.right;
+        DominoPart partWithBiggerCoords = part1CoordsAreBigger ? part1 : part2;
+        DominoPart partWithLowerCoords = part1CoordsAreBigger ? part2 : part1;
 
         bool image1IsOK = cellWithBiggerCoords.GetImage() == ImageEnumerator.any ||
             (partWithBiggerCoords.data.neighboursImage == cellWithBiggerCoords.GetImage() || partWithBiggerCoords.data.neighboursImage == ImageEnumerator.any);
+        bool image2IsOK = cellWithLowerCoords.GetImage() == ImageEnumerator.any ||
+            (partWithLowerCoords.data.neighboursImage == cellWithLowerCoords.GetImage() || partWithLowerCoords.data.neighboursImage == ImageEnumerator.any);
+        bool image1IsOK = cellWithBiggerCoords == ImageEnumerator.any ||
+            (partWithBiggerCoords.data.neighboursRequirments.i == cellWithBiggerCoords.GetImage() || partWithBiggerCoords.data.neighboursImage == ImageEnumerator.any);
         bool image2IsOK = cellWithLowerCoords.GetImage() == ImageEnumerator.any ||
             (partWithLowerCoords.data.neighboursImage == cellWithLowerCoords.GetImage() || partWithLowerCoords.data.neighboursImage == ImageEnumerator.any);
 
         bool number1IsOK = cellWithBiggerCoords.GetNumber() == 0 || (partWithBiggerCoords.data.neighboursNumber == cellWithBiggerCoords.GetNumber());
         bool number2IsOK = cellWithLowerCoords.GetNumber() == 0 || (partWithLowerCoords.data.neighboursNumber == cellWithLowerCoords.GetNumber());
 
-        bool item1IsOK = cellWithBiggerCoords.GetCurItem() == null;
-        bool item2IsOK = cellWithLowerCoords.GetCurItem() == null;
+        bool item1IsOK = cellWithBiggerCoords.GetCurContent() == null;
+        bool item2IsOK = cellWithLowerCoords.GetCurContent() == null;
 
         if (!item1IsOK)
         {
-            itemInCell = cellWithBiggerCoords.GetCurItem().GetComponent<IBreakableObject>();
+            itemInCell = cellWithBiggerCoords.GetCurContent().GetComponent<ICellContent>();
             if (itemInCell != null)
             {
                 item1IsOK = itemInCell.CanBreak(partWithBiggerCoords, partWithLowerCoords);
@@ -171,7 +175,7 @@ public class Domino : PauseBehaviour
         }
         if (!item2IsOK)
         {
-            itemInCell = cellWithLowerCoords.GetCurItem().GetComponent<IBreakableObject>();
+            itemInCell = cellWithLowerCoords.GetCurContent().GetComponent<ICellContent>();
             if (itemInCell != null)
             {
                 item2IsOK = itemInCell.CanBreak(partWithLowerCoords, partWithBiggerCoords);
@@ -211,20 +215,20 @@ public class Domino : PauseBehaviour
         if (curCell1)
         {
             curCell1.NoHighlight();
-            curCell1.SetFree(true);
+            curCell1.SetFree();
             if (curCell1.GetCurDomino()) curCell1.SetFree();
             curCell1 = null;
         }
         if (curCell2)
         {
             curCell2.NoHighlight();
-            curCell2.SetFree(true);
+            curCell2.SetFree();
             if (curCell2.GetCurDomino()) curCell2.SetFree();
             curCell2 = null;
         }
 
-        part1Playable.ChangeIsBeingPlacedFlag(false);
-        part2Playable.ChangeIsBeingPlacedFlag(false);
+        part1.ChangeIsBeingPlacedFlag(false);
+        part2.ChangeIsBeingPlacedFlag(false);
     }
 
     /// <summary>
@@ -239,20 +243,21 @@ public class Domino : PauseBehaviour
     /// <summary>
     /// Размещает домино в выбранных клетках.
     /// </summary>
-    void PutInTheCells()
+    void PutInTheCells() // ЧТО ЭТО
     {
         isBeingGrabbed = false;
         GameManager.Instance.PutInHand(null);
 
-        BreakItemsInCells();
-        TakeFreeSpace();
+        curCell1.GetCurContent()?.Break();
+        curCell2.GetCurContent()?.Break();
+
         LayerSorter.Instance.PutBack(gameObject, SortingOrder.domino);
 
         Collider2D collider1 = curCell1.GetComponent<BoxCollider2D>();
         Collider2D collider2 = curCell2.GetComponent<BoxCollider2D>();
 
         TeleportToCells(collider1.transform, collider2.transform);
-        AddToCells(part1Playable, part2Playable);
+        AddToCells(part1, part2);
 
         AudioManager.Play(SoundType.BonePlace);
         EnemyManager.Instance.MakeStep();
@@ -285,34 +290,6 @@ public class Domino : PauseBehaviour
         pivot.transform.position = targetPos;
     }
 
-    /// <summary>
-    /// Занимает клетки.
-    /// </summary>
-    void TakeFreeSpace()
-    {
-        curCell1.SetFree(false);
-        curCell2.SetFree(false);
-        part1Playable.ChangeIsBeingPlacedFlag(true);
-        part2Playable.ChangeIsBeingPlacedFlag(true);
-    }
-
-    /// <summary>
-    /// Уничтожает объекты в клетках при размещении домино.
-    /// </summary>
-    void BreakItemsInCells()
-    {
-        if (curCell1.GetCurItem())
-        {
-            IBreakableObject item1 = curCell1.GetCurItem().GetComponent<IBreakableObject>();
-            if (item1 != null) item1.Break();
-        }
-
-        if (curCell2.GetCurItem())
-        {
-            IBreakableObject item2 = curCell2.GetCurItem().GetComponent<IBreakableObject>();
-            if (item2 != null) item2.Break();
-        }
-    }
 
     /// <summary>
     /// Проверяет совпадение направления домино с направлением 2х клеток.
@@ -368,7 +345,7 @@ public class Domino : PauseBehaviour
     /// <param name="degree">Угол вращения в градусах.</param>
     void Rotate(float degree = 90)
     {
-        if (!part1Playable || !part2Playable)
+        if (!part1 || !part2)
         {
             Debug.Log("Generate first");
             return;
@@ -390,26 +367,26 @@ public class Domino : PauseBehaviour
     /// <summary>
     /// Генерирует части домино на сцене.
     /// </summary>
-    void GenerateParts()
+    void GenerateParts(DominoData d1, DominoData d2)
     {
-        SpawnParts();
+        SpawnParts(d1, d2);
         SpawnPivot();
     }
 
     /// <summary>
     /// Создает игровые объекты для частей домино.
     /// </summary>
-    void SpawnParts()
+    void SpawnParts(DominoData d1, DominoData d2)
     {
-        if (part2Playable != null) Destroy(part1Playable);
-        if (part1Playable != null) Destroy(part2Playable);
+        if (part2 != null) Destroy(part1);
+        if (part1 != null) Destroy(part2);
 
-        part1Playable = Instantiate(part1.prefab, gameObject.transform.position + new Vector3(0, offsetY), gameObject.transform.rotation, transform).GetComponent<DominoPart>();
-        part2Playable = Instantiate(part2.prefab, gameObject.transform.position, gameObject.transform.rotation, transform).GetComponent<DominoPart>();
-        part1Playable.GetComponent<DominoPart>().data = part1;
-        part2Playable.GetComponent<DominoPart>().data = part2;
-        part1Playable.ChangeIsBeingPlacedFlag(false);
-        part2Playable.ChangeIsBeingPlacedFlag(false);
+        part1 = Instantiate(d1.prefab, gameObject.transform.position + new Vector3(0, OFFSET_Y), gameObject.transform.rotation, transform).GetComponent<DominoPart>();
+        part2 = Instantiate(d2.prefab, gameObject.transform.position, gameObject.transform.rotation, transform).GetComponent<DominoPart>();
+        part1.GetComponent<DominoPart>().data = d1;
+        part2.GetComponent<DominoPart>().data = d2;
+        part1.ChangeIsBeingPlacedFlag(false);
+        part2.ChangeIsBeingPlacedFlag(false);
 
         CheckPartRotation();
     }
@@ -421,10 +398,10 @@ public class Domino : PauseBehaviour
     {
         if (pivot != null) return;
 
-        BoxCollider2D collider1 = part1Playable.GetComponent<BoxCollider2D>();
-        BoxCollider2D collider2 = part2Playable.GetComponent<BoxCollider2D>();
+        BoxCollider2D collider1 = part1.GetComponent<BoxCollider2D>();
+        BoxCollider2D collider2 = part2.GetComponent<BoxCollider2D>();
 
-        Vector2 centerPosition = (part1Playable.transform.position + part2Playable.transform.position) / 2f;
+        Vector2 centerPosition = (part1.transform.position + part2.transform.position) / 2f;
 
         pivot = new GameObject("Pivot");
         pivot.transform.position = centerPosition;
@@ -438,32 +415,32 @@ public class Domino : PauseBehaviour
     /// </summary>
     void CheckPartRotation()
     {
-        bool areHorizontal = Mathf.Abs(part1Playable.transform.position.y - part2Playable.transform.position.y) < 0.5f;
+        bool areHorizontal = Mathf.Abs(part1.transform.position.y - part2.transform.position.y) < 0.5f;
 
         if (areHorizontal)
         {
-            if (part1Playable.transform.position.x > part2Playable.transform.position.x)
+            if (part1.transform.position.x > part2.transform.position.x)
             {
-                part1Playable.ChangeLocation(Location.right);
-                part2Playable.ChangeLocation(Location.left);
+                part1.ChangeLocation(Location.right);
+                part2.ChangeLocation(Location.left);
             }
-            if (part1Playable.transform.position.x < part2Playable.transform.position.x)
+            if (part1.transform.position.x < part2.transform.position.x)
             {
-                part1Playable.ChangeLocation(Location.left);
-                part2Playable.ChangeLocation(Location.right);
+                part1.ChangeLocation(Location.left);
+                part2.ChangeLocation(Location.right);
             }
         }
         else
         {
-            if (part1Playable.transform.position.y > part2Playable.transform.position.y)
+            if (part1.transform.position.y > part2.transform.position.y)
             {
-                part1Playable.ChangeLocation(Location.up);
-                part2Playable.ChangeLocation(Location.down);
+                part1.ChangeLocation(Location.up);
+                part2.ChangeLocation(Location.down);
             }
-            if (part1Playable.transform.position.y < part2Playable.transform.position.y)
+            if (part1.transform.position.y < part2.transform.position.y)
             {
-                part1Playable.ChangeLocation(Location.down);
-                part2Playable.ChangeLocation(Location.up);
+                part1.ChangeLocation(Location.down);
+                part2.ChangeLocation(Location.up);
             }
         }
     }

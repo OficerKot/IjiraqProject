@@ -5,8 +5,8 @@ using UnityEngine;
 /// игровой и ui префабы
 /// </summary>
 /// 
-[CreateAssetMenu(fileName = "New domino type", menuName = "Domino/DominoData")]
-public class DominoData : ScriptableObject
+[CreateAssetMenu(fileName = "New sigil type", menuName = "Sigil/SigilData")]
+public class SigilData : ScriptableObject
 {
     public string sigilId;
 
