@@ -10,12 +10,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DominoManager", menuName = "Domino/DominoManager")]
 public class DominoManager : ScriptableObject
 {
-    public List<DominoData> allDomino;
+    public List<DominoData> allSigils;
     public List<DominoData> available, basic;
 
-    public Dictionary<ImageEnumerator, int> order = new Dictionary<ImageEnumerator, int>()
+    public Dictionary<SigilType, int> order = new Dictionary<SigilType, int>()
     {
-        {ImageEnumerator.bone, 1} , {ImageEnumerator.fireflies, 2}, {ImageEnumerator.leaves, 3 }, {ImageEnumerator.flowers, 4 }, {ImageEnumerator.axe, 5}, {ImageEnumerator.pickaxe, 6}
+        {SigilType.Bone, 1} , {SigilType.Fireflies, 2}, {SigilType.Leaves, 3 }, {SigilType.Flowers, 4 }, {SigilType.Axe, 5}, {SigilType.Pickaxe, 6}
     };
 
     private static DominoManager _instance;
@@ -54,16 +54,16 @@ public class DominoManager : ScriptableObject
     /// </summary>
     /// <param name="id">Идентификатор домино.</param>
     /// <returns>Данные домино или null, если не найдено.</returns>
-    public DominoData GetDominoByID(string id)
+    public DominoData GetSigilByID(string id)
     {
-        return allDomino.Find(domino => domino.sigilId == id);
+        return allSigils.Find(sigil => sigil.characteristics.ID == id);
     }
 
     /// <summary>
     /// Возвращает случайную часть домино из доступных и базовых.
     /// </summary>
     /// <returns>Случайная часть домино.</returns>
-    public DominoData GetRandomDomino()
+    public DominoData GetRandomSigil()
     {
         List<DominoData> allAvailable = basic.ToList();
         allAvailable.AddRange(available);
@@ -77,9 +77,9 @@ public class DominoManager : ScriptableObject
     /// <param name="image">Требуемое изображение.</param>
     /// <param name="number">Требуемое число (0 для любого).</param>
     /// <returns>Данные домино или null, если не найдено.</returns>
-    public DominoData GetDomino(ImageEnumerator image, int number)
+    public DominoData GetSigil(SigilType image, int number)
     {
-        return allDomino.Find(d => d.characteristics.image == image && (d.characteristics.number == 0 || d.characteristics.number == number));
+        return allSigils.Find(d => d.characteristics.sigilType == image && (d.characteristics.number == 0 || d.characteristics.number == number));
     }
 
     /// <summary>

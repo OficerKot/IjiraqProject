@@ -71,8 +71,8 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     }
     void ChooseParts()
     {
-        part1 = DominoManager.Instance.GetRandomDomino();
-        part2 = DominoManager.Instance.GetRandomDomino();
+        part1 = DominoManager.Instance.GetRandomSigil();
+        part2 = DominoManager.Instance.GetRandomSigil();
     }
     void SpawnParts()
     {

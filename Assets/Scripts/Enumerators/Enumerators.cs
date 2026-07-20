@@ -16,7 +16,13 @@ public enum ToolType
     Any
 }
 
-public enum ImageEnumerator
+public enum SigilType
 {
-    any, bone, fireflies, leaves, flowers, axe, pickaxe
+    Any,
+    Bone,
+    Fireflies,
+    Leaves,
+    Flowers,
+    Axe,
+    Pickaxe
 }

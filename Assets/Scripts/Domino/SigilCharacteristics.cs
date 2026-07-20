@@ -1,10 +1,12 @@
 using UnityEngine;
 
 [System.Serializable]
-public abstract class SigilCharacteristics
+public class SigilCharacteristics
 {
-    public ImageEnumerator image { get; private set; } = ImageEnumerator.any;
-    public ToolType tool { get; private set; } = ToolType.None;
-    public int number { get; private set; } = 0;
+    public string ID;
+    [field: SerializeField]  public int number { get; private set; } = 0;
+    [field: SerializeField]  public SigilType sigilType { get; private set; } = SigilType.Any;
+    [field: SerializeField]  public ToolType tool { get; private set; } = ToolType.None;
+   
 
 }

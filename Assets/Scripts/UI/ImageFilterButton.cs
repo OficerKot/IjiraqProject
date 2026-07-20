@@ -8,7 +8,7 @@ public class ImageFilterButton : MonoBehaviour
 {
     public GameObject blurObject;
     bool clicked;
-    public ImageEnumerator image;
+    public SigilType image;
     Button b;
     void Start()
     {

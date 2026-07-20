@@ -8,11 +8,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New domino type", menuName = "Domino/DominoData")]
 public class DominoData : ScriptableObject
 {
-    public string sigilId;
-
     public SigilCharacteristics characteristics;
     public DominoRequirements placeRequirments;
 
-    public GameObject prefab;
-    public GameObject UIprefab;
+    public Sprite[] Sprites;
+    [field: SerializeField] public GameObject prefab { get; private set; }
+    [SerializeField] public GameObject UIprefab; // это убрать!
 }

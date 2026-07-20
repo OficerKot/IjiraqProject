@@ -10,7 +10,7 @@ public class CellsPlacer : MonoBehaviour
 
     public GameObject prefab;
     public List<GameObject> spawnedCells = new List<GameObject>();
-    HashSet<ImageEnumerator> uniqueImages = new HashSet<ImageEnumerator>();
+    HashSet<SigilType> uniqueImages = new HashSet<SigilType>();
     public BoxCollider2D windowCollider;
 
     public Vector3 startPos;
@@ -95,9 +95,9 @@ public class CellsPlacer : MonoBehaviour
     void FillIcons()
     {
         int indx = 0;
-        foreach (ImageEnumerator im in uniqueImages)
+        foreach (SigilType im in uniqueImages)
         {
-            GameObject icon = Instantiate(DominoManager.Instance.GetDomino(im, 1).UIprefab, spawnedCells[indx].transform);
+            GameObject icon = Instantiate(DominoManager.Instance.GetSigil(im, 1).UIprefab, spawnedCells[indx].transform);
             icon.transform.SetAsFirstSibling();
             spawnedCells[indx].GetComponent<ImageFilterButton>().image = im;
             icon.transform.localPosition = Vector3.zero;
@@ -111,9 +111,9 @@ public class CellsPlacer : MonoBehaviour
     {
         foreach (DominoData d in DominoManager.Instance.available)
         {
-            if (!uniqueImages.Contains(d.characteristics.image))
+            if (!uniqueImages.Contains(d.characteristics.sigilType))
             {
-                uniqueImages.Add(d.characteristics.image);
+                uniqueImages.Add(d.characteristics.sigilType);
             }
         }
     }

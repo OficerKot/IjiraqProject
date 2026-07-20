@@ -1,12 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-
+[System.Serializable]
 public class PlacementRequirements
 {
     public bool emptyCell = false;
     public ObjectType objectType = ObjectType.Any;
-    public ImageEnumerator image = ImageEnumerator.any;
+    public SigilType sigilType = SigilType.Any;
     public int number = 0;
 
     //При необходимости реализовать в классе-наследнике
@@ -22,7 +22,7 @@ public class PlacementRequirements
         if (objectType != ObjectType.Any && cell.GetCurContent().GetType() != objectType) return false;
 
         if ( (number != 0 && number != cell.GetCurDomino().data.characteristics.number) &&
-            (image != ImageEnumerator.any && cell.GetCurDomino().data.characteristics.image != image)) return false;
+            (sigilType != SigilType.Any && cell.GetCurDomino().data.characteristics.sigilType != sigilType)) return false;
        
 
         return true;

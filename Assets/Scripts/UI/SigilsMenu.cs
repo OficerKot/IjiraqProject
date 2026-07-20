@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 public class SigilsMenu : Menu
 {
@@ -12,7 +11,7 @@ public class SigilsMenu : Menu
     [SerializeField] GameObject menu;
     List<GameObject> spawnedIcons = new List<GameObject>();
     List<DominoData> sortedDominoList = new List<DominoData>();
-    HashSet<ImageEnumerator> imageFilters = new HashSet<ImageEnumerator>();
+    HashSet<SigilType> sigilsFilters = new HashSet<SigilType>();
     HashSet<int> numberFilters = new HashSet<int>();
     int prevAvailableCount;
 
@@ -62,15 +61,15 @@ public class SigilsMenu : Menu
         }
         UpdateAvailable();
     }
-    public void ApplyFilter(ImageEnumerator im)
+    public void ApplyFilter(SigilType im)
     {
-        if (imageFilters.Contains(im))
+        if (sigilsFilters.Contains(im))
         {
-            imageFilters.Remove(im);
+            sigilsFilters.Remove(im);
         }
         else
         {
-            imageFilters.Add(im);
+            sigilsFilters.Add(im);
         }
         UpdateAvailable();
     }
@@ -81,12 +80,12 @@ public class SigilsMenu : Menu
         {
             int curIndx = 0;
             sortedDominoList = DominoManager.Instance.available.ToList();
-            sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.image].CompareTo(DominoManager.Instance.order[b.characteristics.image]));
+            sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
             sortedDominoList.Sort((a, b) => a.characteristics.number.CompareTo(b.characteristics.number));
 
             foreach (DominoData d in sortedDominoList)
             {
-                bool isImageOk = imageFilters.Count == 0 || imageFilters.Contains(d.characteristics.image);
+                bool isImageOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.characteristics.sigilType);
                 bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);
                 if (isImageOk && isNumberOk)
                 {

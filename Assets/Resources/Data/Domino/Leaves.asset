@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4677ca0113dbc64388e8d1e2d927739, type: 3}
+  m_Name: Leaves
+  m_EditorClassIdentifier: 
+  characteristics:
+    ID: 
+    <number>k__BackingField: 0
+    <sigilType>k__BackingField: 0
+    <tool>k__BackingField: 0
+  placeRequirments:
+    cellRequirements:
+      emptyCell: 0
+      objectType: 0
+      sigilType: 0
+      number: 0
+    neighboursRequirements:
+      emptyCell: 0
+      objectType: 0
+      sigilType: 0
+      number: 0
+  Sprites:
+  - {fileID: -3864771739476507756, guid: 8ee53413031270a4184361b169553c4c, type: 3}
+  - {fileID: 5924549963853653257, guid: d2cb9a4ccdf439b4f929a7301473dedf, type: 3}
+  - {fileID: -4307633934276654295, guid: 7c17e0e2fcc0ad245bd3d525fb9ad9fa, type: 3}
+  - {fileID: 7797364532086310192, guid: 66cb868044897a94cbbc45ca1eae4a6c, type: 3}
+  - {fileID: 416658074743897389, guid: 98261843d88465c438280fed531c2a84, type: 3}
+  - {fileID: 8647949263303196376, guid: c4045c991a833a440b88114359deaa7a, type: 3}
+  <prefab>k__BackingField: {fileID: 8789013147086901380, guid: e4acdb7458c78054bbbdfbcc672c47ca, type: 3}
+  UIprefab: {fileID: 6806147685944260444, guid: 0ff80b69d6ed94a4ca80c7649cfa7412, type: 3}
