@@ -26,7 +26,7 @@ public enum Location
 /// </summary>
 public class DominoPart : MonoBehaviour, IDominoPart
 {
-    public DominoData data;
+    public SigilInstance sigilVariantData;
     int loopNumber = 0;
 
     [SerializeField] bool isBeingPlaced = false;
@@ -35,6 +35,17 @@ public class DominoPart : MonoBehaviour, IDominoPart
 
     [SerializeField] public List<DominoPart> neighbours = new List<DominoPart>();
 
+    public void Init(SigilInstance data)
+    {
+        this.sigilVariantData = data;
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null && data.Sprite != null)
+        {
+            spriteRenderer.sprite = data.Sprite;
+        }
+    }
     /// <summary>
     /// Виртуальный метод для особых свойств части домино.
     /// </summary>

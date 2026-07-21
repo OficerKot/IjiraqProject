@@ -15,8 +15,8 @@ public static class DominoPlacementValidator
 
     public static  bool ValidatePlacement(Domino d) {
      
-        DominoRequirements r1 = d.part1.data.placeRequirments;
-        DominoRequirements r2 = d.part2.data.placeRequirments;
+        DominoRequirements r1 = d.part1.sigilVariantData.placeRequirments;
+        DominoRequirements r2 = d.part2.sigilVariantData.placeRequirments;
 
         Cell c1 = d.curCell1;
         Cell c2 = d.curCell2;

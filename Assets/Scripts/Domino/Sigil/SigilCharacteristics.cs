@@ -3,8 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class SigilCharacteristics
 {
-    public string ID;
-    [field: SerializeField]  public int number { get; private set; } = 0;
+    [field: SerializeField] public string ID { get; private set; }
+    [field: SerializeField] public bool isBasic { get; private set; } = false;
     [field: SerializeField]  public SigilType sigilType { get; private set; } = SigilType.Any;
     [field: SerializeField]  public ToolType tool { get; private set; } = ToolType.None;
    

@@ -109,7 +109,7 @@ public class CellsPlacer : MonoBehaviour
 
     void FindUniqueImages()
     {
-        foreach (DominoData d in DominoManager.Instance.available)
+        foreach (SigilData d in DominoManager.Instance.available)
         {
             if (!uniqueImages.Contains(d.characteristics.sigilType))
             {

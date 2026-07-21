@@ -20,18 +20,32 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject winText;
     [SerializeField] private Camera gameCamera;
 
-    GameObject inHand = null;
+    [SerializeField] SigilsState sigilsState;
+
+    GameObject inHand = null; // вынести
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+
+            sigilsState.Init(DominoManager.Instance);
+
         }
         else
         {
             Destroy(this);
         }
     }
+
+    private void Start()
+    {
+        gameEnd = false;
+        winText.SetActive(false);
+        gameOverText.SetActive(false);
+
+    }
+
 
     /// <summary>
     /// Перезагрузка уровня
@@ -58,12 +72,6 @@ public class GameManager : MonoBehaviour
         paused = !paused; 
         Time.timeScale = paused ? 0f : 1f;
         SetGameOnPause(paused);
-    }
-    private void Start()
-    {
-        gameEnd = false;
-        winText.SetActive(false);
-        gameOverText.SetActive(false);
     }
 
     /// <summary>
@@ -95,6 +103,8 @@ public class GameManager : MonoBehaviour
         Pause();
     }
 
+    //Вынести!-------------------------------------------
+
     public bool IsHandFree()
     {
         return inHand = null;
@@ -108,8 +118,6 @@ public class GameManager : MonoBehaviour
     {
         inHand = obj;
     }
-    public Camera GetCamera()
-    {
-        return gameCamera;
-    }
+    
+    //---------------------------------------------------
 }

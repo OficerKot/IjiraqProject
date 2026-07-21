@@ -10,7 +10,7 @@ public class SigilsMenu : Menu
     [SerializeField] List<Transform> cells;
     [SerializeField] GameObject menu;
     List<GameObject> spawnedIcons = new List<GameObject>();
-    List<DominoData> sortedDominoList = new List<DominoData>();
+    List<SigilData> sortedDominoList = new List<SigilData>();
     HashSet<SigilType> sigilsFilters = new HashSet<SigilType>();
     HashSet<int> numberFilters = new HashSet<int>();
     int prevAvailableCount;
@@ -83,7 +83,7 @@ public class SigilsMenu : Menu
             sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
             sortedDominoList.Sort((a, b) => a.characteristics.number.CompareTo(b.characteristics.number));
 
-            foreach (DominoData d in sortedDominoList)
+            foreach (SigilData d in sortedDominoList)
             {
                 bool isImageOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.characteristics.sigilType);
                 bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);

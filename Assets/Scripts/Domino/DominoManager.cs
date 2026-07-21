@@ -10,8 +10,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DominoManager", menuName = "Domino/DominoManager")]
 public class DominoManager : ScriptableObject
 {
-    public List<DominoData> allSigils;
-    public List<DominoData> available, basic;
+    public List<SigilData> allSigils;
 
     public Dictionary<SigilType, int> order = new Dictionary<SigilType, int>()
     {
@@ -54,21 +53,9 @@ public class DominoManager : ScriptableObject
     /// </summary>
     /// <param name="id">Идентификатор домино.</param>
     /// <returns>Данные домино или null, если не найдено.</returns>
-    public DominoData GetSigilByID(string id)
+    public SigilData GetSigilByID(string id)
     {
         return allSigils.Find(sigil => sigil.characteristics.ID == id);
-    }
-
-    /// <summary>
-    /// Возвращает случайную часть домино из доступных и базовых.
-    /// </summary>
-    /// <returns>Случайная часть домино.</returns>
-    public DominoData GetRandomSigil()
-    {
-        List<DominoData> allAvailable = basic.ToList();
-        allAvailable.AddRange(available);
-        int indx = Random.Range(0, allAvailable.Count);
-        return allAvailable[indx];
     }
 
     /// <summary>
@@ -77,7 +64,7 @@ public class DominoManager : ScriptableObject
     /// <param name="image">Требуемое изображение.</param>
     /// <param name="number">Требуемое число (0 для любого).</param>
     /// <returns>Данные домино или null, если не найдено.</returns>
-    public DominoData GetSigil(SigilType image, int number)
+    public SigilData GetSigil(SigilType image, int number)
     {
         return allSigils.Find(d => d.characteristics.sigilType == image && (d.characteristics.number == 0 || d.characteristics.number == number));
     }

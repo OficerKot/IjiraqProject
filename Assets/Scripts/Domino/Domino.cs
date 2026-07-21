@@ -16,17 +16,10 @@ public class Domino : PauseBehaviour
     public GameObject pivot;
     bool isBeingGrabbed = false;
 
-    [SerializeField] const float OFFSET_Y = 2f;
-
-    /// <summary>
-    /// Инициализирует домино с указанными данными частей.
-    /// </summary>
-    /// <param name="d1">Данные первой части домино.</param>
-    /// <param name="d2">Данные второй части домино.</param>
-    public void Initialize(DominoData d1, DominoData d2)
+    public void SetParts(DominoPart p1, DominoPart p2)
     {
-        GenerateParts(d1,d2);
-        SpawnPivot();
+        part1 = p1;
+        part2 = p2;
     }
 
     /// <summary>
@@ -290,52 +283,6 @@ public class Domino : PauseBehaviour
         targetPos.z = 0;
 
         pivot.transform.position = Vector3.Lerp(pivot.transform.position, targetPos, 1);
-    }
-
-    /// <summary>
-    /// Генерирует части домино на сцене.
-    /// </summary>
-    void GenerateParts(DominoData d1, DominoData d2)
-    {
-        SpawnParts(d1, d2);
-        SpawnPivot();
-    }
-
-    /// <summary>
-    /// Создает игровые объекты для частей домино.
-    /// </summary>
-    void SpawnParts(DominoData d1, DominoData d2)
-    {
-        if (part2 != null) Destroy(part1);
-        if (part1 != null) Destroy(part2);
-
-        part1 = Instantiate(d1.prefab, gameObject.transform.position + new Vector3(0, OFFSET_Y), gameObject.transform.rotation, transform).GetComponent<DominoPart>();
-        part2 = Instantiate(d2.prefab, gameObject.transform.position, gameObject.transform.rotation, transform).GetComponent<DominoPart>();
-        part1.GetComponent<DominoPart>().data = d1;
-        part2.GetComponent<DominoPart>().data = d2;
-        part1.ChangeIsBeingPlacedFlag(false);
-        part2.ChangeIsBeingPlacedFlag(false);
-
-        CheckPartRotation();
-    }
-
-    /// <summary>
-    /// Создает точку вращения (pivot) для домино.
-    /// </summary>
-    void SpawnPivot()
-    {
-        if (pivot != null) return;
-
-        BoxCollider2D collider1 = part1.GetComponent<BoxCollider2D>();
-        BoxCollider2D collider2 = part2.GetComponent<BoxCollider2D>();
-
-        Vector2 centerPosition = (part1.transform.position + part2.transform.position) / 2f;
-
-        pivot = new GameObject("Pivot");
-        pivot.transform.position = centerPosition;
-        pivot.transform.rotation = transform.rotation;
-
-        transform.SetParent(pivot.transform);
     }
 
     /// <summary>

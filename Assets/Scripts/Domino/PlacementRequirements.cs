@@ -21,8 +21,8 @@ public class PlacementRequirements
 
         if (objectType != ObjectType.Any && cell.GetCurContent().GetType() != objectType) return false;
 
-        if ( (number != 0 && number != cell.GetCurDomino().data.characteristics.number) &&
-            (sigilType != SigilType.Any && cell.GetCurDomino().data.characteristics.sigilType != sigilType)) return false;
+        if ( (number != 0 && number != cell.GetCurDomino().sigilVariantData.boneNumber) &&
+            (sigilType != SigilType.Any && cell.GetCurDomino().sigilVariantData.sigilTypeData.characteristics.sigilType != sigilType)) return false;
        
 
         return true;
