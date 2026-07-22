@@ -6,12 +6,15 @@ using UnityEngine.UI;
 /// </summary>
 public class NumFilterButton : MonoBehaviour
 {
+    SigilsMenu menu;
     Image imageComponent;
     bool clicked;
     public int number;
     Button b;
     void Start()
     {
+        menu = GetComponentInParent<SigilsMenu>();
+
         clicked = false;
         b = GetComponent<Button>();
         imageComponent = GetComponent<Image>();
@@ -23,7 +26,7 @@ public class NumFilterButton : MonoBehaviour
     /// </summary>
     void ApplyFilter()
     {
-        SigilsMenu.Instance.ApplyFilter(number);
+       //  menu.ApplyFilter(number); 
         if (clicked)
         {
             clicked = false;

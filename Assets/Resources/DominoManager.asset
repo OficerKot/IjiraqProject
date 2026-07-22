@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88dbd9f9553657458d54fa0768115a4, type: 3}
   m_Name: DominoManager
   m_EditorClassIdentifier: 
-  allSigils: []
-  available:
-  - {fileID: 11400000, guid: 2ee437f443c960b4389a84af6cbf43fe, type: 2}
-  - {fileID: 11400000, guid: 7a591ac3be09c5d4089ae84cd5e4efe4, type: 2}
-  basic:
+  allSigils:
   - {fileID: 11400000, guid: d408135d13f250140aaf22871a919066, type: 2}
-  - {fileID: 11400000, guid: ea4f742290ba9934982279c46e15b6e1, type: 2}
+  - {fileID: 11400000, guid: 2ee437f443c960b4389a84af6cbf43fe, type: 2}
   - {fileID: 11400000, guid: 98f16321ec9b4d149ae3da39231bcc06, type: 2}
   - {fileID: 11400000, guid: 257d4db813940d6469f651bbf868bfbc, type: 2}
+  - {fileID: 11400000, guid: ea4f742290ba9934982279c46e15b6e1, type: 2}
+  - {fileID: 11400000, guid: 7a591ac3be09c5d4089ae84cd5e4efe4, type: 2}

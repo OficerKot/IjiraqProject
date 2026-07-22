@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Fireflies
   m_EditorClassIdentifier: 
   characteristics:
-    ID: 
-    <number>k__BackingField: 0
-    <sigilType>k__BackingField: 0
+    <ID>k__BackingField: fireflies
+    <isBasic>k__BackingField: 1
+    <sigilType>k__BackingField: 2
     <tool>k__BackingField: 0
   placeRequirments:
     cellRequirements:
@@ -28,8 +28,8 @@ MonoBehaviour:
       objectType: 0
       sigilType: 0
       number: 0
-  Sprites:
-  - {fileID: 21300000, guid: 644185bb7c6647142a71248e167c5638, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: 6d31420252ec92c4f991a92b5e210364, type: 3}
   - {fileID: 21300000, guid: 8c3c3fcde0c404446ac53cfe2888599a, type: 3}
   - {fileID: 21300000, guid: fcf268ead66942b42861278f9195cf65, type: 3}
   - {fileID: -154231748857337115, guid: 6068d70d0703e7544a9cf1fbce1f1d76, type: 3}

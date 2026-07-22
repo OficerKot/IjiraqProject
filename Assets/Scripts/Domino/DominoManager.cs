@@ -59,23 +59,14 @@ public class DominoManager : ScriptableObject
     }
 
     /// <summary>
-    /// Находит информацию о части домино по изображению и числу (0 - любое число).
+    /// Находит информацию о части домино по изображению.
     /// </summary>
-    /// <param name="image">Требуемое изображение.</param>
-    /// <param name="number">Требуемое число (0 для любого).</param>
+    /// <param name="type">Требуемое изображение.</param>
     /// <returns>Данные домино или null, если не найдено.</returns>
-    public SigilData GetSigil(SigilType image, int number)
+    public SigilData GetSigil(SigilType type)
     {
-        return allSigils.Find(d => d.characteristics.sigilType == image && (d.characteristics.number == 0 || d.characteristics.number == number));
+        return allSigils.Find(d => d.characteristics.sigilType == type);
     }
 
-    /// <summary>
-    /// Проверяет, есть ли доступные сигилы (кроме базовых).
-    /// </summary>
-    /// <returns>True если есть доступные сигилы.</returns>
-    public bool HasAvailable()
-    {
-        return available.Count > 0;
-    }
 }
 

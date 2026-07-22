@@ -1,15 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 public class DominoFactory
 {
     SigilsState playerSigils;
     GameObject dominoPrefab;
-    public void Init(SigilsState playerSigils)
+    public void Init(SigilsState playerSigils, GameObject dominoPrefab)
     {
         this.playerSigils = playerSigils;
+        this.dominoPrefab = dominoPrefab;
     }
+
+    /// <summary>
+    /// √енерирует на сцене домино из случайной комбинации доступных сигилов
+    /// </summary>
     public Domino GenerateRandomDomino()
     {
         Domino domino = GameObject.Instantiate(dominoPrefab).GetComponent<Domino>();
@@ -52,6 +57,10 @@ public class DominoFactory
         d.part2.transform.SetParent(d.pivot.transform);
         d.transform.SetParent(d.pivot.transform);
     }
+
+    /// <summary>
+    /// ѕолучить случайный вариант сигила из всех доступных игроку.
+    /// </summary>
     SigilInstance GenerateRandomSigil()
     {
         SigilInstance sigilInstance = new SigilInstance();
@@ -63,7 +72,7 @@ public class DominoFactory
         return sigilInstance;
     }
     /// <summary>
-    /// ѕолучить случайный сигил из всех доступных игроку.
+    /// ѕолучить случайный тип сигила из всех доступных игроку.
     /// </summary>
     public SigilData GetRandomSigil()
     {
@@ -73,7 +82,7 @@ public class DominoFactory
         return allAvailable[indx];
     }
 
-    public int ChooseRandomSigilVariant(SigilData sigil)
+    int ChooseRandomSigilVariant(SigilData sigil)
     {
         int spritesCnt = sigil.sprites.Length;
         int indx = Random.Range(0, spritesCnt);

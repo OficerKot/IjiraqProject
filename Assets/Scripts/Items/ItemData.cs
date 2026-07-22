@@ -7,7 +7,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "New item", menuName = "Items/ItemData")]
 public class ItemData : ScriptableObject
 {
-    public string ID { get; private set; }
+    [field: SerializeField] public string ID { get; private set; }
     public GameObject prefab;
     public GameObject UIprefab;
 

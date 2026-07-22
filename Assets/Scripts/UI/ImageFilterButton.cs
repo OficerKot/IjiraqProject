@@ -6,12 +6,15 @@ using UnityEngine.UI;
 /// </summary>
 public class ImageFilterButton : MonoBehaviour
 {
+    SigilsMenu menu;
     public GameObject blurObject;
     bool clicked;
     public SigilType image;
     Button b;
     void Start()
     {
+        menu = GetComponentInParent<SigilsMenu>();
+
         clicked = false;
         b = GetComponent<Button>();
         b.onClick.AddListener(ApplyFilter);
@@ -22,7 +25,7 @@ public class ImageFilterButton : MonoBehaviour
     /// </summary>
     void ApplyFilter()
     {
-        SigilsMenu.Instance.ApplyFilter(image);
+        menu.ApplyFilter(image);
         if (clicked)
         {
             clicked = false;

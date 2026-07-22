@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Bones
   m_EditorClassIdentifier: 
   characteristics:
-    ID: bones
-    <number>k__BackingField: 0
-    <sigilType>k__BackingField: 0
+    <ID>k__BackingField: bone
+    <isBasic>k__BackingField: 1
+    <sigilType>k__BackingField: 1
     <tool>k__BackingField: 0
   placeRequirments:
     cellRequirements:
@@ -28,7 +28,7 @@ MonoBehaviour:
       objectType: 0
       sigilType: 0
       number: 0
-  Sprites:
+  sprites:
   - {fileID: 8864230763937196874, guid: df630a28b986f6b43a81f9f4c34717e0, type: 3}
   - {fileID: -4694171696524752631, guid: 89b15a3af63b5d54b8bd86382310f463, type: 3}
   - {fileID: -1345233036637759699, guid: e6d4c56a10697f542849336d1ee10008, type: 3}

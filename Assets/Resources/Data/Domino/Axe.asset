@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   characteristics:
-    ID: axe
-    <number>k__BackingField: 0
-    <sigilType>k__BackingField: 0
+    <ID>k__BackingField: axe
+    <isBasic>k__BackingField: 1
+    <sigilType>k__BackingField: 5
     <tool>k__BackingField: 1
   placeRequirments:
     cellRequirements:
@@ -28,7 +28,7 @@ MonoBehaviour:
       objectType: 0
       sigilType: 0
       number: 0
-  Sprites:
+  sprites:
   - {fileID: -7609632171516861410, guid: d2ef99426261d844ca7aefd0342d81c8, type: 3}
   <prefab>k__BackingField: {fileID: 8789013147086901380, guid: bc33fbd9ecee8f24888fe75ad404a382, type: 3}
   UIprefab: {fileID: 6806147685944260444, guid: e92e7e68621328a419d3ab4617819fd9, type: 3}

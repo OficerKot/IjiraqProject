@@ -143,7 +143,7 @@ public class Item : PauseBehaviour, Interactable, ICellContent
     {
         DominoPart p1 = d.part1;
         DominoPart p2 = d.part2;
-        return p1.sigilVariantData.characteristics.tool == data.toolToDestroy || p2.sigilVariantData.characteristics.tool == data.toolToDestroy || data.toolToDestroy == ToolType.Any;
+        return p1.sigilVariantData.sigilTypeData.characteristics.tool == data.toolToDestroy || p2.sigilVariantData.sigilTypeData.characteristics.tool == data.toolToDestroy || data.toolToDestroy == ToolType.Any;
     }
 
     /// <summary>

@@ -43,8 +43,8 @@ public class Rockies : ResourceSource
         DominoPart p1 = d.part1;
         DominoPart p2 = d.part2;
 
-        return (c1 == curCell && p1.sigilVariantData.characteristics.number == generator.GetCount() ||
-            c2 == curCell && p2.sigilVariantData.characteristics.number == generator.GetCount());
+        return (c1 == curCell && p1.sigilVariantData.boneNumber == generator.GetCount() ||
+            c2 == curCell && p2.sigilVariantData.boneNumber == generator.GetCount());
 
     }
 }

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Leaves
   m_EditorClassIdentifier: 
   characteristics:
-    ID: 
-    <number>k__BackingField: 0
-    <sigilType>k__BackingField: 0
+    <ID>k__BackingField: leaves
+    <isBasic>k__BackingField: 1
+    <sigilType>k__BackingField: 3
     <tool>k__BackingField: 0
   placeRequirments:
     cellRequirements:
@@ -28,7 +28,7 @@ MonoBehaviour:
       objectType: 0
       sigilType: 0
       number: 0
-  Sprites:
+  sprites:
   - {fileID: -3864771739476507756, guid: 8ee53413031270a4184361b169553c4c, type: 3}
   - {fileID: 5924549963853653257, guid: d2cb9a4ccdf439b4f929a7301473dedf, type: 3}
   - {fileID: -4307633934276654295, guid: 7c17e0e2fcc0ad245bd3d525fb9ad9fa, type: 3}

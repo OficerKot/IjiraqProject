@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Окно крафта предметов с системой рецептов и категорий.
 /// </summary>
-public class UICraftWindow : Menu
+public class UICraftWindow : MonoBehaviour, IMenu
 {
     public static UICraftWindow Instance = null;
     [SerializeField] GameObject menu;
@@ -38,7 +38,7 @@ public class UICraftWindow : Menu
     /// <summary>
     /// Закрывает окно крафта.
     /// </summary>
-    public override void Close()
+    public void Close()
     {
         if (curWindow)
         {
@@ -51,7 +51,7 @@ public class UICraftWindow : Menu
     /// <summary>
     /// Открывает окно крафта в позиции курсора мыши.
     /// </summary>
-    public override void Open()
+    public void Open()
     {
         if (curWindow)
         {

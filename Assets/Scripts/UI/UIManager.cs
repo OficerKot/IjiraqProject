@@ -3,11 +3,23 @@ using UnityEngine;
 
 public class UIManager : PauseBehaviour
 {
-    Menu openedMenu = null;
+    IMenu openedMenu = null;
     bool isActive = true;
-    [SerializeField] Menu sigilsMenu, pauseMenu, craftMenu;
-    [SerializeField] KeyCode sigilsKey, pauseKey, craftKey;
 
+    [Header("Ёкраны меню")]
+    [SerializeField] SigilsMenu sigilsMenu;
+    [SerializeField] PauseMenu pauseMenu;
+    [SerializeField] UICraftWindow craftMenu;
+
+    [Header(" нопки управлени€")]
+    [SerializeField] KeyCode sigilsKey;
+    [SerializeField] KeyCode pauseKey;
+    [SerializeField] KeyCode craftKey;
+    public void Init(SigilsState sigilsState)
+    {
+        sigilsMenu.Init(sigilsState);
+    }
+  
     void Update()
     {
         if (Input.GetKeyDown(sigilsKey))
@@ -28,7 +40,7 @@ public class UIManager : PauseBehaviour
         isActive = !isGamePaused;
     }
 
-    public void ToggleMenu(Menu menu)
+    public void ToggleMenu(IMenu menu)
     {
         if (!isActive && GameManager.Instance.gameEnd) return;
         if (openedMenu == menu)

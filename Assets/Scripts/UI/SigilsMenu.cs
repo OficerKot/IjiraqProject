@@ -2,65 +2,64 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SigilsMenu : Menu
+public class SigilsMenu : MonoBehaviour, IMenu
 {
-    public static SigilsMenu Instance;
+    SigilsState sigilsState;
+    CellsPlacer menuCells;
 
     [SerializeField] float scaleKoefficient = 2.5f;
     [SerializeField] List<Transform> cells;
     [SerializeField] GameObject menu;
+
     List<GameObject> spawnedIcons = new List<GameObject>();
     List<SigilData> sortedDominoList = new List<SigilData>();
     HashSet<SigilType> sigilsFilters = new HashSet<SigilType>();
-    HashSet<int> numberFilters = new HashSet<int>();
+
+    //HashSet<int> numberFilters = new HashSet<int>();
+
     int prevAvailableCount;
 
-    private void Awake()
+    public void Init(SigilsState sigilsState)
     {
-        if(Instance == null)
-        {
-            Instance = this;
-            prevAvailableCount = DominoManager.Instance.available.Count;
-            FillAvailable();
-        }
-        else
-        {
-            Destroy(this);
-        }
+        this.sigilsState = sigilsState;
+
+        prevAvailableCount = sigilsState.GetAllAvailable().Count;
+        FillAvailable();
+
     }
-    public override void Open()
+    public void Open()
     {
         menu.SetActive(true);
         if (spawnedIcons.Count == 0) FillAvailable();
     }
-    public override void Close()
+    public void Close()
     {
         menu.SetActive(false);
     }
     private void Update()
     {
-        if (prevAvailableCount != DominoManager.Instance.available.Count) 
+        if (prevAvailableCount != sigilsState.GetAllAvailable().Count) 
         {
             Debug.Log("Update");
             UpdateAvailable();
-            CellsPlacer.Instance.UpdateButtons();
-            prevAvailableCount = DominoManager.Instance.available.Count;
+            menuCells.UpdateButtons();
+            prevAvailableCount = sigilsState.GetAllAvailable().Count;
         }
 
     }
 
-    public void ApplyFilter(int num)
-    {
-        if (numberFilters.Contains(num))
-        {
-            numberFilters.Remove(num);
-        }
-        else
-        {
-            numberFilters.Add(num);
-        }
-        UpdateAvailable();
-    }
+    //public void ApplyFilter(int num)
+    //{
+    //    if (numberFilters.Contains(num))
+    //    {
+    //        numberFilters.Remove(num);
+    //    }
+    //    else
+    //    {
+    //        numberFilters.Add(num);
+    //    }
+    //    UpdateAvailable();
+    //}
     public void ApplyFilter(SigilType im)
     {
         if (sigilsFilters.Contains(im))
@@ -76,18 +75,18 @@ public class SigilsMenu : Menu
 
     void FillAvailable() 
     {
-        if (DominoManager.Instance.HasAvailable())
+        if (sigilsState.HasAvailable())
         {
             int curIndx = 0;
-            sortedDominoList = DominoManager.Instance.available.ToList();
+            sortedDominoList = sigilsState.GetAllAvailable();
             sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
-            sortedDominoList.Sort((a, b) => a.characteristics.number.CompareTo(b.characteristics.number));
+            // sortedDominoList.Sort((a, b) => a.characteristics.boneNumber.CompareTo(b.characteristics.number));
 
             foreach (SigilData d in sortedDominoList)
             {
-                bool isImageOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.characteristics.sigilType);
-                bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);
-                if (isImageOk && isNumberOk)
+                bool isTypeOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.characteristics.sigilType);
+               // bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);
+                if (isTypeOk) // && isNumberOk)
                 {
                     cells[curIndx].gameObject.SetActive(true);
                     GameObject icon = Instantiate(d.UIprefab, menu.transform);

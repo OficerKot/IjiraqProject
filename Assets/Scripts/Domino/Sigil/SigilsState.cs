@@ -4,8 +4,8 @@ using UnityEngine;
 public class SigilsState : MonoBehaviour
 {
     DominoManager dominoManager;
-    public List<SigilData> available { get; private set; }
-    public List<SigilData> basic { get; private set; }
+    public List<SigilData> available { get; private set; } = new List<SigilData>();
+    public List<SigilData> basic { get; private set; } = new List<SigilData>();
 
     public void Init(DominoManager dominoManager)
     {
@@ -34,6 +34,15 @@ public class SigilsState : MonoBehaviour
         List<SigilData> result = new List<SigilData>(basic);
         result.AddRange(available);
         return result;
+    }
+
+    /// <summary>
+    /// Проверяет, есть ли доступные сигилы (кроме базовых).
+    /// </summary>
+    /// <returns>True если есть доступные сигилы.</returns>
+    public bool HasAvailable()
+    {
+        return available.Count > 0;
     }
 
     public void AddToAvailable(SigilData data)

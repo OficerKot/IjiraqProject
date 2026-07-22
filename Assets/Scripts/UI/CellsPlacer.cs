@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CellsPlacer : MonoBehaviour
 {
-    public static CellsPlacer Instance;
+    SigilsState sigilsState;
 
     public GameObject prefab;
     public List<GameObject> spawnedCells = new List<GameObject>();
@@ -28,18 +28,10 @@ public class CellsPlacer : MonoBehaviour
     //При этом если элементов <= maxDefaultElements, отступ будет не больше defaultOffset
    
 
-    private void Awake()
+    public void Init(SigilsState state)
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        sigilsState = state;
     }
-
     public void UpdateButtons()
     {
         ClearElements();
@@ -95,11 +87,11 @@ public class CellsPlacer : MonoBehaviour
     void FillIcons()
     {
         int indx = 0;
-        foreach (SigilType im in uniqueImages)
+        foreach (SigilType type in uniqueImages)
         {
-            GameObject icon = Instantiate(DominoManager.Instance.GetSigil(im, 1).UIprefab, spawnedCells[indx].transform);
+            GameObject icon = Instantiate(DominoManager.Instance.GetSigil(type).UIprefab, spawnedCells[indx].transform);
             icon.transform.SetAsFirstSibling();
-            spawnedCells[indx].GetComponent<ImageFilterButton>().image = im;
+            spawnedCells[indx].GetComponent<ImageFilterButton>().image = type;
             icon.transform.localPosition = Vector3.zero;
             icon.transform.localScale *= scaleKoef;
             indx++;
@@ -109,7 +101,7 @@ public class CellsPlacer : MonoBehaviour
 
     void FindUniqueImages()
     {
-        foreach (SigilData d in DominoManager.Instance.available)
+        foreach (SigilData d in sigilsState.GetAllAvailable())
         {
             if (!uniqueImages.Contains(d.characteristics.sigilType))
             {
