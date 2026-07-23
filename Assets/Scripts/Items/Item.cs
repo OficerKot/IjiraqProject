@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Для тех объектов, которые могут взаимодействовать с клетками
 /// </summary>
-public interface Interactable
+public interface IInteractable
 {
     public void PutInCell(Cell cell);
     public void PutInCell();
@@ -15,9 +15,9 @@ public interface Interactable
 /// <summary>
 /// Класс для объектов, которые могут находиться в инвентаре, подбираться с поля и размещаться на поле с определёнными условиями
 /// </summary>
-public class Item : PauseBehaviour, Interactable, ICellContent
+public class Item : PauseBehaviour, IInteractable, ICellContent
 {
-    public ItemData data { get; private set; }
+    [field: SerializeField] public ItemData data { get; private set; }
     [SerializeField] Cell curCell;
     bool isPlaced = true;
     public event Action OnItemPlaced;
@@ -119,8 +119,8 @@ public class Item : PauseBehaviour, Interactable, ICellContent
         InvokeAction();
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
-        Inventory.Instance.RemoveItem(ItemManager.Instance.GetItemByID(data.ID));
-        GameManager.Instance.PutInHand(null);
+        Inventory.Instance.RemoveItem(data);
+        HandManager.Instance?.PutInHand(null);
     }
 
     protected void InvokeAction()

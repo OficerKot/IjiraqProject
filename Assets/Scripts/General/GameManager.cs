@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Управляет игровым процессом: начало, перезагрузка, окончание игры, выход из приложения. 
-/// Хранит в себе объект, находящийся в руке игрока (в будущем будет вынесено в отдельный скрипт)
+/// Управляет зависимостями и игровым процессом: начало, перезагрузка, окончание игры, выход из приложения. 
 /// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     /// <summary>
-    /// Событие, активируемое при установке игры на паузу или снятии с паузы.
+    /// Установка игры на паузу или снятие с паузы.
     /// </summary>
     public static event Action<bool> OnGamePaused;
     bool paused = false;
@@ -24,13 +23,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject winScreen;
 
-    [Header("Генерация домино")]
-    [SerializeField] GameObject dominoPrefab;
+    [Header("Сигилы игрока")]
     [SerializeField] SigilsState sigilsState;
+
+    [Header("Генерация домино")]
+    [SerializeField] public const int DOMINO_CNT = 5;
+    [SerializeField] GameObject dominoPrefab;
+    [SerializeField] DominoPool dominoPool;
+    [SerializeField] UISelectionPanel uiSelectionPanel;
     DominoFactory dominoFactory;
 
-    
-    GameObject inHand = null; // вынести
     private void Awake()
     {
         if (Instance == null)
@@ -38,11 +40,14 @@ public class GameManager : MonoBehaviour
             Instance = this;
 
             sigilsState.Init(DominoManager.Instance);
+            uiManager.Init(sigilsState);
 
             dominoFactory = new DominoFactory();
-            dominoFactory.Init(sigilsState, dominoPrefab);
 
-            uiManager.Init(sigilsState);
+            dominoFactory.Init(sigilsState, dominoPrefab);
+            dominoPool.Init(dominoFactory);
+            uiSelectionPanel.Init(dominoPool);
+            
         }
         else
         {
@@ -55,12 +60,18 @@ public class GameManager : MonoBehaviour
         gameEnd = false;
         winScreen.SetActive(false);
         gameOverScreen.SetActive(false);
-
+        UpdateDominoSet();
     }
 
+    // Скорее всего потом куда то вынести
+    public void UpdateDominoSet()
+    {
+        dominoPool.UpdateDominoSet(DOMINO_CNT);
+        uiSelectionPanel.UpdatePanel();
+    }
 
     /// <summary>
-    /// Перезагрузка уровня
+    /// Перезагрузка уровня.
     /// </summary>
     public void Restart()
     {
@@ -114,22 +125,4 @@ public class GameManager : MonoBehaviour
         winScreen.SetActive(true);
         Pause();
     }
-
-    //Вынести!-------------------------------------------
-
-    public bool IsHandFree()
-    {
-        return inHand = null;
-    }
-
-    public GameObject WhatInHand()
-    {
-        return inHand;
-    }
-    public void PutInHand(GameObject obj)
-    {
-        inHand = obj;
-    }
-    
-    //---------------------------------------------------
 }

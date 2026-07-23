@@ -25,17 +25,17 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        if (GameManager.Instance.WhatInHand() == null || GameManager.Instance.WhatInHand() == gameObject)
+        if (HandManager.Instance.WhatInHand() == null || HandManager.Instance.WhatInHand() == gameObject)
         {
             clicked = !clicked;
             if (clicked)
             {
-                GameManager.Instance.PutInHand(gameObject);
+                HandManager.Instance.PutInHand(gameObject);
                 blurImage.SetActive(true);
             }
             else
             {
-                GameManager.Instance.PutInHand(null);
+                HandManager.Instance.PutInHand(null);
                 blurImage.SetActive(false);
             }
         }

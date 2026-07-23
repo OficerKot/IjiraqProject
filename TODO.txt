@@ -1,3 +1,4 @@
+- нету обработки ошибок 
 
 GameManager:
 [] Вынести руку в HandManager

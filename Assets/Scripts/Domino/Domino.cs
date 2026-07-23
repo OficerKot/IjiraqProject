@@ -167,7 +167,7 @@ public class Domino : PauseBehaviour
     void PutInTheCells() // врн щрн
     {
         isBeingGrabbed = false;
-        GameManager.Instance.PutInHand(null);
+        HandManager.Instance.PutInHand(null);
 
         curCell1.GetCurContent()?.Remove();
         curCell2.GetCurContent()?.Remove();

@@ -34,16 +34,16 @@ public class UIPickableIcon : MonoBehaviour, IPointerClickHandler
         }
         if (spawnedPlayable == null)
         {
-            if (GameManager.Instance.WhatInHand() == null)
+            if (HandManager.Instance.WhatInHand() == null)
             {
-                GameManager.Instance.PutInHand(gameObject);
+                HandManager.Instance.PutInHand(gameObject);
                 if(blurImage) blurImage.SetActive(true);
                 Grab();
             }
         }
         else
         {
-            GameManager.Instance.PutInHand(null);
+            HandManager.Instance.PutInHand(null);
             if(blurImage) blurImage.SetActive(false);
             Destroy(spawnedPlayable);
         }

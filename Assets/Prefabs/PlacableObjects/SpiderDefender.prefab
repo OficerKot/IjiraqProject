@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaSize: {x: 2, y: 2}
+  affectedCells: []
 --- !u!114 &931304645541431792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,5 +247,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f840c950cfd432489fab1ce0a91da23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: spider_defender
+  <data>k__BackingField: {fileID: 11400000, guid: 3aef8fefaf27009409634d6173012693, type: 2}
   curCell: {fileID: 0}

@@ -1,61 +1,78 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class UISelectionPanel : PauseBehaviour
 {
     [SerializeField] List<GameObject> spawnedUIDomino = new List<GameObject>();
-    public static UISelectionPanel Instance;
-    [SerializeField] GameObject UIDominoPrefab;
+    DominoPool dominoPool;
     bool isActive = true;
-    const int DOMINO_CNT = 5;
+
+    [Header("Настройки внешнего вида домино")]
+    [SerializeField] GameObject UIDominoPrefab;
+    [SerializeField] GameObject UISigilPrefab;
+
+    [Header("Настройки расположения домино")]
     public float YPos = -170;
     public float XPos = 5;
     public float XOffset = 50;
 
-    private void Awake()
+    public void Init(DominoPool dominoPool)
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        this.dominoPool = dominoPool;
     }
-    private void Start()
-    {
-        GeneratePanel();
-    }
+
 
     public override void OnGamePaused(bool isGamePaused)
     {
         isActive = !isGamePaused;
     }
-    public void GeneratePanel()
+    public void UpdatePanel()
     {
         if (!isActive) return;
-        if(spawnedUIDomino.Count != 0)
+
+        UpdateHunger();
+        int offset = 0;
+
+        foreach (var domino in dominoPool.currentPool)
         {
+            Vector3 pos = new Vector3(XPos + offset * XOffset, YPos, 0);
+            DisplayDomino(domino, pos);
+
+            offset++;
+        }
+    }
+
+    void UpdateHunger()
+    {
+        if (spawnedUIDomino.Count != 0)
+        {
+            Debug.Log(spawnedUIDomino.Count);
             foreach (var c in spawnedUIDomino)
             {
+                Debug.Log(c.name);
                 Hunger.Instance.MakeStep();
                 Destroy(c);
             }
             spawnedUIDomino.Clear();
         }
-        for (int i = 0; i < DOMINO_CNT; i++)
-        {
-            SpawnNewUIDomino(new Vector3(XPos + i * XOffset, YPos, 0));
-        }
     }
-    public void SpawnNewUIDomino(Vector3 pos)
-    {
-        GameObject newDomino = Instantiate(UIDominoPrefab, transform);
-        RectTransform newDominoRect = newDomino.GetComponent<RectTransform>();
-        newDominoRect.localPosition = pos;
 
-        spawnedUIDomino.Add(newDomino);
+    public void DisplayDomino(Domino domino, Vector3 pos)
+    {
+        GameObject uiDomino = Instantiate(UIDominoPrefab, transform);
+
+        RectTransform uiDominoRect = uiDomino.GetComponent<RectTransform>();
+        uiDominoRect.localPosition = pos;
+
+        Image part1Sprite = Instantiate(UISigilPrefab, uiDomino.transform).GetComponent<Image>();
+        Image part2Sprite = Instantiate(UISigilPrefab, uiDomino.transform).GetComponent<Image>();
+
+        part1Sprite.sprite = domino.part1.sigilVariantData.Sprite;
+        part2Sprite.sprite = domino.part2.sigilVariantData.Sprite;
+
+        spawnedUIDomino.Add(uiDomino);
     }
 
     public void RemoveDomino(GameObject d)

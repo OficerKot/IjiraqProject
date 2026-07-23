@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec55d87d3200afc46bb8387d3236c69e, type: 3}
   m_Name: SpiderDefender
   m_EditorClassIdentifier: 
-  Id: spider_defender
+  <ID>k__BackingField: spider_def
   prefab: {fileID: 3265742574692647083, guid: 2a012f7355891f14e92955f864ef4584, type: 3}
   UIprefab: {fileID: 2342191990407282095, guid: cf66363d635a7914b8ed335bdf4c95f7, type: 3}
   itemsForCraft:

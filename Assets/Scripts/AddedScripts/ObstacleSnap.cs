@@ -3,14 +3,12 @@ using UnityEngine;
 /// <summary>
 /// Скрипт, фиксирующий создаваемые на старте предметы/препятствия в клетках.
 /// При появлении предмета/препятствия в мире, скрипт проверяет, чем является появившийся объект. 
-/// Если предмет - кладёт его в клетку методом PutInCell() класса interactableInterface, если препятствие - занимает клетку методом SetFree(false) класса curCell
-/// 
-/// Дополнительная настройка: не требуется
+/// Если предмет - кладёт его в клетку методом PutInCell()
 /// </summary>
 public class ObstacleSnap : MonoBehaviour
 {
     [SerializeField] public Cell curCell;
-    [SerializeField] Interactable interactableInterface;
+    [SerializeField] IInteractable obstacle;
     [SerializeField] public bool spawned = false;
 
     void OnTriggerEnter2D(Collider2D other)
@@ -18,12 +16,12 @@ public class ObstacleSnap : MonoBehaviour
         if (other.gameObject.layer == 6)
         { 
             curCell = other.GetComponent<Cell>();
-            interactableInterface = GetComponent<Interactable>();
-            if (interactableInterface != null)
+            obstacle = GetComponent<IInteractable>();
+            if (obstacle != null)
             {
                 if (spawned == true)
                 {
-                    interactableInterface.PutInCell(curCell);
+                    obstacle.PutInCell(curCell);
                 }
             }
             //

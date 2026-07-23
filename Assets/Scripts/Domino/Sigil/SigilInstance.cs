@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Данные о конкретном созданном сигиле на сцене
 /// </summary>
-public class SigilInstance : MonoBehaviour
+public class SigilInstance
 {
     public SigilData sigilTypeData { get; private set; }
     public int variantIndex { get; private set; }

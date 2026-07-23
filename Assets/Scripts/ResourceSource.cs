@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Источник ресурсов. В отличие от других объектов может быть разрушен постановкой соответствующего ему домино.
 /// </summary>
-public class ResourceSource : MonoBehaviour, Interactable, ICellContent
+public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
 {
     [SerializeField] public ItemData resource;
     [SerializeField] ObjectType type;

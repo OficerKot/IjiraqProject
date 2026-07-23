@@ -44,6 +44,7 @@ public class DominoPart : MonoBehaviour, IDominoPart
         if (spriteRenderer != null && data.Sprite != null)
         {
             spriteRenderer.sprite = data.Sprite;
+            spriteRenderer.size = new Vector2(20f, 20f);
         }
     }
     /// <summary>

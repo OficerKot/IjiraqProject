@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec55d87d3200afc46bb8387d3236c69e, type: 3}
   m_Name: Obelisk
   m_EditorClassIdentifier: 
-  Id: obelisk
+  <ID>k__BackingField: obelisk
   prefab: {fileID: 3265742574692647083, guid: 7a998a4d9cd615b4fadc1d7dcca4fce1, type: 3}
   UIprefab: {fileID: 2342191990407282095, guid: 8f0cf2018da89424dba1e0663d0d4117, type: 3}
   itemsForCraft: []

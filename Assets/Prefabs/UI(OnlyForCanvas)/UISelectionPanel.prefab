@@ -60,6 +60,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnedUIDomino: []
   UIDominoPrefab: {fileID: 1710019895863560010, guid: 13f03177fa8674a43ab0cdc09229632e, type: 3}
+  UISigilPrefab: {fileID: 6806147685944260444, guid: e92e7e68621328a419d3ab4617819fd9, type: 3}
+  YPos: -170
+  XPos: 5
+  XOffset: 50
 --- !u!1 &9200253435345415365
 GameObject:
   m_ObjectHideFlags: 0

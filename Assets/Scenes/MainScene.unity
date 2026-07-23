@@ -1004,6 +1004,7 @@ Transform:
   - {fileID: 1388247035}
   - {fileID: 1732680099}
   - {fileID: 1421047292}
+  - {fileID: 418809830}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &124673119
@@ -4033,6 +4034,51 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   duplicationBlockers: 0
+--- !u!1 &418809829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 418809830}
+  - component: {fileID: 418809831}
+  m_Layer: 0
+  m_Name: DominoPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &418809830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418809829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 105264585}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &418809831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418809829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04dc5168d6ad77b48bb467dd233b2652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPool: []
 --- !u!1 &430053973
 GameObject:
   m_ObjectHideFlags: 0
@@ -10937,8 +10983,10 @@ MonoBehaviour:
   uiManager: {fileID: 974587246}
   gameOverScreen: {fileID: 444232019}
   winScreen: {fileID: 198940185}
-  dominoPrefab: {fileID: 2431666912444899434, guid: 5a07de9cb0460d04292ec2250e0516e7, type: 3}
   sigilsState: {fileID: 1421047293}
+  dominoPrefab: {fileID: 2431666912444899434, guid: 5a07de9cb0460d04292ec2250e0516e7, type: 3}
+  dominoPool: {fileID: 418809831}
+  uiSelectionPanel: {fileID: 1952784675}
 --- !u!1001 &843455817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18628,6 +18676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8522f8dc57053e944b380de0943e3df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <available>k__BackingField: []
+  <basic>k__BackingField: []
 --- !u!1001 &1434375373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19910,14 +19960,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1952784675}
-        m_TargetAssemblyTypeName: UISelectionPanel, Assembly-CSharp
-        m_MethodName: GeneratePanel
+      - m_Target: {fileID: 828168271}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpdateDominoSet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -19925,18 +19975,6 @@ MonoBehaviour:
       - m_Target: {fileID: 317317348}
         m_TargetAssemblyTypeName: DominoBreaker, Assembly-CSharp
         m_MethodName: HitSomeDomino
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: EnemyManager, Assembly-CSharp
-        m_MethodName: MakeStep
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

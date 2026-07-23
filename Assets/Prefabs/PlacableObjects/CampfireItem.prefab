@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f840c950cfd432489fab1ce0a91da23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: campfire
+  <data>k__BackingField: {fileID: 11400000, guid: f86fd20ec5eea6741b5f313044a21745, type: 2}
   curCell: {fileID: 0}
 --- !u!50 &1051257574510345545
 Rigidbody2D:
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curCell: {fileID: 0}
-  this_item: {fileID: 0}
+  spawned: 0
 --- !u!1 &6649827320987129869
 GameObject:
   m_ObjectHideFlags: 0

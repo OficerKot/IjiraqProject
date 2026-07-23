@@ -103,7 +103,7 @@ public class Building : Item
         SetIsPlaced(true);
         InvokeAction();
         Inventory.Instance.RemoveItem(ItemManager.Instance.GetItemByID(GetID()));
-        GameManager.Instance.PutInHand(null);
+        HandManager.Instance.PutInHand(null);
 
         StartProducing();
     }

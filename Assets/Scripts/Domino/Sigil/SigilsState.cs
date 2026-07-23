@@ -4,12 +4,13 @@ using UnityEngine;
 public class SigilsState : MonoBehaviour
 {
     DominoManager dominoManager;
-    public List<SigilData> available { get; private set; } = new List<SigilData>();
-    public List<SigilData> basic { get; private set; } = new List<SigilData>();
+    [field: SerializeField] public List<SigilData> available { get; private set; } = new List<SigilData>();
+    [field: SerializeField] public List<SigilData> basic { get; private set; } = new List<SigilData>();
 
     public void Init(DominoManager dominoManager)
     {
         this.dominoManager = dominoManager;
+
         FillBasicSigils();
     }
     

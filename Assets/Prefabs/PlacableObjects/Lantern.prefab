@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac9ec28d1c948d468381facc839c799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: lantern
+  <data>k__BackingField: {fileID: 11400000, guid: aff599e9aecd39c4da49120d2b7bb865, type: 2}
   curCell: {fileID: 0}
   placeAreaSize: {x: 2, y: 2}
 --- !u!114 &2522701519713503523
