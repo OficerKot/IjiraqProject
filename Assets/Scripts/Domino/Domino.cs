@@ -14,12 +14,51 @@ public class Domino : PauseBehaviour
     public Cell curCell2 { get; private set; }
 
     public GameObject pivot;
+    Vector3 part1Pos, part2Pos;
     bool isBeingGrabbed = false;
 
-    public void SetParts(DominoPart p1, DominoPart p2)
+    public void Init(DominoPart p1, DominoPart p2)
     {
         part1 = p1;
         part2 = p2;
+
+        part1.transform.SetParent(transform);
+        part2.transform.SetParent(transform);
+
+        SetPartsPositions();
+        SpawnAndSetPivot();
+    }
+
+    /// <summary>
+    /// Расчёт и установка расположения частей домино
+    /// </summary>
+    void SetPartsPositions()
+    {
+        var spriteBounds = GetComponent<SpriteRenderer>().bounds;
+        var height = spriteBounds.size.y;
+
+        part1Pos = new Vector3(0, height / 4, 0);
+        part2Pos = new Vector3(0, -height / 4, 0);
+
+        part1.transform.localPosition = part1Pos;
+        part2.transform.localPosition = part2Pos;
+    }
+
+    /// <summary>
+    /// Создает точку вращения (pivot) для домино.
+    /// </summary>
+    void SpawnAndSetPivot()
+    {
+        Vector2 centerPosition = GetComponent<SpriteRenderer>().bounds.center;
+
+        pivot = new GameObject("Pivot");
+        pivot.transform.position = centerPosition;
+        pivot.transform.rotation = transform.rotation;
+
+        part1.transform.SetParent(pivot.transform);
+        part2.transform.SetParent(pivot.transform);
+
+        transform.SetParent(pivot.transform);
     }
 
     /// <summary>

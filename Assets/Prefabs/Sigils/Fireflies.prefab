@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 771872327868908671}
   - component: {fileID: 2117834041195668683}
   - component: {fileID: 7516642398175641843}
+  - component: {fileID: -5110865332037687863}
   m_Layer: 7
   m_Name: Fireflies
   m_TagString: Path
@@ -114,9 +115,9 @@ Transform:
   m_GameObject: {fileID: 4689632754707460671}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.62, y: -2.3013, z: 0}
-  m_LocalScale: {x: 3.1958253, y: 3.1958253, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5065767406453682633}
   m_Father: {fileID: 0}
@@ -237,17 +238,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.014863014, y: 0.042561084}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.61538464, y: 0.42307693}
+    oldSize: {x: 0.7692308, y: 0.7692308}
     newSize: {x: 0.61538464, y: 0.42307693}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.3352747, y: 1.3351486}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2117834041195668683
 MonoBehaviour:
@@ -288,7 +289,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b430eb7baafe4a4a8bd84ccce0745ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sigilVariantData: {fileID: 0}
   isBeingPlaced: 0
   loc: 0
   neighbours: []
+--- !u!210 &-5110865332037687863
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689632754707460671}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0

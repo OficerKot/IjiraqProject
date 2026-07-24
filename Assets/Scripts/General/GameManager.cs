@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] UISelectionPanel uiSelectionPanel;
     DominoFactory dominoFactory;
 
+
+    [Header("Внешний вид домино")]
+    [SerializeField] DominoConfig config;
+
     private void Awake()
     {
         if (Instance == null)
@@ -44,9 +48,9 @@ public class GameManager : MonoBehaviour
 
             dominoFactory = new DominoFactory();
 
-            dominoFactory.Init(sigilsState, dominoPrefab);
+            dominoFactory.Init(sigilsState, config);
             dominoPool.Init(dominoFactory);
-            uiSelectionPanel.Init(dominoPool);
+            uiSelectionPanel.Init(dominoPool, config);
             
         }
         else

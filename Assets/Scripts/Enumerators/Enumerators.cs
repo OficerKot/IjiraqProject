@@ -23,6 +23,5 @@ public enum SigilType
     Fireflies,
     Leaves,
     Flowers,
-    Axe,
-    Pickaxe
+    Tool
 }

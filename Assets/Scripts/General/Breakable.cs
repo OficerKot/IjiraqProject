@@ -12,7 +12,7 @@ public class Breakable : MonoBehaviour
     [SerializeField] List<DominoProtectionSource> protectors = new List<DominoProtectionSource> ();
     [SerializeField] SpriteRenderer healthStateObject;
     [SerializeField] List<Sprite> healhStates;
-    private void Start()
+    private void Awake()
     {
         startHealth = health;
     }

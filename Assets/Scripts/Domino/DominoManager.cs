@@ -14,7 +14,7 @@ public class DominoManager : ScriptableObject
 
     public Dictionary<SigilType, int> order = new Dictionary<SigilType, int>()
     {
-        {SigilType.Bone, 1} , {SigilType.Fireflies, 2}, {SigilType.Leaves, 3 }, {SigilType.Flowers, 4 }, {SigilType.Axe, 5}, {SigilType.Pickaxe, 6}
+        {SigilType.Bone, 1} , {SigilType.Fireflies, 2}, {SigilType.Leaves, 3 }, {SigilType.Flowers, 4 }, {SigilType.Tool, 5}
     };
 
     private static DominoManager _instance;

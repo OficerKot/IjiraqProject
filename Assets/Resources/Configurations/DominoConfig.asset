@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af90ba8ddf261743ae5f9fe61c34296, type: 3}
+  m_Name: DominoConfig
+  m_EditorClassIdentifier: 
+  dominoPrefab: {fileID: 2431666912444899434, guid: 5a07de9cb0460d04292ec2250e0516e7, type: 3}
+  UIDominoPrefab: {fileID: 1710019895863560010, guid: 13f03177fa8674a43ab0cdc09229632e, type: 3}
+  UISigilPrefab: {fileID: 6806147685944260444, guid: e92e7e68621328a419d3ab4617819fd9, type: 3}

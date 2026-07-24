@@ -5,11 +5,11 @@ using UnityEngine;
 public class DominoFactory
 {
     SigilsState playerSigils;
-    GameObject dominoPrefab;
-    public void Init(SigilsState playerSigils, GameObject dominoPrefab)
+    DominoConfig config;
+    public void Init(SigilsState playerSigils, DominoConfig config)
     {
         this.playerSigils = playerSigils;
-        this.dominoPrefab = dominoPrefab;
+        this.config = config;
     }
 
     /// <summary>
@@ -17,13 +17,11 @@ public class DominoFactory
     /// </summary>
     public Domino GenerateRandomDomino()
     {
-        Domino domino = GameObject.Instantiate(dominoPrefab).GetComponent<Domino>();
+        Domino domino = GameObject.Instantiate(config.dominoPrefab).GetComponent<Domino>();
         DominoPart p1, p2;
 
         (p1, p2) = SpawnParts(GenerateRandomSigil(), GenerateRandomSigil());
-        domino.SetParts(p1, p2);
-
-        SpawnAndSetPivot(domino);
+        domino.Init(p1, p2);
 
         return domino;
     }
@@ -42,21 +40,6 @@ public class DominoFactory
        // CheckPartRotation();
     }
 
-    /// <summary>
-    /// —оздает точку вращени€ (pivot) дл€ домино.
-    /// </summary>
-    void SpawnAndSetPivot(Domino d)
-    {
-        Vector2 centerPosition = (d.part1.transform.position + d.part2.transform.position) / 2f;
-
-        d.pivot = new GameObject("Pivot");
-        d.pivot.transform.position = centerPosition;
-        d.pivot.transform.rotation = d.transform.rotation;
-
-        d.part1.transform.SetParent(d.pivot.transform);
-        d.part2.transform.SetParent(d.pivot.transform);
-        d.transform.SetParent(d.pivot.transform);
-    }
 
     /// <summary>
     /// ѕолучить случайный вариант сигила из всех доступных игроку.
