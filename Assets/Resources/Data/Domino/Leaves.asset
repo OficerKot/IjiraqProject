@@ -19,15 +19,13 @@ MonoBehaviour:
     <tool>k__BackingField: 0
   placeRequirments:
     cellRequirements:
-      emptyCell: 0
+      emptyCell: 1
       objectType: 0
-      sigilType: 3
-      number: 0
+      sigilType: 0
     neighboursRequirements:
       emptyCell: 0
       objectType: 0
-      sigilType: 0
-      number: 0
+      sigilType: 3
   sprites:
   - {fileID: -3864771739476507756, guid: 8ee53413031270a4184361b169553c4c, type: 3}
   - {fileID: 5924549963853653257, guid: d2cb9a4ccdf439b4f929a7301473dedf, type: 3}

@@ -104,11 +104,6 @@ public class Domino : PauseBehaviour
         {
             Interact();
         }
-
-        if (part1 && part2)
-        {
-            CheckPartRotation();
-        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -327,38 +322,4 @@ public class Domino : PauseBehaviour
         pivot.transform.position = Vector3.Lerp(pivot.transform.position, targetPos, 1);
     }
 
-    /// <summary>
-    /// Обновляет расположение частей домино (верх/низ/лево/право).
-    /// </summary>
-    void CheckPartRotation()
-    {
-        bool areHorizontal = Mathf.Abs(part1.transform.position.y - part2.transform.position.y) < 0.5f;
-
-        if (areHorizontal)
-        {
-            if (part1.transform.position.x > part2.transform.position.x)
-            {
-                part1.ChangeLocation(Location.right);
-                part2.ChangeLocation(Location.left);
-            }
-            if (part1.transform.position.x < part2.transform.position.x)
-            {
-                part1.ChangeLocation(Location.left);
-                part2.ChangeLocation(Location.right);
-            }
-        }
-        else
-        {
-            if (part1.transform.position.y > part2.transform.position.y)
-            {
-                part1.ChangeLocation(Location.up);
-                part2.ChangeLocation(Location.down);
-            }
-            if (part1.transform.position.y < part2.transform.position.y)
-            {
-                part1.ChangeLocation(Location.down);
-                part2.ChangeLocation(Location.up);
-            }
-        }
-    }
 }

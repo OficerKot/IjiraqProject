@@ -6,7 +6,10 @@ using UnityEngine;
 [System.Serializable]
 public class DominoRequirements
 {
+    [Header("Требования для клетки")]
     public PlacementRequirements cellRequirements;
+
+    [Header("Требования для соседних домино")]
     public PlacementRequirements neighboursRequirements;
 
 }

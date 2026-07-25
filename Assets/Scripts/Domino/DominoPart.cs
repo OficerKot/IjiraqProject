@@ -31,8 +31,6 @@ public class DominoPart : MonoBehaviour, IDominoPart
 
     [SerializeField] bool isBeingPlaced = false;
 
-    [SerializeField] Location loc;
-
     [SerializeField] public List<DominoPart> neighbours = new List<DominoPart>();
 
     public void Init(SigilInstance data)
@@ -53,23 +51,6 @@ public class DominoPart : MonoBehaviour, IDominoPart
     public virtual void Property()
     {
         //do nothing
-    }
-
-    /// <summary>
-    /// »змен€ет расположение части домино, относительно другой.
-    /// </summary>
-    /// <param name="l">Ќовое расположение.</param>
-    public void ChangeLocation(Location l)
-    {
-        loc = l;
-    }
-
-    /// <summary>
-    /// ¬озвращает текущее расположение части домино.
-    /// </summary>
-    public Location GetLocation()
-    {
-        return loc;
     }
 
     /// <summary>
