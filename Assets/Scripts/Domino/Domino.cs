@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using System;
 
 /// <summary>
 /// Основной класс управления домино, обрабатывающий перетаскивание, размещение и взаимодействие с клетками.
@@ -15,7 +17,9 @@ public class Domino : PauseBehaviour
 
     public GameObject pivot;
     Vector3 part1Pos, part2Pos;
+
     bool isBeingGrabbed = false;
+    public event Action<Domino> OnPlaced;
 
     public void Init(DominoPart p1, DominoPart p2)
     {
@@ -55,6 +59,8 @@ public class Domino : PauseBehaviour
         pivot.transform.position = centerPosition;
         pivot.transform.rotation = transform.rotation;
 
+        pivot.AddComponent<SortingGroup>();
+
         part1.transform.SetParent(pivot.transform);
         part2.transform.SetParent(pivot.transform);
 
@@ -67,7 +73,7 @@ public class Domino : PauseBehaviour
     public void PickUp()
     {
         isBeingGrabbed = true;
-        LayerSorter.Instance.PutInFront(gameObject);
+        LayerSorter.Instance.PutInFront(pivot);
 
         if (curCell1 && curCell2)
         {
@@ -92,7 +98,7 @@ public class Domino : PauseBehaviour
         return !isBeingGrabbed;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isBeingGrabbed)
         {
@@ -144,7 +150,7 @@ public class Domino : PauseBehaviour
         Cell minDistCell = null;
         foreach (Cell nearCell in curCell1.neighbourCells)
         {
-            if (nearCell && CellIsOK(curCell1, nearCell))
+            if (nearCell && CellsAreOK(curCell1, nearCell))
             {
                 if (minDist > GetDistance2(pivot.transform, nearCell.transform))
                 {
@@ -159,10 +165,10 @@ public class Domino : PauseBehaviour
     /// <summary>
     /// Проверяет, подходит ли клетка для размещения домино.
     /// </summary>
-    bool CellIsOK(Cell cell1, Cell cell2)
+    bool CellsAreOK(Cell cell1, Cell cell2)
     {
         if (!IsSameRotationAngle(cell2.transform.position, curCell1.transform.position)) return false;
-        if (!DominoPlacementValidator.ValidatePlacement(this)) return false;
+        if (!DominoPlacementValidator.ValidatePlacement(this, cell1, cell2)) return false;
 
         return true;
     }
@@ -206,12 +212,14 @@ public class Domino : PauseBehaviour
     void PutInTheCells() // ЧТО ЭТО
     {
         isBeingGrabbed = false;
+        OnPlaced.Invoke(this);
+
         HandManager.Instance.PutInHand(null);
 
         curCell1.GetCurContent()?.Remove();
         curCell2.GetCurContent()?.Remove();
 
-        LayerSorter.Instance.PutBack(gameObject, SortingOrder.domino);
+        LayerSorter.Instance.PutBack(pivot, SortingOrder.domino);
 
         Collider2D collider1 = curCell1.GetComponent<BoxCollider2D>();
         Collider2D collider2 = curCell2.GetComponent<BoxCollider2D>();
@@ -220,7 +228,7 @@ public class Domino : PauseBehaviour
         AddToCells(part1, part2);
 
         AudioManager.Play(SoundType.BonePlace);
-        EnemyManager.Instance.MakeStep();
+
     }
 
     /// <summary>
@@ -305,11 +313,6 @@ public class Domino : PauseBehaviour
     /// <param name="degree">Угол вращения в градусах.</param>
     void Rotate(float degree = 90)
     {
-        if (!part1 || !part2)
-        {
-            Debug.Log("Generate first");
-            return;
-        }
         pivot.transform.Rotate(0, 0, degree);
     }
 

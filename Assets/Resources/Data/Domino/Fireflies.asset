@@ -21,7 +21,7 @@ MonoBehaviour:
     cellRequirements:
       emptyCell: 0
       objectType: 0
-      sigilType: 0
+      sigilType: 2
       number: 0
     neighboursRequirements:
       emptyCell: 0

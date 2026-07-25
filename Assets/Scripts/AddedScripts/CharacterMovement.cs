@@ -16,20 +16,20 @@ public class CharacterMovement : PauseBehaviour
     private void Awake()
     {
         targetPosition.parent = null;
+        charStates = GetComponent<CharacterStates>();
     }
     public override void OnGamePaused(bool isGamePaused)
     {
         isActive = !isGamePaused;
     }
    
-    public void OnWalk(InputValue inputValue) //Ќичего не мен€ла, только вынесла в 1 метод
+    public void OnWalk(InputValue inputValue)
     {
         if (!isActive || isMoving) return;
         Vector2 destination = inputValue.Get<Vector2>();
         if(AvailableDestinaton(destination))
         {
             Clock.Instance.TimeTick();
-            EnemyManager.Instance.MakeStep();
             Move(destination);
             AudioManager.Play(SoundType.Step);
         }

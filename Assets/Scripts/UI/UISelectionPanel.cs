@@ -58,14 +58,23 @@ public class UISelectionPanel : PauseBehaviour
     {
         foreach (var c in spawnedUIDomino)
         {
+            c.OnDestroyed -= RemoveDomino;
             Destroy(c);
         }
         spawnedUIDomino.Clear();
+    }
+
+    void RemoveDomino(UIDomino domino)
+    {
+        domino.OnDestroyed -= RemoveDomino;
+        spawnedUIDomino.Remove(domino);
     }
     public void DisplayDomino(Domino domino, Vector3 pos)
     {
         UIDomino uiDomino = Instantiate(config.UIDominoPrefab, transform).GetComponent<UIDomino>();
         uiDomino.Init(domino, config);
+
+        uiDomino.OnDestroyed += RemoveDomino;
 
         RectTransform uiDominoRect = uiDomino.GetComponent<RectTransform>();
         uiDominoRect.localPosition = pos;
