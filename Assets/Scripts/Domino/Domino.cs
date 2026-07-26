@@ -20,6 +20,7 @@ public class Domino : PauseBehaviour
 
     bool isBeingGrabbed = false;
     public event Action<Domino> OnPlaced;
+    public static event Action<Domino> OnAnyDominoPlaced;
 
     public void Init(DominoPart p1, DominoPart p2)
     {
@@ -176,15 +177,11 @@ public class Domino : PauseBehaviour
         if (curCell1)
         {
             curCell1.NoHighlight();
-            curCell1.SetFree();
-            if (curCell1.GetCurDomino()) curCell1.SetFree();
             curCell1 = null;
         }
         if (curCell2)
         {
             curCell2.NoHighlight();
-            curCell2.SetFree();
-            if (curCell2.GetCurDomino()) curCell2.SetFree();
             curCell2 = null;
         }
 
@@ -208,6 +205,7 @@ public class Domino : PauseBehaviour
     {
         isBeingGrabbed = false;
         OnPlaced.Invoke(this);
+        OnAnyDominoPlaced.Invoke(this);
 
         HandManager.Instance.PutInHand(null);
 

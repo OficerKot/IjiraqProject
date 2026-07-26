@@ -47,6 +47,15 @@ public class Cell : MonoBehaviour, ICell
         }
     }
 
+    public bool HasNeighbourDominos()
+    {
+        foreach (Cell cell in neighbourCells)
+        {
+            if (cell.GetCurDomino()) return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// Возвращает текущее домино в клетке.
     /// </summary>

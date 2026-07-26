@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static event Action<bool> OnGamePaused;
     bool paused = false;
+    public bool dominoPlaced { get; private set; } = false;
     public bool gameEnd = false;
 
     [Header("Меню")]
@@ -43,6 +45,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
 
+            Domino.OnAnyDominoPlaced += OnAnyDominoPlaced;
+
             sigilsState.Init(DominoManager.Instance);
             uiManager.Init(sigilsState);
 
@@ -62,9 +66,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameEnd = false;
+        dominoPlaced = false;
         winScreen.SetActive(false);
         gameOverScreen.SetActive(false);
         UpdateDominoSet();
+    }
+
+    public void OnAnyDominoPlaced(Domino d)
+    {
+        if(!dominoPlaced) dominoPlaced = true;
     }
 
     // Скорее всего потом куда то вынести
