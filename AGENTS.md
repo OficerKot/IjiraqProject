@@ -2,7 +2,7 @@
 - Project name: Project
 - Unity version: Unity 6000.1.15f1
 - Active game object:
-  - Name: Axe
-  - Tag: Path
-  - Layer: DominoPart
+  - Name: EventSystem
+  - Tag: Untagged
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

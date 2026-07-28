@@ -1,29 +1,14 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// Инвентарь игрока.
 /// Хранит предметы по ID и их количество,
 /// ограничен максимальным размером и автоматически обновляет UI.
 /// </summary>
-public class Inventory : MonoBehaviour
+public class Inventory : IInventory
 {
     public const int MAX_SIZE = 6;
-    [SerializeField] Dictionary<string, int> itemsID = new Dictionary<string, int>();
-    public static Inventory Instance;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+    Dictionary<string, int> itemsID = new Dictionary<string, int>();
 
     /// <summary>
     /// Добавление предмета в ивентарь
@@ -53,7 +38,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     /// <param name="i">Данные предмета</param>
     /// <param name="count">Количество</param>
-    public void AddItem(ItemData i, int count)
+    public void AddItems(ItemData i, int count)
     {
         if (Contains(i) || itemsID.Count < MAX_SIZE)
         {
@@ -118,7 +103,7 @@ public class Inventory : MonoBehaviour
     /// <returns></returns>
     public bool IsFull()
     {
-        if (itemsID.Count >= MAX_SIZE) AudioManager.Play(SoundType.FullInventory);
+        if (itemsID.Count >= MAX_SIZE) AudioManager.Play(SoundType.FullInventory); // убрать отсюда
         return itemsID.Count >= MAX_SIZE;
     }
 }

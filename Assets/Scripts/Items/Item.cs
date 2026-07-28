@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using VContainer;
 
 /// <summary>
 /// Для тех объектов, которые могут взаимодействовать с клетками
@@ -22,9 +23,17 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
     bool isPlaced = true;
     public event Action OnItemPlaced;
 
+    private IInventory _inventory;
+
+    [Inject]
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
+
     public virtual void OnMouseDown()
     {
-        if (isPlaced && (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !Inventory.Instance.IsFull()))
+        if (isPlaced && (_inventory.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !_inventory.IsFull()))
         {
             Remove();
         }
@@ -119,7 +128,8 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
         InvokeAction();
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
-        Inventory.Instance.RemoveItem(data);
+
+        _inventory.RemoveItem(data);
         HandManager.Instance?.PutInHand(null);
     }
 
@@ -151,9 +161,9 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
     /// </summary>
     public void Remove()
     {
-        if (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !Inventory.Instance.IsFull())
+        if (_inventory.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !_inventory.IsFull())
         {
-            Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(data.ID));
+            _inventory.AddItem(ItemManager.Instance.GetItemByID(data.ID));
             Destroy(gameObject);
         }
     }

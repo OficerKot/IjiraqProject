@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using VContainer;
 
 /// <summary>
 /// —крипт, управл€ющий поведением объекта  уст
@@ -15,13 +16,21 @@ public class Bush : MonoBehaviour
     private SpriteAnimator sprAnim;
     private string itemID = "berry";
 
+    private IInventory _inventory;
+
+    [Inject]
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
+
     private void Awake()
     {
         sprAnim = GetComponent<SpriteAnimator>();
     }
     private void OnMouseDown()
     {
-        if (IsNearbyPlayer() && (Inventory.Instance.Contains(ItemManager.Instance.GetItemByID(itemID)) || !Inventory.Instance.IsFull()) )
+        if (IsNearbyPlayer() && (_inventory.Contains(ItemManager.Instance.GetItemByID(itemID)) || !_inventory.IsFull()) )
         {
             Interact();
         }
@@ -37,7 +46,7 @@ public class Bush : MonoBehaviour
 
     void Interact()
     {
-        Inventory.Instance.AddItem(ItemManager.Instance.GetItemByID(itemID));
+        _inventory.AddItem(ItemManager.Instance.GetItemByID(itemID));
         sprAnim.ForcePlay("BushEmpty");
         Destroy(this);
     }

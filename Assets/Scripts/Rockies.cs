@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// ќсобый тип ресурса " амешки", с генерацией случайного количества и проверкой по числу на домино.
@@ -6,6 +7,13 @@ using UnityEngine;
 public class Rockies : ResourceSource
 {
     RockiesNumberGenerator generator;
+    private IInventory _inventory;
+
+    [Inject]
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
 
     private void Awake()
     {
@@ -18,7 +26,7 @@ public class Rockies : ResourceSource
     /// </summary>
     public override void Remove()
     {
-        Inventory.Instance.AddItem(resource, generator.GetCount());
+        _inventory.AddItems(resource, generator.GetCount());
         curCell.SetCurContent(null);
         Destroy(gameObject);
     }

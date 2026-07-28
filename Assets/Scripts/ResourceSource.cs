@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// Источник ресурсов. В отличие от других объектов может быть разрушен постановкой соответствующего ему домино.
@@ -11,6 +12,14 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
     [SerializeField] ToolType toolToDestroy;
     [SerializeField] public Cell curCell;
 
+    private IInventory _inventory;
+
+    [Inject]
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
+
     /// <summary>
     /// Подбирает ресурс, добавляет его в инвентарь и уничтожает объект.
     /// </summary>
@@ -18,7 +27,7 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
     {
         if (resource)
         {
-            Inventory.Instance.AddItem(resource);
+            _inventory.AddItem(resource);
         }
         curCell.SetCurContent(null);
         Destroy(gameObject);

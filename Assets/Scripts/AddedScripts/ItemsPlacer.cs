@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
+using UnityEngine.UIElements;
+using VContainer;
+using VContainer.Unity;
 
 /// <summary>
 /// Скрипт-генератор, точечно размещающий предметы по карте. 
@@ -22,6 +26,14 @@ public class ItemsPlacer : MonoBehaviour
     private PerlinNoiseMap perlin;
     private ObstacleSnap obs_snap;
     private List<List<int>> noise_grid;
+
+    private IObjectResolver _resolver;
+
+    [Inject]
+    private void Construct(IObjectResolver resolver)
+    {
+        _resolver = resolver;
+    }
 
     void Awake()
     {
@@ -66,6 +78,7 @@ public class ItemsPlacer : MonoBehaviour
         int item_id = Random.Range(0, itemsCount);
         GameObject item_prefab = itemTypes[item_id];
         GameObject item = Instantiate(item_prefab, transform);
+        _resolver.InjectGameObject(item);
 
         item.name = string.Format("item_{0}_x{1}_y{2}", item_prefab.name, x, y);
         item.transform.localPosition = new Vector3Int(x, y, 0);
@@ -73,11 +86,12 @@ public class ItemsPlacer : MonoBehaviour
         obs_snap = item.GetComponent<ObstacleSnap>();
         obs_snap.spawned = true;
     }
-    public static void CreateItem(GameObject prefab, int x, int y)
-    {
-        GameObject item = Instantiate(prefab);
-        item.name = string.Format("item_{0}_x{1}_y{2}", prefab.name, x, y);
-        item.transform.localPosition = new Vector2(x, y);
-    }
+    //public static void CreateItem(GameObject prefab, int x, int y)
+    //{
+    //    GameObject item = Instantiate(prefab);
+    //    _resolver.InjectGameObject(item);
+    //    item.name = string.Format("item_{0}_x{1}_y{2}", prefab.name, x, y);
+    //    item.transform.localPosition = new Vector2(x, y);
+    //}
 
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using VContainer;
 
 /// <summary>
 /// Окно крафта предметов с системой рецептов и категорий.
@@ -17,6 +18,14 @@ public class UICraftWindow : MonoBehaviour, IMenu
     [SerializeField] List<ItemSpawnerButton> spawnerButtons;
     public HashSet<ItemData> availableItems = new HashSet<ItemData>();
     public HashSet<ItemData> exploredRecipes = new HashSet<ItemData>();
+
+    private IInventory _inventory;
+
+    [Inject]
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
 
     private void Awake()
     {
@@ -89,7 +98,7 @@ public class UICraftWindow : MonoBehaviour, IMenu
             GameObject spawnedObj = Instantiate(obj.prefab, transform.position, transform.rotation);
             foreach (ItemData i in obj.itemsForCraft)
             {
-                Inventory.Instance.RemoveItem(i);
+                _inventory.RemoveItem(i);
             }
             spawnedObj.GetComponent<Item>().Remove();
             CheckInventoryAfterRemove();
@@ -103,7 +112,7 @@ public class UICraftWindow : MonoBehaviour, IMenu
     public void CheckInventoryAfterRemove()
     {
         HashSet<ItemData> itemsInInventory = new HashSet<ItemData>();
-        foreach (string id in Inventory.Instance.GetCurItems().Keys)
+        foreach (string id in _inventory.GetCurItems().Keys)
         {
             itemsInInventory.Add(ItemManager.Instance.GetItemByID(id));
         }
@@ -129,7 +138,7 @@ public class UICraftWindow : MonoBehaviour, IMenu
     public void CheckInventory(ItemData added)
     {
         HashSet<ItemData> itemsInInventory = new HashSet<ItemData>();
-        foreach (string id in Inventory.Instance.GetCurItems().Keys)
+        foreach (string id in _inventory.GetCurItems().Keys)
         {
             itemsInInventory.Add(ItemManager.Instance.GetItemByID(id));
         }

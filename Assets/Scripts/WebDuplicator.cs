@@ -149,7 +149,7 @@ public class WebDuplicator : MonoBehaviour
     {
         if (targetCell.GetCurContent() == null && targetCell.GetCurDomino() != null)
         {
-            ItemsPlacer.CreateItem(gameObject, (int)targetCell.transform.position.x, (int)targetCell.transform.position.y);
+            // ItemsPlacer.CreateItem(gameObject, (int)targetCell.transform.position.x, (int)targetCell.transform.position.y);
             // ?? targetCell.SetCurContent(gameObject);
         }
     }

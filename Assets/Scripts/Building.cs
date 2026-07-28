@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// Базовый класс для зданий, которые можно размещать на поле и которые производят ресурсы.
@@ -13,6 +14,14 @@ public class Building : Item
     [SerializeField] ItemData resource;
     [SerializeField] List<Cell> curCells = new List<Cell>();
     int count = 0;
+
+    private IInventory _inventory;
+
+    [Inject] 
+    private void Construct(IInventory inventory)
+    {
+        _inventory = inventory;
+    }
 
     /// <summary>
     /// Проверяет клетки для размещения здания и подсвечивает доступные.
@@ -102,7 +111,7 @@ public class Building : Item
         transform.position = cornerPoint;
         SetIsPlaced(true);
         InvokeAction();
-        Inventory.Instance.RemoveItem(ItemManager.Instance.GetItemByID(GetID()));
+        _inventory.RemoveItem(data);
         HandManager.Instance.PutInHand(null);
 
         StartProducing();
@@ -137,11 +146,11 @@ public class Building : Item
     /// </summary>
     void PickResource()
     {
-        if (Inventory.Instance.Contains(resource) || !Inventory.Instance.IsFull())
+        if (_inventory.Contains(resource) || !_inventory.IsFull())
         {
             if (count > 0)
             {
-                Inventory.Instance.AddItem(resource, count);
+                _inventory.AddItems(resource, count);
                 Debug.Log("You've picked " + resource.name + "x" + count);
                 count = 0;
             }
