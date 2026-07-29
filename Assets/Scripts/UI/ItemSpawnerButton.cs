@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using VContainer;
 
 /// <summary>
 /// Позиция кнопки на кольце крафта для корректного отображения кнопки и описания предмета при наведении курсора мыши.
@@ -25,17 +26,23 @@ public enum Category
 /// </summary>
 public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointerExitHandler
 {
-    public Position pos;
     public ItemData objectToSpawn;
     public GameObject craftPanelPrefab;
     public string description;
     public Category category;
+    public Position pos;
     Vector3 offset;
-    GameObject craftPanel;
+    GameObject infoPanel;
     [SerializeField] GameObject AvailableImage; //в будущем нужно свести к одной переменной и работать с яркостью изображения
     [SerializeField] GameObject notAvailableImage;
 
-  
+    private ICraftService _craftService;
+    [Inject]
+    private void Construct(ICraftService craftService)
+    {
+        _craftService = craftService;
+    }
+
 
     private void Start()
     {
@@ -56,12 +63,12 @@ public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointe
         }
     }
 
-    private void Update()
+    public void SetAvailability(bool isAvailable)
     {
-        if (UICraftWindow.Instance.availableItems.Contains(objectToSpawn))
+        if (isAvailable)
         {
-            notAvailableImage.SetActive(false);
             AvailableImage.SetActive(true);
+            notAvailableImage.SetActive(false);
         }
         else
         {
@@ -75,10 +82,10 @@ public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointe
     /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        craftPanel = Instantiate(craftPanelPrefab, transform.position, transform.rotation, (GameObject.Find("Craft").transform));
-        RectTransform rect = craftPanel.GetComponent<RectTransform>();
+        infoPanel = Instantiate(craftPanelPrefab, transform.position, transform.rotation, (GameObject.Find("Craft").transform));
+        RectTransform rect = infoPanel.GetComponent<RectTransform>();
         rect.localPosition += offset;
-        craftPanel.GetComponent<CraftPanel>().text.text = description;
+        infoPanel.GetComponent<RecipeInfo>().text.text = description;
         AddItemsForCraft();
     }
 
@@ -87,16 +94,16 @@ public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointe
     /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
-        Destroy(craftPanel);
-        craftPanel = null;
+        Destroy(infoPanel);
+        infoPanel = null;
     }
 
     private void OnDisable()
     {
-        if (craftPanel)
+        if (infoPanel)
         {
-            Destroy(craftPanel);
-            craftPanel = null;
+            Destroy(infoPanel);
+            infoPanel = null;
         }
     }
 
@@ -106,7 +113,7 @@ public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointe
     void AddItemsForCraft()
     {
         int cellIndx = 0;
-        List<GameObject> cells = craftPanel.GetComponent<CraftPanel>().cells;
+        List<GameObject> cells = infoPanel.GetComponent<RecipeInfo>().cells;
         foreach (ItemData obj in objectToSpawn.itemsForCraft)
         {
             GameObject icon = Instantiate(obj.UIprefab, cells[cellIndx].transform);

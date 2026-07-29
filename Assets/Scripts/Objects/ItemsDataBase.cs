@@ -1,29 +1,25 @@
 using UnityEngine;
 
 /// <summary>
-/// Менеджер предметов, предоставляющий доступ ко всем игровым предметам через ScriptableObject.
+/// Хранит в себе все предметы в игре
 /// </summary>
-[CreateAssetMenu(fileName = "ItemManager", menuName = "Inventory/ItemManager")]
-public class ItemManager : ScriptableObject
+[CreateAssetMenu(fileName = "Items", menuName = "ItemsDataBase")]
+public class ItemsDataBase : ScriptableObject
 {
     public ItemData[] allItems;
 
-    private static ItemManager _instance;
-
-    /// <summary>
-    /// Singleton instance менеджера предметов. Автоматически загружается из Resources.
-    /// </summary>
-    public static ItemManager Instance
+    private static ItemsDataBase _instance;
+    public static ItemsDataBase Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = Resources.Load<ItemManager>("ItemManager");
+                _instance = Resources.Load<ItemsDataBase>("ItemManager");
 
                 if (_instance == null)
                 {
-                    _instance = CreateInstance<ItemManager>();
+                    _instance = CreateInstance<ItemsDataBase>();
                     Debug.LogWarning("Created new ItemManager instance. Consider creating it as an asset.");
                 }
             }

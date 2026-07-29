@@ -33,7 +33,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
 
     public virtual void OnMouseDown()
     {
-        if (isPlaced && (_inventory.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !_inventory.IsFull()))
+        if (isPlaced && (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(data.ID)) || !_inventory.IsFull()))
         {
             Remove();
         }
@@ -161,9 +161,9 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
     /// </summary>
     public void Remove()
     {
-        if (_inventory.Contains(ItemManager.Instance.GetItemByID(data.ID)) || !_inventory.IsFull())
+        if (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(data.ID)) || !_inventory.IsFull())
         {
-            _inventory.AddItem(ItemManager.Instance.GetItemByID(data.ID));
+            _inventory.AddItem(ItemsDataBase.Instance.GetItemByID(data.ID));
             Destroy(gameObject);
         }
     }

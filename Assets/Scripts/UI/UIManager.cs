@@ -9,7 +9,7 @@ public class UIManager : PauseBehaviour
     [Header("Ёкраны меню")]
     [SerializeField] SigilsMenu sigilsMenu;
     [SerializeField] PauseMenu pauseMenu;
-    [SerializeField] UICraftWindow craftMenu;
+    [SerializeField] CraftWindow craftMenu;
 
     [Header(" нопки управлени€")]
     [SerializeField] KeyCode sigilsKey;

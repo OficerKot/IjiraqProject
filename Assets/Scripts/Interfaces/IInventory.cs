@@ -7,5 +7,5 @@ public interface IInventory
     void RemoveItem(ItemData data);
     bool Contains(ItemData resource);
     bool IsFull();
-    Dictionary<string, int> GetCurItems();
+    Dictionary<ItemData, int> GetCurItems();
 }

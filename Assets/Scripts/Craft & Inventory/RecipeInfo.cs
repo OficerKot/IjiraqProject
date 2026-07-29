@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-public class CraftPanel : MonoBehaviour
+public class RecipeInfo : MonoBehaviour
 {
     public List<GameObject> cells;
     public TextMeshProUGUI text;

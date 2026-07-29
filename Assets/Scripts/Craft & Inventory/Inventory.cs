@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class Inventory : IInventory
 {
     public const int MAX_SIZE = 6;
-    Dictionary<string, int> itemsID = new Dictionary<string, int>();
+    Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();
 
     /// <summary>
     /// Добавление предмета в ивентарь
@@ -16,21 +16,21 @@ public class Inventory : IInventory
     /// <param name="i">Данные добавляемого предмета.</param>
     public void AddItem(ItemData i)
     {
-        if (Contains(i) || itemsID.Count < MAX_SIZE)
+        if (Contains(i) || items.Count < MAX_SIZE)
         {
-            AudioManager.Play(SoundType.Pickup);
-            if (!itemsID.ContainsKey(i.ID))
+            AudioManager.Play(SoundType.Pickup); // убрать
+            if (!items.ContainsKey(i))
             {
-                itemsID.Add(i.ID, 0);
+                items.Add(i, 0);
                 UIInventory.Instance.AddNewItem(i);
             }
-            itemsID[i.ID]++;
+            items[i]++;
             UIInventory.Instance.AddOneMoreItem(i);
-            UICraftWindow.Instance.CheckInventory(i);
+            // UICraftWindow.Instance.CheckInventory(i);
         }
         else
         {
-            AudioManager.Play(SoundType.FullInventory);
+            AudioManager.Play(SoundType.FullInventory); // убрать..
         }
     }
     /// <summary>
@@ -40,20 +40,21 @@ public class Inventory : IInventory
     /// <param name="count">Количество</param>
     public void AddItems(ItemData i, int count)
     {
-        if (Contains(i) || itemsID.Count < MAX_SIZE)
+        if (Contains(i) || items.Count < MAX_SIZE)
         {
-            AudioManager.Play(SoundType.Pickup);
-            if (!itemsID.ContainsKey(i.ID))
+            AudioManager.Play(SoundType.Pickup); // убрать
+
+            if (!items.ContainsKey(i))
             {
-                itemsID.Add(i.ID, 0);
+                items.Add(i, 0);
                 UIInventory.Instance.AddNewItem(i);
             }
             for (int j = 0; j < count; j++)
             {
-                itemsID[i.ID]++;
+                items[i]++;
                 UIInventory.Instance.AddOneMoreItem(i);
             }
-            UICraftWindow.Instance.CheckInventory(i);
+            //UICraftWindow.Instance.CheckInventory(i);
         }
     }
 
@@ -63,17 +64,17 @@ public class Inventory : IInventory
     /// <param name="i">Данные предмета</param>
     public void RemoveItem(ItemData i)
     {
-        if (itemsID.ContainsKey(i.ID))
+        if (items.ContainsKey(i))
         {
-            itemsID[i.ID]--;
+            items[i]--;
             UIInventory.Instance.RemoveOneItem(i);
 
-            if (itemsID[i.ID] < 1)
+            if (items[i] < 1)
             {
                 UIInventory.Instance.RemoveItemIcon(i);
-                itemsID.Remove(i.ID);
+                items.Remove(i);
             }
-            UICraftWindow.Instance.CheckInventory(i);
+            //UICraftWindow.Instance.CheckInventory(i);
         }
 
     }
@@ -85,16 +86,16 @@ public class Inventory : IInventory
     /// <returns></returns>
     public bool Contains(ItemData i)
     {
-        return itemsID.ContainsKey(i.ID);
+        return items.ContainsKey(i);
     }
 
     /// <summary>
     /// Возвращает текущие предметы инвентаря.
     /// </summary>
     /// <returns>Словарь ID предметов и их количества.</returns>
-    public Dictionary<string, int> GetCurItems()
+    public Dictionary<ItemData, int> GetCurItems()
     {
-        return itemsID;
+        return items;
     }
 
     /// <summary>
@@ -103,7 +104,7 @@ public class Inventory : IInventory
     /// <returns></returns>
     public bool IsFull()
     {
-        if (itemsID.Count >= MAX_SIZE) AudioManager.Play(SoundType.FullInventory); // убрать отсюда
-        return itemsID.Count >= MAX_SIZE;
+        if (items.Count >= MAX_SIZE) AudioManager.Play(SoundType.FullInventory); // убрать 
+        return items.Count >= MAX_SIZE;
     }
 }

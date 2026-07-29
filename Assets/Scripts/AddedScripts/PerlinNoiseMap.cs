@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using VContainer;
+using VContainer.Unity;
 
 /// <summary>
 /// Скрипт, создающий ландшафт игровой карты из префабов, данных ему, по карте шума Перлина и по PNG-карте биомов.
@@ -47,6 +49,14 @@ public class PerlinNoiseMap : MonoBehaviour
 
     private Vector3 safepoint;
     private ItemsPlacer itemsPlacer;
+
+    private IObjectResolver _resolver;
+
+    [Inject]
+    private void Construct(IObjectResolver resolver)
+    {
+        _resolver = resolver;
+    }
 
     public void Start()
     {
@@ -200,7 +210,10 @@ public class PerlinNoiseMap : MonoBehaviour
             default: { tile_prefab = tileset_grove[tile_id]; break; }
         }
         if (tile_prefab == emptinnes) return;
+
+
         GameObject tile = Instantiate(tile_prefab, this.transform);
+        _resolver.InjectGameObject(tile);
 
         tile.name = string.Format("tile_x{0}_y{1}", x, y);
         tile.transform.localPosition = new Vector3Int(x, y, 0);

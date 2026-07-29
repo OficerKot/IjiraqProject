@@ -30,7 +30,7 @@ public class Bush : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (IsNearbyPlayer() && (_inventory.Contains(ItemManager.Instance.GetItemByID(itemID)) || !_inventory.IsFull()) )
+        if (IsNearbyPlayer() && (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(itemID)) || !_inventory.IsFull()) )
         {
             Interact();
         }
@@ -46,7 +46,7 @@ public class Bush : MonoBehaviour
 
     void Interact()
     {
-        _inventory.AddItem(ItemManager.Instance.GetItemByID(itemID));
+        _inventory.AddItem(ItemsDataBase.Instance.GetItemByID(itemID));
         sprAnim.ForcePlay("BushEmpty");
         Destroy(this);
     }

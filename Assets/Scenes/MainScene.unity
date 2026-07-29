@@ -106266,7 +106266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2099278048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7cac967a1b92c9438eb8ec2719d88bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9223baa319f95004c95e40eed4603f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 1622970352}
@@ -106277,12 +106277,13 @@ MonoBehaviour:
   - {fileID: 655716923}
   spawnerButtons:
   - {fileID: 180197184}
+  - {fileID: 1298593503}
+  - {fileID: 1298593503}
   - {fileID: 687517565}
   - {fileID: 1914578590}
   - {fileID: 2101280853}
   - {fileID: 1437348463}
   - {fileID: 1801832514}
-  - {fileID: 1298593503}
 --- !u!224 &2100550894 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5935782231854931781, guid: ca6949826fa10c047a39eac177d270d1, type: 3}
@@ -106580,6 +106581,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  itemManager: {fileID: 11400000, guid: 190a28787e2385540bd5b9fc17792c2e, type: 2}
 --- !u!1001 &2117035926
 PrefabInstance:
   m_ObjectHideFlags: 0

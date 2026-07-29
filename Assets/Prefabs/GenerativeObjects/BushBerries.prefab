@@ -230,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f32f67c88f957c4da8bdd0576f2700a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resource: {fileID: 0}
+  resource: {fileID: 11400000, guid: a88c999c3e4cc8442b9ec55e80fb54f0, type: 2}
+  type: 0
   toolToDestroy: 0
   curCell: {fileID: 0}

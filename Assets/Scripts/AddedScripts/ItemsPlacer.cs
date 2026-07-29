@@ -77,6 +77,7 @@ public class ItemsPlacer : MonoBehaviour
     {
         int item_id = Random.Range(0, itemsCount);
         GameObject item_prefab = itemTypes[item_id];
+
         GameObject item = Instantiate(item_prefab, transform);
         _resolver.InjectGameObject(item);
 

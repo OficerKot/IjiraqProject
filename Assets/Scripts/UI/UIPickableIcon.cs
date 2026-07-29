@@ -51,7 +51,7 @@ public class UIPickableIcon : MonoBehaviour, IPointerClickHandler
 
     void Grab()
     {
-        spawnedPlayable = Instantiate(ItemManager.Instance.GetItemByID(itemId).prefab, transform.position, transform.rotation);
+        spawnedPlayable = Instantiate(ItemsDataBase.Instance.GetItemByID(itemId).prefab, transform.position, transform.rotation);
         spawnedPlayable.GetComponent<Item>().SetIsPlaced(false);
     }
 
