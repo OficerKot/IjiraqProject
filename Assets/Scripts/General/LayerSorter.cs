@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 /// </summary>
 public enum SortingOrder
 {
-    domino = 4,
+    domino = 3,
     item = 4,
     pond = 5,
     player = 6,
@@ -19,39 +19,38 @@ public enum SortingOrder
 /// <summary>
 /// Предназначен для смены порядка слоёв в процессе игры.
 /// </summary>
-public class LayerSorter : MonoBehaviour
+public class LayerSorter
 {
-    public static LayerSorter Instance;
     int topLayer = 10;
     /// <summary>
     /// Содержит объекты, перемещённые на передний план в порядке их добавления.
     /// </summary>
-    List<GameObject> objectsOnTop = new List<GameObject>();
+    List<ILayerSortable> objectsOnTop = new List<ILayerSortable>();
 
-    private void Awake()
+    public void Register(ILayerSortable sortable)
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        sortable.Picked += PutInFront;
+        sortable.Placed += PutBack;
     }
-    public void PutInFront(GameObject obj)
+
+    public void Unregister(ILayerSortable sortable)
     {
-        SortingGroup sortingGroup = obj.GetComponent<SortingGroup>();
+        sortable.Picked -= PutInFront;
+        sortable.Placed -= PutBack;
+    }
+    public void PutInFront(ILayerSortable obj)
+    {
+        SortingGroup sortingGroup = obj.sortingGroup;
         objectsOnTop.Add(obj);
         sortingGroup.sortingOrder = topLayer;
         topLayer++;
     }
 
-    public void PutBack(GameObject obj, SortingOrder ord)
+    public void PutBack(ILayerSortable obj)
     {
         if (objectsOnTop.Contains(obj))
         {
-            obj.GetComponent<SortingGroup>().sortingOrder = (int)ord;
+            obj.sortingGroup.sortingOrder = (int)obj.defaultSortingOrder;
             if (objectsOnTop[objectsOnTop.Count-1] == obj)
             {
                 topLayer--;

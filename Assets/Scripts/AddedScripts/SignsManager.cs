@@ -8,23 +8,10 @@ using System.Collections.Generic;
 /// 
 /// Дополнительная настройка: Не требуется. Установить на пустой объект и не трогать.
 /// </summary>
-public class SignsManager : MonoBehaviour
+public class SignsManager
 {
-    public static SignsManager Instance;
-    private List<Sign> signsList;
+    private List<Sign> signsList = new List<Sign>();
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-        signsList = new List<Sign>();
-    }
     public void PutInList(Sign sign)
     {
         signsList.Add(sign);

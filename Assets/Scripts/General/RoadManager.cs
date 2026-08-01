@@ -2,20 +2,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// Интерфейс для менеджера дорог, проверяющего наличие циклов.
-/// </summary>
-interface IRoadManager
-{
-    public void CheckForLoop(DominoPart d);
-}
 
 /// <summary>
 /// Управляет дорожной сетью из домино, обнаруживает циклы и создает поселения внутри них.
 /// </summary>
-public class RoadManager : MonoBehaviour, IRoadManager
+public class RoadManager
 {
-    public static RoadManager Instance;
     /// <summary>
     /// Нумерация для циклов. Каждое кольцо - новый цикл.
     /// </summary>
@@ -23,18 +15,6 @@ public class RoadManager : MonoBehaviour, IRoadManager
 
     [SerializeField] public GameObject[] settlementsPrefabs;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     /// <summary>
     /// Проверяет наличие цикла, начиная с указанной части домино.
@@ -147,7 +127,7 @@ public class RoadManager : MonoBehaviour, IRoadManager
 
             Vector3 settlementPos = new Vector3((maxX + minX) / 2, (maxY + minY) / 2, zPos);
             Vector3 settlementScale = new Vector3(maxX - minX, maxY - minY);
-            GameObject s = Instantiate(settlementsPrefabs[0], settlementPos, transform.rotation);
+            GameObject s = GameObject.Instantiate(settlementsPrefabs[0], settlementPos, Quaternion.identity);
             s.transform.localScale = settlementScale;
             Debug.Log(minX + " " + maxX + " " + minY + " " + maxY);
         }

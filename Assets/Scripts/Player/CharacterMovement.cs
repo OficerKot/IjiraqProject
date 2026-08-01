@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using VContainer;
 
 public class CharacterMovement : PauseBehaviour
 {
@@ -10,9 +11,17 @@ public class CharacterMovement : PauseBehaviour
     [SerializeField] public Transform targetPosition;
     public LayerMask whatAllowsMovement;
     public static event Action <bool> OnMovementAttempted;
+
     private CharacterStates charStates;
 
-
+    HandManager _handManager;
+    SignsManager _signsManager;
+    [Inject]
+    void Construct(HandManager handManager, SignsManager signsManager)
+    {
+        _handManager = handManager;
+        _signsManager = signsManager;
+    }
     private void Awake()
     {
         targetPosition.parent = null;
@@ -55,7 +64,7 @@ public class CharacterMovement : PauseBehaviour
     }
     bool AvailableDestinaton(Vector3 destination)
     {
-        return Mathf.Abs(destination.x + destination.y) == 1 && !HandManager.Instance.WhatInHand() && Physics2D.OverlapCircle(targetPosition.position + destination, .01f, whatAllowsMovement);
+        return Mathf.Abs(destination.x + destination.y) == 1 && !_handManager.WhatInHand() && Physics2D.OverlapCircle(targetPosition.position + destination, .01f, whatAllowsMovement);
     }
     void FixedUpdate()
     {
@@ -66,7 +75,7 @@ public class CharacterMovement : PauseBehaviour
             {
                 isMoving = false;
                 charStates.CheckState();
-                SignsManager.Instance.CastSignsRays();
+                _signsManager.CastSignsRays();
             }
         }
     }

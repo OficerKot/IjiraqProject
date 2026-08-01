@@ -5,22 +5,10 @@ using UnityEngine;
 /// Контроль сбора обелисков.
 /// При сборе полного набора обелисков вызывает завершение игры.
 /// </summary>
-public class ObeliskManager : MonoBehaviour
+public class ObeliskManager
 {
-    public static ObeliskManager Instance;
     [SerializeField] int obelisksCount = 4; // количество обелисков на карте с уникальным цветом
     public static event Action<ObeliskColor> OnObeliskCollected;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
 
     /// <summary>
     /// Сбор обелиска и вызов соответствующего события. Проверка на победу.

@@ -15,14 +15,6 @@ public class Building : Item
     [SerializeField] List<Cell> curCells = new List<Cell>();
     int count = 0;
 
-    private IInventory _inventory;
-
-    [Inject] 
-    private void Construct(IInventory inventory)
-    {
-        _inventory = inventory;
-    }
-
     /// <summary>
     /// Проверяет клетки для размещения здания и подсвечивает доступные.
     /// </summary>
@@ -110,9 +102,11 @@ public class Building : Item
         }
         transform.position = cornerPoint;
         SetIsPlaced(true);
-        InvokeAction();
-        _inventory.RemoveItem(data);
-        HandManager.Instance.PutInHand(null);
+
+        InvokeOnPlacedAction();
+
+        _inventory.RemoveItem(data); // чо это
+        _handManager.PutInHand(null);
 
         StartProducing();
     }

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 /// <summary>
 /// Управляет зависимостями и игровым процессом: начало, перезагрузка, окончание игры, выход из приложения. 
@@ -18,49 +19,25 @@ public class GameManager : MonoBehaviour
     public bool dominoPlaced { get; private set; } = false;
     public bool gameEnd = false;
 
-    [Header("Меню")]
-    [SerializeField] UIManager uiManager;
-
     [Header("Состояние игры")]
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject winScreen;
 
-    [Header("Сигилы игрока")]
-    [SerializeField] SigilsState sigilsState;
-
     [Header("Генерация домино")]
     [SerializeField] public const int DOMINO_CNT = 5;
     [SerializeField] GameObject dominoPrefab;
-    [SerializeField] DominoPool dominoPool;
-    [SerializeField] UISelectionPanel uiSelectionPanel;
-    DominoFactory dominoFactory;
+  
+    UISelectionPanel _uiSelectionPanel;
+    DominoPool _dominoPool;
 
-
-    [Header("Внешний вид домино")]
-    [SerializeField] DominoConfig config;
-
-    private void Awake()
+    [Inject]
+    void Construct(UISelectionPanel uiSelectionPanel, DominoPool dominoPool)
     {
-        if (Instance == null)
-        {
-            Instance = this;
+        _uiSelectionPanel = uiSelectionPanel;
+        _dominoPool = dominoPool;
 
-            Domino.OnAnyDominoPlaced += OnAnyDominoPlaced;
-
-            sigilsState.Init(DominoManager.Instance);
-            uiManager.Init(sigilsState);
-
-            dominoFactory = new DominoFactory();
-
-            dominoFactory.Init(sigilsState, config);
-            dominoPool.Init(dominoFactory);
-            uiSelectionPanel.Init(dominoPool, config);
-            
-        }
-        else
-        {
-            Destroy(this);
-        }
+        Domino.OnAnyDominoPlaced += OnAnyDominoPlaced;
+        Instance = this;
     }
 
     private void Start()
@@ -80,8 +57,8 @@ public class GameManager : MonoBehaviour
     // Скорее всего потом куда то вынести
     public void UpdateDominoSet()
     {
-        dominoPool.UpdateDominoSet(DOMINO_CNT);
-        uiSelectionPanel.UpdatePanel();
+        _dominoPool.UpdateDominoSet(DOMINO_CNT);
+        _uiSelectionPanel.UpdatePanel();
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ using System;
 /// <summary>
 /// Основной класс управления домино, обрабатывающий перетаскивание, размещение и взаимодействие с клетками.
 /// </summary>
-public class Domino : PauseBehaviour
+public class Domino : PauseBehaviour, ILayerSortable
 {
     public DominoPart part1 { get; private set; }
     public DominoPart part2 { get; private set; }
@@ -19,11 +19,26 @@ public class Domino : PauseBehaviour
     Vector3 part1Pos, part2Pos;
 
     bool isBeingGrabbed = false;
+
     public event Action<Domino> OnPlaced;
     public static event Action<Domino> OnAnyDominoPlaced;
 
-    public void Init(DominoPart p1, DominoPart p2)
+    #region Sort
+    public event Action<ILayerSortable> Picked;
+    public event Action<ILayerSortable> Placed;
+
+    public SortingOrder defaultSortingOrder { get; } = SortingOrder.item;
+    public SortingGroup sortingGroup => GetComponent<SortingGroup>();
+
+    LayerSorter _layerSorter;
+    private HandManager _handManager;
+    #endregion
+
+    public void Construct(HandManager handManager, LayerSorter layerSorter, DominoPart p1, DominoPart p2)
     {
+        _handManager = handManager;
+        _layerSorter = layerSorter;
+
         part1 = p1;
         part2 = p2;
 
@@ -74,7 +89,6 @@ public class Domino : PauseBehaviour
     public void PickUp()
     {
         isBeingGrabbed = true;
-        LayerSorter.Instance.PutInFront(pivot);
 
         if (curCell1 && curCell2)
         {
@@ -88,6 +102,7 @@ public class Domino : PauseBehaviour
     private void OnDestroy()
     {
         ClearCellData();
+        _layerSorter.Unregister(this);
     }
 
     /// <summary>
@@ -207,12 +222,10 @@ public class Domino : PauseBehaviour
         OnPlaced.Invoke(this);
         OnAnyDominoPlaced.Invoke(this);
 
-        HandManager.Instance.PutInHand(null);
+        _handManager.PutInHand(null);
 
         curCell1.GetCurContent()?.Remove();
         curCell2.GetCurContent()?.Remove();
-
-        LayerSorter.Instance.PutBack(pivot, SortingOrder.domino);
 
         Collider2D collider1 = curCell1.GetComponent<BoxCollider2D>();
         Collider2D collider2 = curCell2.GetComponent<BoxCollider2D>();

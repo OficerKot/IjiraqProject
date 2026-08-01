@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// Скрипт, управляющий поведением объекта Табличка. 
@@ -25,6 +26,12 @@ public class Sign : MonoBehaviour
     bool RayCrossed = false;
     float DestructionTime = 0.25f;
 
+    SignsManager _signsManager;
+    [Inject]
+    void Construct(SignsManager signsManager)
+    {
+        _signsManager = signsManager;
+    }
     enum RayhitsNature
     {
         Sign, DominoPart, Obstacle
@@ -32,7 +39,7 @@ public class Sign : MonoBehaviour
 
     private void Start()
     {
-        SignsManager.Instance.PutInList(this);
+        _signsManager.PutInList(this);
         SpriteAnimator SprAnim = GetComponent<SpriteAnimator>();
         direction = (Direction)Random.Range(0, 4);
 
@@ -71,18 +78,12 @@ public class Sign : MonoBehaviour
         if (Physics2D.Raycast(transform.position, VDirection, 5f, LayerMask.GetMask("Player")))
         {
             RayCrossed = true;
-            //Debug.Log("Player found!");
+           
             return;
         }
         else if (Physics2D.Raycast(transform.position, VDirection, 5f, LayerMask.GetMask("Default", "DominoPart")))
         {
             RayHitsArray = Physics2D.RaycastAll(transform.position, VDirection, 5f, LayerMask.GetMask("Default", "DominoPart"));
-
-            //Debug.Log($"Ray touched {RayHitsArray.Length} cell-objects");
-            //foreach (RaycastHit2D domino in RayHitsArray)
-            //{
-            //    Debug.Log(domino.transform.gameObject);
-            //}
         }
         if (RayCrossed)
         {

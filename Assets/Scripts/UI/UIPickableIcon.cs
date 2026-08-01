@@ -28,25 +28,25 @@ public class UIPickableIcon : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (disposable)
-        {
-            return;
-        }
-        if (spawnedPlayable == null)
-        {
-            if (HandManager.Instance.WhatInHand() == null)
-            {
-                HandManager.Instance.PutInHand(gameObject);
-                if(blurImage) blurImage.SetActive(true);
-                Grab();
-            }
-        }
-        else
-        {
-            HandManager.Instance.PutInHand(null);
-            if(blurImage) blurImage.SetActive(false);
-            Destroy(spawnedPlayable);
-        }
+        //if (disposable)
+        //{
+        //    return;
+        //}
+        //if (spawnedPlayable == null)
+        //{
+        //    if (HandManager.Instance.WhatInHand() == null)
+        //    {
+        //        HandManager.Instance.PutInHand(gameObject);
+        //        if(blurImage) blurImage.SetActive(true);
+        //        Grab();
+        //    }
+        //}
+        //else
+        //{
+        //    HandManager.Instance.PutInHand(null);
+        //    if(blurImage) blurImage.SetActive(false);
+        //    Destroy(spawnedPlayable);
+        //}
     }
 
     void Grab()

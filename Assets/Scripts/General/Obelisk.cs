@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// Цвет обелиска. Все обелиски на сцене должны иметь уникальный цвет.
@@ -20,6 +21,12 @@ public class Obelisk : PauseBehaviour
     bool isActive;
     SpriteAnimator sprAnim;
 
+    ObeliskManager _obeliskManager;
+    [Inject]
+    void Construct(ObeliskManager obeliskManager)
+    {
+        _obeliskManager = obeliskManager;
+    }
     private void Start()
     {
         isActive = true;
@@ -32,7 +39,7 @@ public class Obelisk : PauseBehaviour
     public void OnMouseDown()
     {
         if (!isActive) return;
-        ObeliskManager.Instance.Pick(color);
+        _obeliskManager.Pick(color);
         sprAnim.StopAllCoroutines();
         sprAnim.enabled = false;
         GetComponent<SpriteRenderer>().sprite = collectedSprite;

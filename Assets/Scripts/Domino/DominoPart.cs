@@ -32,10 +32,12 @@ public class DominoPart : MonoBehaviour, IDominoPart
     [SerializeField] bool isBeingPlaced = false;
 
     [SerializeField] public List<DominoPart> neighbours = new List<DominoPart>();
+    RoadManager _roadManager;
 
-    public void Init(SigilInstance data)
+    public void Init(RoadManager roadManager, SigilInstance data)
     {
-        this.sigilVariantData = data;
+        _roadManager = roadManager;
+        sigilVariantData = data;
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -104,7 +106,7 @@ public class DominoPart : MonoBehaviour, IDominoPart
         if (dominoPart.IsBeingPlaced() && isBeingPlaced && !IsAlreadyNeighbour(dominoPart) && NotAngular(dominoPart.transform))
         {
             neighbours.Add(dominoPart);
-            RoadManager.Instance.CheckForLoop(this);
+            _roadManager.CheckForLoop(this);
         }
     }
 
@@ -127,7 +129,7 @@ public class DominoPart : MonoBehaviour, IDominoPart
             if (n)
             {
                 n.RemoveNeighbor(this);
-                RoadManager.Instance.CheckForLoop(n);
+                _roadManager.CheckForLoop(n);
             }
         }
         neighbours.Clear();

@@ -1,15 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 
 public class DominoFactory
 {
-    SigilsState playerSigils;
-    DominoConfig config;
-    public void Init(SigilsState playerSigils, DominoConfig config)
+    SigilsState _sigils;
+    DominoConfig _config;
+    LayerSorter _layerSorter;
+    HandManager _handManager;
+    RoadManager _roadManager;
+
+    [Inject]
+     void Construct(RoadManager roadManager, HandManager handManager, SigilsState playerSigils, DominoConfig config, LayerSorter layerSorter)
     {
-        this.playerSigils = playerSigils;
-        this.config = config;
+        _roadManager = roadManager;
+        _handManager = handManager;
+        _layerSorter = layerSorter;
+        _sigils = playerSigils;
+        _config = config;
     }
 
     /// <summary>
@@ -17,12 +26,13 @@ public class DominoFactory
     /// </summary>
     public Domino GenerateRandomDomino()
     {
-        Domino domino = GameObject.Instantiate(config.dominoPrefab).GetComponent<Domino>();
+        Domino domino = GameObject.Instantiate(_config.dominoPrefab).GetComponent<Domino>();
         DominoPart p1, p2;
 
         (p1, p2) = SpawnParts(GenerateRandomSigil(), GenerateRandomSigil());
-        domino.Init(p1, p2);
+        domino.Construct(_handManager, _layerSorter, p1, p2);
 
+        _layerSorter.Register(domino);
         return domino;
     }
     /// <summary>
@@ -33,8 +43,8 @@ public class DominoFactory
         DominoPart p1 = GameObject.Instantiate(sigil1.sigilTypeData.prefab).GetComponent<DominoPart>(); 
         DominoPart p2 = GameObject.Instantiate(sigil2.sigilTypeData.prefab).GetComponent<DominoPart>();
 
-        p1.Init(sigil1);
-        p2.Init(sigil2);
+        p1.Init(_roadManager, sigil1);
+        p2.Init(_roadManager, sigil2);
 
         return (p1,p2);
        // CheckPartRotation();
@@ -59,7 +69,7 @@ public class DominoFactory
     /// </summary>
     public SigilData GetRandomSigil()
     {
-        List<SigilData> allAvailable = playerSigils.GetAllAvailable();
+        List<SigilData> allAvailable = _sigils.GetAllAvailable();
 
         int indx = Random.Range(0, allAvailable.Count);
         return allAvailable[indx];

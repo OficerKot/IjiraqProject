@@ -1,24 +1,25 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 /// <summary>
 /// Менеджер защиты всех домино на сцене при активации определённых событий. На данный момент - при сборе обелиска.
 /// </summary>
-public class DominoProtecter : MonoBehaviour
+public class DominoProtecter : IStartable, IDisposable
 {
     public int hoursToProtect = 48;
     public bool isProtecting;
     int cnter = 0;
     public static event Action<bool> OnProtectionStarted;
 
-    void Start()
+    public void Start()
     {
         isProtecting = false;
         Clock.OnHourPassed += OnHourPassed;
         ObeliskManager.OnObeliskCollected += OnObeliskCollected;
     }
 
-    void OnDestroy()
+    public void Dispose()
     {
         Clock.OnHourPassed -= OnHourPassed;
         ObeliskManager.OnObeliskCollected -= OnObeliskCollected;

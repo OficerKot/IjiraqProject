@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 
 public class UISelectionPanel : PauseBehaviour
 {
     [SerializeField] List<UIDomino> spawnedUIDomino = new List<UIDomino>();
-    DominoConfig config;
-    DominoPool dominoPool;
+    DominoConfig _config;
+    DominoPool _dominoPool;
+    HandManager _handManager;
     bool isActive = true;
 
     [Header("Настройки расположения домино на панели")]
@@ -15,10 +17,12 @@ public class UISelectionPanel : PauseBehaviour
     [SerializeField] public float XPos = 5;
     [SerializeField] public float XOffset = 50;
 
-    public void Init(DominoPool dominoPool, DominoConfig config)
+    [Inject]
+    public void Construct(DominoPool dominoPool, DominoConfig config, HandManager handManager)
     {
-        this.dominoPool = dominoPool;
-        this.config = config;
+        _dominoPool = dominoPool;
+        _config = config;
+        _handManager = handManager;
     }
 
 
@@ -34,7 +38,7 @@ public class UISelectionPanel : PauseBehaviour
         ClearPanel();
 
         int offset = 0;
-        foreach (var domino in dominoPool.currentPool)
+        foreach (var domino in _dominoPool.currentPool)
         {
             Vector3 pos = new Vector3(XPos + offset * XOffset, YPos, 0);
             DisplayDomino(domino, pos);
@@ -71,8 +75,8 @@ public class UISelectionPanel : PauseBehaviour
     }
     public void DisplayDomino(Domino domino, Vector3 pos)
     {
-        UIDomino uiDomino = Instantiate(config.UIDominoPrefab, transform).GetComponent<UIDomino>();
-        uiDomino.Init(domino, config);
+        UIDomino uiDomino = Instantiate(_config.UIDominoPrefab, transform).GetComponent<UIDomino>();
+        uiDomino.Init(_handManager, domino, _config);
 
         uiDomino.OnDestroyed += RemoveDomino;
 

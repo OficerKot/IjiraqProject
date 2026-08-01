@@ -1,15 +1,17 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
+using VContainer;
 
-public class DominoPool : MonoBehaviour
+public class DominoPool
 {
-    public List<Domino> currentPool;
-    DominoFactory factory;
+    public List<Domino> currentPool { get; private set; } = new List<Domino>();
+    DominoFactory _factory;
 
-    public void Init(DominoFactory factory)
+    [Inject]
+    public void Construct(DominoFactory factory)
     {
-        this.factory = factory;
+        _factory = factory;
     }
     public void UpdateDominoSet(int number)
     {
@@ -18,7 +20,7 @@ public class DominoPool : MonoBehaviour
         List<Domino> dominoList = new List<Domino>(number);
         for (int i = 0; i < number; i++)
         {
-            Domino newDomino = factory.GenerateRandomDomino();
+            Domino newDomino = _factory.GenerateRandomDomino();
             newDomino.OnPlaced += OnDominoPlaced;
 
             newDomino.pivot.SetActive(false);
@@ -38,7 +40,7 @@ public class DominoPool : MonoBehaviour
         foreach (var domino in currentPool)
         {
             domino.OnPlaced -= OnDominoPlaced;
-            Destroy(domino.pivot);
+            GameObject.Destroy(domino.pivot);
         }
         currentPool.Clear();
     }

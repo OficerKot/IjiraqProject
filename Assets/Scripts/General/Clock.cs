@@ -97,7 +97,7 @@ public class Clock : PauseBehaviour
         {
             for (int i = 0; i < hoursPassed; i++)
             {
-                OnHourPassed.Invoke();
+                OnHourPassed?.Invoke();
                 //Debug.Log("An hour passed. Time: " + time);
             }
             hourCounter -= hoursPassed;

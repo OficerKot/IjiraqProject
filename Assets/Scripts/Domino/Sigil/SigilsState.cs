@@ -1,22 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-public class SigilsState : MonoBehaviour
+public class SigilsState
 {
-    DominoManager dominoManager;
     [field: SerializeField] public List<SigilData> available { get; private set; } = new List<SigilData>();
     [field: SerializeField] public List<SigilData> basic { get; private set; } = new List<SigilData>();
 
-    public void Init(DominoManager dominoManager)
+    DominoManager _dominoManager;
+    [Inject]
+    public void Construct(DominoManager dominoManager)
     {
-        this.dominoManager = dominoManager;
+        _dominoManager = dominoManager;
 
         FillBasicSigils();
     }
     
     void FillBasicSigils()
     {
-        foreach (var sigil in dominoManager.allSigils)
+        foreach (var sigil in _dominoManager.allSigils)
         {
             if (sigil.characteristics.isBasic)
             {

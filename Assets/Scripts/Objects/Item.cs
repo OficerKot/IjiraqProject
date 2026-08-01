@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using VContainer;
 
 /// <summary>
@@ -16,19 +17,37 @@ public interface IInteractable
 /// <summary>
 /// Класс для объектов, которые могут находиться в инвентаре, подбираться с поля и размещаться на поле с определёнными условиями
 /// </summary>
-public class Item : PauseBehaviour, IInteractable, ICellContent
+public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
 {
     [field: SerializeField] public ItemData data { get; private set; }
     [SerializeField] Cell curCell;
     bool isPlaced = true;
+
     public event Action OnItemPlaced;
 
-    private IInventory _inventory;
+    #region Sort
+    public event Action<ILayerSortable> Picked;
+    public event Action<ILayerSortable> Placed;
+
+    public SortingOrder defaultSortingOrder { get; } = SortingOrder.item;
+    public SortingGroup sortingGroup => GetComponent<SortingGroup>();
+    #endregion
+
+    protected IInventory _inventory;
+    protected LayerSorter _layerSorter;
+    protected HandManager _handManager;
 
     [Inject]
-    private void Construct(IInventory inventory)
+    protected void Construct(HandManager handManager, IInventory inventory, LayerSorter layerSorter)
     {
+        _handManager = handManager;
         _inventory = inventory;
+        _layerSorter = layerSorter;
+    }
+
+    private void Start()
+    {
+        _layerSorter.Register(this);
     }
 
     public virtual void OnMouseDown()
@@ -45,12 +64,14 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
         }
 
     }
+
     private void OnDestroy()
     {
         if(curCell)
         {
             curCell.SetFree();
         }
+        _layerSorter.Unregister(this);
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -118,6 +139,11 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
         curCell = cell;
         PutInCell();
     }
+
+    public void PickUp()
+    {
+        Picked?.Invoke(this);
+    }
     /// <summary>
     /// Установка предмета в клетку/множество клеток
     /// </summary>
@@ -125,17 +151,15 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
     {
         curCell.SetCurContent(this);
         isPlaced = true;
-        InvokeAction();
+
+        OnItemPlaced?.Invoke();
+        Placed?.Invoke(this);
+
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
 
         _inventory.RemoveItem(data);
-        HandManager.Instance?.PutInHand(null);
-    }
-
-    protected void InvokeAction()
-    {
-        OnItemPlaced?.Invoke();
+        _handManager.PutInHand(null);
     }
     void Move() 
     {
@@ -154,6 +178,11 @@ public class Item : PauseBehaviour, IInteractable, ICellContent
         DominoPart p1 = d.part1;
         DominoPart p2 = d.part2;
         return p1.sigilVariantData.sigilTypeData.characteristics.tool == data.toolToDestroy || p2.sigilVariantData.sigilTypeData.characteristics.tool == data.toolToDestroy || data.toolToDestroy == ToolType.Any;
+    }
+
+    protected void InvokeOnPlacedAction()
+    {
+        OnItemPlaced?.Invoke();
     }
 
     /// <summary>

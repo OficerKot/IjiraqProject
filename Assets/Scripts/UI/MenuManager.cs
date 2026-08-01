@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
-public class UIManager : PauseBehaviour
+public class MenuManager : PauseBehaviour
 {
     IMenu openedMenu = null;
     bool isActive = true;
@@ -15,9 +17,13 @@ public class UIManager : PauseBehaviour
     [SerializeField] KeyCode sigilsKey;
     [SerializeField] KeyCode pauseKey;
     [SerializeField] KeyCode craftKey;
-    public void Init(SigilsState sigilsState)
+
+    IObjectResolver _resolver;
+    [Inject]
+    private void Construct(IObjectResolver resolver)
     {
-        sigilsMenu.Init(sigilsState);
+        _resolver = resolver;
+        _resolver.Inject(sigilsMenu);
     }
   
     void Update()

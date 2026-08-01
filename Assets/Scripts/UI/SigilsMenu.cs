@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using VContainer;
 
 public class SigilsMenu : MonoBehaviour, IMenu
 {
-    SigilsState sigilsState;
+    SigilsState _sigilsState;
     CellsPlacer menuCells;
 
     [SerializeField] float scaleKoefficient = 2.5f;
@@ -19,9 +20,10 @@ public class SigilsMenu : MonoBehaviour, IMenu
 
     int prevAvailableCount;
 
-    public void Init(SigilsState sigilsState)
+    [Inject]
+    public void Construct(SigilsState sigilsState)
     {
-        this.sigilsState = sigilsState;
+        _sigilsState = sigilsState;
 
         prevAvailableCount = sigilsState.GetAllAvailable().Count;
         FillAvailable();
@@ -38,12 +40,12 @@ public class SigilsMenu : MonoBehaviour, IMenu
     }
     private void Update()
     {
-        if (prevAvailableCount != sigilsState.GetAllAvailable().Count) 
+        if (prevAvailableCount != _sigilsState.GetAllAvailable().Count) 
         {
             Debug.Log("Update");
             UpdateAvailable();
             menuCells.UpdateButtons();
-            prevAvailableCount = sigilsState.GetAllAvailable().Count;
+            prevAvailableCount = _sigilsState.GetAllAvailable().Count;
         }
 
     }
@@ -75,10 +77,10 @@ public class SigilsMenu : MonoBehaviour, IMenu
 
     void FillAvailable() 
     {
-        if (sigilsState.HasAvailable())
+        if (_sigilsState.HasAvailable())
         {
             int curIndx = 0;
-            sortedDominoList = sigilsState.GetAllAvailable();
+            sortedDominoList = _sigilsState.GetAllAvailable();
             sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
             // sortedDominoList.Sort((a, b) => a.characteristics.boneNumber.CompareTo(b.characteristics.number));
 

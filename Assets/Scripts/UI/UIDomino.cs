@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using VContainer;
 
 
 public class UIDomino : MonoBehaviour, IPointerClickHandler
@@ -11,8 +12,11 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     Domino domino;
     [SerializeField] bool clicked = false;
     public event Action<UIDomino> OnDestroyed;
-    public void Init(Domino domino, DominoConfig config)
+    HandManager _handManager;
+
+    public void Init(HandManager handManager, Domino domino, DominoConfig config)
     {
+        _handManager = handManager;
         this.domino = domino;
         domino.OnPlaced += OnDominoPlaced;
 
@@ -57,19 +61,19 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        if (HandManager.Instance.WhatInHand() == null || HandManager.Instance.WhatInHand() == domino.gameObject)
+        if (_handManager.WhatInHand() == null || _handManager.WhatInHand() == domino.gameObject)
         {
             clicked = !clicked;
             if (clicked)
             {
-                HandManager.Instance.PutInHand(domino.gameObject);
+                _handManager.PutInHand(domino.gameObject);
                 domino.PickUp();
                 domino.pivot.SetActive(true);
                 //blurImage.SetActive(true);
             }
             else
             {
-                HandManager.Instance.PutInHand(null);
+                _handManager.PutInHand(null);
                 domino.pivot.SetActive(false);
                 //blurImage.SetActive(false);
             }
