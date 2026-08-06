@@ -16,8 +16,7 @@ public class GameLifeTimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<IInventory, Inventory>(Lifetime.Singleton);
-        builder.RegisterComponentInHierarchy<ItemsPlacer>();
-
+ 
         builder.RegisterInstance(itemManager);
         builder.RegisterInstance(dominoManager);
         builder.RegisterInstance(menuManager);
@@ -35,10 +34,12 @@ public class GameLifeTimeScope : LifetimeScope
 
         builder.Register<ICraftService, CraftService>(Lifetime.Singleton);
 
+        builder.RegisterComponentInHierarchy<ItemsPlacer>();
         builder.RegisterComponentInHierarchy<PerlinNoiseMap>();
         builder.RegisterComponentInHierarchy<GameManager>();
         builder.RegisterComponentInHierarchy<SigilsMenu>();
         builder.RegisterComponentInHierarchy<UISelectionPanel>();
+        builder.RegisterComponentInHierarchy<UIInventory>();
         builder.RegisterComponentInHierarchy<CharacterMovement>(); //он вообще не должен быть MonoBehaviour, потом исправить
     }
 }

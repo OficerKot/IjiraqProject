@@ -21,7 +21,7 @@ public enum SortingOrder
 /// </summary>
 public class LayerSorter
 {
-    int topLayer = 10;
+    int topLayer = 11;
     /// <summary>
     /// Содержит объекты, перемещённые на передний план в порядке их добавления.
     /// </summary>
