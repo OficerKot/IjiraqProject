@@ -47,7 +47,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
 
     private void Start()
     {
-        _layerSorter.Register(this);
+        //_layerSorter.Register(this);
     }
 
     public virtual void OnMouseDown()
@@ -71,7 +71,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
         {
             curCell.SetFree();
         }
-        _layerSorter.Unregister(this);
+       // _layerSorter.Unregister(this);
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -159,7 +159,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
         transform.Translate(0, 0, -curCell.transform.position.z);
 
         _inventory.RemoveItem(data);
-        _handManager.PutInHand(null);
+        _handManager.Take(null);
     }
     void Move() 
     {

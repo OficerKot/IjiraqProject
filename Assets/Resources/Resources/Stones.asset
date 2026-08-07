@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: stones
   prefab: {fileID: 3265742574692647083, guid: 4fe8c79aac65b7245bcded13c58df06a, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: cb40330c8e4cbd047910b13a30530961, type: 3}
+  sprite: {fileID: 2667589067915142571, guid: d5865b6ad5104804ba74db3c7abfe9bb, type: 3}
   itemsForCraft: []

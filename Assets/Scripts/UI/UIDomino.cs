@@ -61,19 +61,19 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        if (_handManager.WhatInHand() == null || _handManager.WhatInHand() == domino.gameObject)
+        if (_handManager.GetContent() == null || _handManager.GetContent() == domino.gameObject)
         {
             clicked = !clicked;
             if (clicked)
             {
-                _handManager.PutInHand(domino.gameObject);
+                _handManager.Take(domino.gameObject);
                 domino.PickUp();
                 domino.pivot.SetActive(true);
                 //blurImage.SetActive(true);
             }
             else
             {
-                _handManager.PutInHand(null);
+                _handManager.Take(null);
                 domino.pivot.SetActive(false);
                 //blurImage.SetActive(false);
             }

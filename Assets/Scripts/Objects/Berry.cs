@@ -4,7 +4,7 @@ using VContainer;
 
 public class Berry : MonoBehaviour, IPointerClickHandler
 {
-    private UIPickableIcon berryUIPI;
+    private ItemIcon berryUIPI;
     public ItemData berry;
 
     private IInventory _inventory;
@@ -16,8 +16,7 @@ public class Berry : MonoBehaviour, IPointerClickHandler
     }
     void Awake()
     {
-        berryUIPI = this.GetComponent<UIPickableIcon>();
-        berryUIPI.SetDisposable();
+        berryUIPI = this.GetComponent<ItemIcon>();
     }
     public void OnPointerClick(PointerEventData eventData)
     {

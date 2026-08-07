@@ -9,7 +9,7 @@ public class ItemData : ScriptableObject
 {
     [field: SerializeField] public string ID { get; private set; }
     public GameObject prefab;
-    public GameObject UIprefab;
+    public Sprite sprite;
 
     public ToolType toolToDestroy {  get; private set; }
     public ObjectType type { get; private set; } = ObjectType.Any;

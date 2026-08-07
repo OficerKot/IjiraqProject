@@ -106,7 +106,7 @@ public class Building : Item
         InvokeOnPlacedAction();
 
         _inventory.RemoveItem(data); // чо это
-        _handManager.PutInHand(null);
+        _handManager.Take(null);
 
         StartProducing();
     }

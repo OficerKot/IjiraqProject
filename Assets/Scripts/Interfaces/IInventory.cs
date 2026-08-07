@@ -12,8 +12,8 @@ public interface IInventory
     bool IsFull();
     Dictionary<ItemData, int> GetCurItems();
 
-    public event Action<ItemData> OnItemAdded;
-    public event Action<ItemData> OnItemRemoved;
+    public event Action<ItemData, int> OnItemAdded;
+    public event Action<ItemData, int> OnItemRemoved;
     public event Action OnInventoryFull;
     public event Action OnInventoryChanged;
 }

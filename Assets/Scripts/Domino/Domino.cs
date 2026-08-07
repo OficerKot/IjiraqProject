@@ -34,6 +34,7 @@ public class Domino : PauseBehaviour, ILayerSortable
     private HandManager _handManager;
     #endregion
 
+  
     public void Construct(HandManager handManager, LayerSorter layerSorter, DominoPart p1, DominoPart p2)
     {
         _handManager = handManager;
@@ -222,7 +223,7 @@ public class Domino : PauseBehaviour, ILayerSortable
         OnPlaced.Invoke(this);
         OnAnyDominoPlaced.Invoke(this);
 
-        _handManager.PutInHand(null);
+        _handManager.Take(null);
 
         curCell1.GetCurContent()?.Remove();
         curCell2.GetCurContent()?.Remove();

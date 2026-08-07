@@ -116,10 +116,10 @@ public class ItemSpawnerButton : Notificationable, IPointerEnterHandler, IPointe
         List<GameObject> cells = infoPanel.GetComponent<RecipeInfo>().cells;
         foreach (ItemData obj in objectToSpawn.itemsForCraft)
         {
-            GameObject icon = Instantiate(obj.UIprefab, cells[cellIndx].transform);
-            icon.transform.position = cells[cellIndx].transform.position;
-            Destroy(icon.GetComponent<UIPickableIcon>());
-            cellIndx++;
+            //GameObject icon = Instantiate(obj.sprite, cells[cellIndx].transform);
+            //icon.transform.position = cells[cellIndx].transform.position;
+            //Destroy(icon.GetComponent<UIPickableIcon>());
+            //cellIndx++;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using VContainer;
 using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
+using static UnityEditor.Progress;
 
 public class UIInventory : PauseBehaviour
 {
@@ -15,10 +17,14 @@ public class UIInventory : PauseBehaviour
     bool isActive = true;
 
     IInventory _inventory;
+    UIConfig _config;
+    HandManager _handManager;
     [Inject]
-    void Construct(IInventory inventory)
+    void Construct(IInventory inventory,UIConfig config, HandManager handManager)
     {
         _inventory = inventory;
+        _config = config;
+        _handManager = handManager;
         
         _inventory.OnItemAdded += AddItem;
         _inventory.OnItemRemoved += RemoveItem;
@@ -35,30 +41,27 @@ public class UIInventory : PauseBehaviour
         inventoryButton.onClick.AddListener(Interact);
     }
 
-    void AddItem(ItemData item)
+    void AddItem(ItemData item, int cnt)
     {
       
-        if(_inventory.Count(item) == 1)
+        if(cnt == 1)
         {
             AddIcon(item);
-            Debug.Log("Added Icon");
         }
         else
         {
-            IncreaseCounter(item);
-            Debug.Log("Increased");
-
+            UpdateCounter(item, cnt);
         }
     }
 
-    void IncreaseCounter(ItemData item)
+    void UpdateCounter(ItemData item, int cnt)
     {
         for (int i = 0; i < cells.Count; i++)
         {
             UIInventoryCell cell = cellsList[i];
             if (cells[cell] == item)
             {
-                cell.AddToCounter(1);
+                cell.SetCounter(cnt);
                 break;
             }
         }
@@ -73,7 +76,10 @@ public class UIInventory : PauseBehaviour
             else
             {
                 cells[cell] = item;
-                cell.PutItem(Instantiate(item.UIprefab, inventory.transform));
+                ItemIcon icon = CreateAndInitIcon(item);
+                icon.OnClick += OnIconClick;
+
+                cell.PutIcon(icon);
                 break;
             }
         }
@@ -81,28 +87,28 @@ public class UIInventory : PauseBehaviour
         if (!isOpened) inventory.SetActive(false);
     }
 
-
-    void RemoveItem(ItemData item)
+    void OnIconClick(ItemIcon icon)
     {
-        if(_inventory.Count(item) == 0)
+        ToggleResult res = _handManager.ToggleItem(icon.data);
+        
+    }
+    ItemIcon CreateAndInitIcon(ItemData item)
+    {
+        ItemIcon icon = Instantiate(_config.itemIconPrefab, inventory.transform).GetComponent<ItemIcon>();
+        icon.Init(item);
+
+        return icon;
+    }
+
+    void RemoveItem(ItemData item, int cnt)
+    {
+        if(cnt == 0)
         {
             RemoveIcon(item);
         }
         else
         {
-            DecreaseCounter(item);
-        }
-    }
-
-    void DecreaseCounter(ItemData item)
-    {
-        for (int i = 0; i < cells.Count; i++)
-        {
-            UIInventoryCell cell = cellsList[i];
-            if (cells[cell] == item)
-            {
-                cell.AddToCounter(-1);
-            }
+            UpdateCounter(item, cnt);
         }
     }
     void RemoveIcon(ItemData item)
@@ -124,23 +130,23 @@ public class UIInventory : PauseBehaviour
 
         if (!isOpened)
         {
-            isOpened = true;
             Open();
         }
         else
         {
-            isOpened = false;
             Close();
         }
     }
 
     void Open()
     {
+        isOpened = true;
         inventory.SetActive(true);
     }
 
     void Close()
     {
+        isOpened = false;
         inventory.SetActive(false);
     }
 

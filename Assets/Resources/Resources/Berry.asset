@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: berry
   prefab: {fileID: 3265742574692647083, guid: 4622bf30394bacb44860fa0292e49194, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: 5480fe3d9f74dd04dadbfc5a81c5d8ae, type: 3}
+  sprite: {fileID: 2778267843588853002, guid: bcbd90db91fc6844a97f8419b80f2b22, type: 3}
   itemsForCraft: []

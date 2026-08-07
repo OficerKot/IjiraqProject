@@ -10,8 +10,8 @@ public class Inventory : IInventory
 {
     public const int MAX_SIZE = 6;
 
-    public event Action<ItemData> OnItemAdded;
-    public event Action<ItemData> OnItemRemoved;
+    public event Action<ItemData, int> OnItemAdded;
+    public event Action<ItemData, int> OnItemRemoved;
     public event Action OnInventoryFull;
     public event Action OnInventoryChanged;
 
@@ -30,7 +30,7 @@ public class Inventory : IInventory
                 items.Add(i, 0);
             }
             items[i]++;
-            OnItemAdded?.Invoke(i);
+            OnItemAdded?.Invoke(i, items[i]);
             OnInventoryChanged?.Invoke();
             // UICraftWindow.Instance.CheckInventory(i);
         }
@@ -64,8 +64,13 @@ public class Inventory : IInventory
             if (items[i] < 1)
             {
                 items.Remove(i);
+                OnItemRemoved?.Invoke(i, 0);
             }
-            OnItemRemoved?.Invoke(i);
+            else
+            {
+                OnItemRemoved?.Invoke(i, items[i]);
+            }
+
             OnInventoryChanged?.Invoke();
             //UICraftWindow.Instance.CheckInventory(i);
         }

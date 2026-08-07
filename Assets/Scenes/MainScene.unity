@@ -19886,7 +19886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1549230273
 RectTransform:
   m_ObjectHideFlags: 0
@@ -106214,6 +106214,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   menuManager: {fileID: 974587246}
+  uiConfig: {fileID: 11400000, guid: 73a9eb167d6184844859d91c9122bcfa, type: 2}
   itemManager: {fileID: 11400000, guid: 190a28787e2385540bd5b9fc17792c2e, type: 2}
   dominoManager: {fileID: 11400000, guid: 9b30b917a98d97a4f931ad7a54166863, type: 2}
   dominoConfig: {fileID: 11400000, guid: 8a8a77a7f12ffbd41a70c4e759d2bf65, type: 2}

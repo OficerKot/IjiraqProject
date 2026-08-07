@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: house
   prefab: {fileID: 3265742574692647083, guid: 446689d10fe2f1e48a981438e0f634e6, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: 26ea33fcd4da8a247a0bcd895573efb2, type: 3}
+  sprite: {fileID: -7411974349392773033, guid: 1ab8986a32a9ed047ad6c49500857e5d, type: 3}
   itemsForCraft:
   - {fileID: 11400000, guid: 75dd84d4cfe1035438c3a2a9cd811a5e, type: 2}
   - {fileID: 11400000, guid: 798a0125585a54a45bd5212e968cabfb, type: 2}

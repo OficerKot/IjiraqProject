@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: web
   prefab: {fileID: 3265742574692647083, guid: f1b7e5f1e2a091440a1df4e6b5a3fb44, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: 2a21cbc93ee3dee49ae0b50a802ef9a8, type: 3}
+  sprite: {fileID: 4783380919058496157, guid: 91ca72afe3eed5745bc5080f8b76ed3d, type: 3}
   itemsForCraft: []

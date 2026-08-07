@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: obelisk
   prefab: {fileID: 3265742574692647083, guid: 7a998a4d9cd615b4fadc1d7dcca4fce1, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: 8f0cf2018da89424dba1e0663d0d4117, type: 3}
+  sprite: {fileID: 389160672, guid: d184b8563a2309e48aa29f55f9c808c3, type: 3}
   itemsForCraft: []

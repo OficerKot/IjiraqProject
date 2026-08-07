@@ -5,7 +5,8 @@ using VContainer.Unity;
 public class GameLifeTimeScope : LifetimeScope
 {
     [Header("Игра")]
-    [SerializeField] MenuManager menuManager;    
+    [SerializeField] MenuManager menuManager;
+    [SerializeField] UIConfig uiConfig;
     [Header("Предметы")]
     [SerializeField] ItemsDataBase itemManager;
     [Header("Домино")]
@@ -15,14 +16,15 @@ public class GameLifeTimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.Register<IInventory, Inventory>(Lifetime.Singleton);
  
         builder.RegisterInstance(itemManager);
+        builder.RegisterInstance(uiConfig);
         builder.RegisterInstance(dominoManager);
         builder.RegisterInstance(menuManager);
         builder.RegisterInstance(dominoConfig);    
 
         builder.Register<DominoFactory>(Lifetime.Singleton);
+        builder.Register<ItemFactory>(Lifetime.Singleton);
         builder.Register<SigilsState>(Lifetime.Singleton);
         builder.Register<HandManager>(Lifetime.Singleton);
         builder.Register<DominoPool>(Lifetime.Singleton);
@@ -31,7 +33,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.Register<RoadManager>(Lifetime.Singleton);
         builder.Register<SignsManager>(Lifetime.Singleton);
         builder.Register<LayerSorter>(Lifetime.Singleton);
-
+        builder.Register<IInventory, Inventory>(Lifetime.Singleton);
         builder.Register<ICraftService, CraftService>(Lifetime.Singleton);
 
         builder.RegisterComponentInHierarchy<ItemsPlacer>();

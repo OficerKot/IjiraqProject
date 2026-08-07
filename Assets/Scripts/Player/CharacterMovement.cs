@@ -64,7 +64,7 @@ public class CharacterMovement : PauseBehaviour
     }
     bool AvailableDestinaton(Vector3 destination)
     {
-        return Mathf.Abs(destination.x + destination.y) == 1 && !_handManager.WhatInHand() && Physics2D.OverlapCircle(targetPosition.position + destination, .01f, whatAllowsMovement);
+        return Mathf.Abs(destination.x + destination.y) == 1 && !_handManager.GetContent() && Physics2D.OverlapCircle(targetPosition.position + destination, .01f, whatAllowsMovement);
     }
     void FixedUpdate()
     {

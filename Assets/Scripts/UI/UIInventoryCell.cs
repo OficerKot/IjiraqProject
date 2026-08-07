@@ -3,37 +3,39 @@ using UnityEngine;
 
 public class UIInventoryCell : MonoBehaviour
 {
-    [SerializeField] GameObject item;
+    [SerializeField] public ItemIcon icon { get; private set; }
     [SerializeField] int itemCount;
     [SerializeField] TextMeshProUGUI counterText;
 
     private void Start()
     {
-        if (item == null)
+        if (icon == null)
         {
             ClearCounter();
         }
     }
 
-    public void PutItem(GameObject i)
+    public void PutIcon(ItemIcon i)
     {
-        item = i;
+        icon = i;
         if (i == null)
         {
             ClearCounter();
             return;
         }
+        SetCounter(1);
+
         i.transform.position = transform.position;
     }
     public void RemoveItem()
     {
-        Destroy(item);
-        item = null;
+        Destroy(icon);
+        icon = null;
         ClearCounter();
     }
-    public void AddToCounter(int i)
+    public void SetCounter(int i)
     {
-        itemCount += i;
+        itemCount = i;
         counterText.text = itemCount.ToString();
     }
 

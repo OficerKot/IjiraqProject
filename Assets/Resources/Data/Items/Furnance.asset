@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec55d87d3200afc46bb8387d3236c69e, type: 3}
   m_Name: Furnance
   m_EditorClassIdentifier: 
-  Id: furnance
+  <ID>k__BackingField: furnance
   prefab: {fileID: 3265742574692647083, guid: 8a9ea888be8ab0c4f883de26f577da1f, type: 3}
-  UIprefab: {fileID: 2342191990407282095, guid: 2123859d34bb7094c960cc9554557812, type: 3}
+  sprite: {fileID: 5839503353984351374, guid: fb167a0961ad7244a8c75c7e42eda15e, type: 3}
   itemsForCraft:
   - {fileID: 11400000, guid: 798a0125585a54a45bd5212e968cabfb, type: 2}
   - {fileID: 11400000, guid: f86fd20ec5eea6741b5f313044a21745, type: 2}
