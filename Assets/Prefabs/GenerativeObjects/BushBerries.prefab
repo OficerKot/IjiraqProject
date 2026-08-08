@@ -232,5 +232,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: {fileID: 11400000, guid: a88c999c3e4cc8442b9ec55e80fb54f0, type: 2}
   type: 0
-  toolToDestroy: 0
+  toolToDestroy: 3
   curCell: {fileID: 0}

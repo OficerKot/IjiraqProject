@@ -33,6 +33,8 @@ public static class DominoPlacementValidator
         var rMin = sigilWithMinCoords.sigilTypeData.placeRequirments;
 
         if (!rMax.cellRequirements.ValidateCell(cellWithMaxCoords) || !rMin.cellRequirements.ValidateCell(cellWithMinCoords) ) return false;
+        if (!CheckContent(c1, d) || !CheckContent(c2, d)) return false;
+
         if (!CheckNeighbourSigils(cellWithMaxCoords, sigilWithMaxCoords) || !CheckNeighbourSigils(cellWithMinCoords, sigilWithMinCoords)) return false;
 
         return true;
@@ -54,5 +56,11 @@ public static class DominoPlacementValidator
         return true;
     }
 
-    
+    static bool CheckContent(Cell c, Domino d)
+    {
+        ICellContent content = c.GetCurContent();
+        if (content == null) return true;
+
+        return content.CanBeBrokenBy(d);
+    }
 }

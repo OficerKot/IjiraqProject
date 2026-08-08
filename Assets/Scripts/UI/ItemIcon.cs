@@ -23,19 +23,16 @@ public class ItemIcon : MonoBehaviour, IPointerClickHandler
         OnClick.Invoke(this);
     }
 
-    public void SetIconState(ToggleResult res)
+    public void SetIconState(IconState res)
     {
         switch (res)
         {
-            case ToggleResult.Taken:
+            case IconState.Pressed:
                 MakeDark();
                 break;
 
-            case ToggleResult.Released:
+            case IconState.Released:
                 MakeBright();
-                break;
-
-            case ToggleResult.Failed:
                 break;
         }
     }
@@ -49,4 +46,9 @@ public class ItemIcon : MonoBehaviour, IPointerClickHandler
         img.color = Color.white;
     }
 
+}
+
+public enum IconState
+{
+    Pressed, Released
 }

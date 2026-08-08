@@ -30,7 +30,7 @@ public class PlayerStopper : MonoBehaviour
         character.ControlMovement(true);
         if (GetComponent<ResourceSource>() != null)
         {
-            GetComponent<ResourceSource>().Remove();
+            GetComponent<ResourceSource>().Pick();
         }
     }
 

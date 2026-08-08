@@ -19,7 +19,7 @@ MonoBehaviour:
     <tool>k__BackingField: 0
   placeRequirments:
     cellRequirements:
-      emptyCell: 1
+      emptyCell: 0
       objectType: 0
       sigilType: 0
     neighboursRequirements:

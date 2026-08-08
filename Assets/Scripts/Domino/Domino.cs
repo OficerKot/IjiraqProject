@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using System;
+using VContainer;
 
 /// <summary>
 /// Основной класс управления домино, обрабатывающий перетаскивание, размещение и взаимодействие с клетками.
@@ -34,7 +35,8 @@ public class Domino : PauseBehaviour, ILayerSortable
     private HandManager _handManager;
     #endregion
 
-  
+
+    [Inject]
     public void Construct(HandManager handManager, LayerSorter layerSorter, DominoPart p1, DominoPart p2)
     {
         _handManager = handManager;
@@ -225,8 +227,8 @@ public class Domino : PauseBehaviour, ILayerSortable
 
         _handManager.Take(null);
 
-        curCell1.GetCurContent()?.Remove();
-        curCell2.GetCurContent()?.Remove();
+        curCell1.GetCurContent()?.Pick();
+        curCell2.GetCurContent()?.Pick();
 
         Collider2D collider1 = curCell1.GetComponent<BoxCollider2D>();
         Collider2D collider2 = curCell2.GetComponent<BoxCollider2D>();

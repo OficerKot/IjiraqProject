@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// Инвентарь игрока.
@@ -25,7 +26,7 @@ public class Inventory : IInventory
     {
         if (Contains(i) || items.Count < MAX_SIZE)
         {
-            if (!items.ContainsKey(i))
+            if (!Contains(i))
             {
                 items.Add(i, 0);
             }

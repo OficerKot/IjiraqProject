@@ -24,7 +24,7 @@ public class Rockies : ResourceSource
     /// <summary>
     /// Подбирает камешки с учетом сгенерированного количества.
     /// </summary>
-    public override void Remove()
+    public override void Pick()
     {
         _inventory.AddItems(resource, generator.GetCount());
         curCell.SetCurContent(null);

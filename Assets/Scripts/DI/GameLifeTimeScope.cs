@@ -33,6 +33,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.Register<RoadManager>(Lifetime.Singleton);
         builder.Register<SignsManager>(Lifetime.Singleton);
         builder.Register<LayerSorter>(Lifetime.Singleton);
+        builder.Register<InventoryItemController>(Lifetime.Singleton);
         builder.Register<IInventory, Inventory>(Lifetime.Singleton);
         builder.Register<ICraftService, CraftService>(Lifetime.Singleton);
 

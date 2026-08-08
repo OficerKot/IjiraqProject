@@ -29,7 +29,7 @@ public class UIInventoryCell : MonoBehaviour
     }
     public void RemoveItem()
     {
-        Destroy(icon);
+        Destroy(icon.gameObject);
         icon = null;
         ClearCounter();
     }

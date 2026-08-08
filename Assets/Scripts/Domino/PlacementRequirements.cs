@@ -18,6 +18,9 @@ public class PlacementRequirements
     {
         if (emptyCell && !cell.IsFree()) return false;
 
+        ICellContent content = cell.GetCurContent();
+ 
+
         if (objectType != ObjectType.Any && cell.GetCurContent().GetType() != objectType) return false;
 
         return true;

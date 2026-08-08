@@ -91,11 +91,11 @@ public class Cell : MonoBehaviour, ICell
     public void SetCurContent(ICellContent i)
     {
         CheckForDuplications();
-        curContent = i;
         if (i == null)
         {
             return;
         }
+        curContent = i;
     }
 
     /// <summary>

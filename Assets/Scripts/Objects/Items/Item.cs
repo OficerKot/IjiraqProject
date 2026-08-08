@@ -52,9 +52,9 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
 
     public virtual void OnMouseDown()
     {
-        if (isPlaced && (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(data.ID)) || !_inventory.IsFull()))
+        if (isPlaced && (_inventory.Contains(data) || !_inventory.IsFull()))
         {
-            Remove();
+            Pick();
         }
 
         else if (Input.GetKeyDown(KeyCode.Mouse0) && curCell)
@@ -63,6 +63,15 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
             PutInCell();
         }
 
+    }
+
+    /// <summary>
+    /// —бор предмета в инвентарь
+    /// </summary>
+    public void Pick()
+    {
+        _inventory.AddItem(data);
+        Destroy(gameObject);
     }
 
     private void OnDestroy()
@@ -158,8 +167,6 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
         transform.position = curCell.transform.position;
         transform.Translate(0, 0, -curCell.transform.position.z);
 
-        _inventory.RemoveItem(data);
-        _handManager.Take(null);
     }
     void Move() 
     {
@@ -185,16 +192,6 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
         OnItemPlaced?.Invoke();
     }
 
-    /// <summary>
-    /// —бор предмета в инвентарь
-    /// </summary>
-    public void Remove()
-    {
-        if (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(data.ID)) || !_inventory.IsFull())
-        {
-            _inventory.AddItem(ItemsDataBase.Instance.GetItemByID(data.ID));
-            Destroy(gameObject);
-        }
-    }
+
   
 }

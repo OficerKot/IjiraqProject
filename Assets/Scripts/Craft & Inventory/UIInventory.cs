@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -18,13 +19,13 @@ public class UIInventory : PauseBehaviour
 
     IInventory _inventory;
     UIConfig _config;
-    HandManager _handManager;
+    InventoryItemController _itemController;
     [Inject]
-    void Construct(IInventory inventory,UIConfig config, HandManager handManager)
+    void Construct(IInventory inventory,UIConfig config, InventoryItemController controller)
     {
         _inventory = inventory;
         _config = config;
-        _handManager = handManager;
+        _itemController = controller;
         
         _inventory.OnItemAdded += AddItem;
         _inventory.OnItemRemoved += RemoveItem;
@@ -41,20 +42,32 @@ public class UIInventory : PauseBehaviour
         inventoryButton.onClick.AddListener(Interact);
     }
 
-    void AddItem(ItemData item, int cnt)
+    void AddItem(ItemData item, int curCnt)
     {
       
-        if(cnt == 1)
+        if(curCnt == 1)
         {
             AddIcon(item);
         }
         else
         {
-            UpdateCounter(item, cnt);
+            UpdateCell(item, curCnt);
         }
     }
 
-    void UpdateCounter(ItemData item, int cnt)
+    void RemoveItem(ItemData item, int curCnt)
+    {
+        if (curCnt == 0)
+        {
+            RemoveIcon(item);
+        }
+        else
+        {
+            UpdateCell(item, curCnt);
+        }
+    }
+
+    void UpdateCell(ItemData item, int cnt)
     {
         for (int i = 0; i < cells.Count; i++)
         {
@@ -62,6 +75,7 @@ public class UIInventory : PauseBehaviour
             if (cells[cell] == item)
             {
                 cell.SetCounter(cnt);
+                cell.icon.SetIconState(IconState.Released);
                 break;
             }
         }
@@ -89,8 +103,19 @@ public class UIInventory : PauseBehaviour
 
     void OnIconClick(ItemIcon icon)
     {
-        ToggleResult res = _handManager.ToggleItem(icon.data);
-        
+        ToggleResult res = _itemController.ToggleItem(icon.data);
+        if (res == ToggleResult.Taken)
+        {
+            icon.SetIconState(IconState.Pressed);
+            return;
+        }
+
+        if (res == ToggleResult.Released)
+        {
+            icon.SetIconState(IconState.Released);
+            return;
+        }
+
     }
     ItemIcon CreateAndInitIcon(ItemData item)
     {
@@ -98,18 +123,6 @@ public class UIInventory : PauseBehaviour
         icon.Init(item);
 
         return icon;
-    }
-
-    void RemoveItem(ItemData item, int cnt)
-    {
-        if(cnt == 0)
-        {
-            RemoveIcon(item);
-        }
-        else
-        {
-            UpdateCounter(item, cnt);
-        }
     }
     void RemoveIcon(ItemData item)
     {

@@ -23,7 +23,7 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
     /// <summary>
     /// Подбирает ресурс, добавляет его в инвентарь и уничтожает объект.
     /// </summary>
-    public virtual void Remove()
+    public virtual void Pick()
     {
         if (resource)
         {
