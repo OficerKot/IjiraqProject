@@ -12,11 +12,6 @@ public class DominoManager : ScriptableObject
 {
     public List<SigilData> allSigils;
 
-    public Dictionary<SigilType, int> order = new Dictionary<SigilType, int>()
-    {
-        {SigilType.Bone, 1} , {SigilType.Fireflies, 2}, {SigilType.Leaves, 3 }, {SigilType.Flowers, 4 }, {SigilType.Tool, 5}
-    };
-
     private static DominoManager _instance;
 
     /// <summary>

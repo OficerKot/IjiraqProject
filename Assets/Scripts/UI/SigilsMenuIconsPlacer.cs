@@ -12,7 +12,7 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
 
     public GameObject prefab;
     public List<GameObject> spawnedCells = new List<GameObject>();
-    HashSet<Sprite> icons = new HashSet<Sprite>();
+    HashSet<SigilData> sigils = new HashSet<SigilData>();
     public BoxCollider2D windowCollider;
 
     public Vector3 startPos;
@@ -42,11 +42,6 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
         PlaceElements();
         FillIcons();
     }
-    private void Start()
-    {
-        PlaceElements();
-        FillIcons();
-    }
     void CountOffset()
     {
 
@@ -64,7 +59,7 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
     void PlaceElements()
     {
         FillImages();
-        elementsCnt = icons.Count;
+        elementsCnt = sigils.Count;
 
         if (elementsCnt < maxDefaultElements)
         {
@@ -82,6 +77,8 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
         for (int i = 0; i < elementsCnt; i++)
         {
             GameObject newObj = Instantiate(prefab, transform);
+            newObj.transform.SetParent(transform);
+
             newObj.transform.localPosition = curStartPos + new Vector3(offsetX * i, 0, 0);
             spawnedCells.Add(newObj);
         }
@@ -91,13 +88,13 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
     void FillIcons()
     {
         int indx = 0;
-        foreach (var i in icons)
+        foreach (var i in sigils)
         {
             GameObject newIcon = Instantiate(_config.UISigilPrefab, spawnedCells[indx].transform);
-            newIcon.GetComponent<Image>().sprite = i;
+            newIcon.GetComponent<Image>().sprite = i.sprites[0];
 
             newIcon.transform.SetAsFirstSibling();
-            spawnedCells[indx].GetComponent<ImageFilterButton>().image = i;
+            spawnedCells[indx].GetComponent<ImageFilterButton>().sigil = i;
             newIcon.transform.localPosition = Vector3.zero;
             newIcon.transform.localScale *= scaleKoef;
             indx++;
@@ -107,19 +104,20 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
 
     void FillImages()
     {
-        foreach (var sigil in _sigilsState.GetAllAvailable())
+        foreach (var sigil in _sigilsState.GetAvailableTypes())
         {
-            icons.Add(sigil.sprites[0]);
+            SigilData data = sigil.Key;
+            sigils.Add(data);
         }
     }
     void ClearElements()
     {
         for (int i = 0; i < spawnedCells.Count; i++)
         {
-            Destroy(spawnedCells[i]);
+            Destroy(spawnedCells[i].gameObject);
         }
         spawnedCells.Clear();
-        icons.Clear();
+        sigils.Clear();
     }
 
 }

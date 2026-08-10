@@ -11902,6 +11902,7 @@ GameObject:
   - component: {fileID: 907618201}
   - component: {fileID: 907618200}
   - component: {fileID: 907618202}
+  - component: {fileID: 907618203}
   m_Layer: 5
   m_Name: MenuBase
   m_TagString: Untagged
@@ -11924,7 +11925,6 @@ RectTransform:
   - {fileID: 1608696413}
   - {fileID: 71787734}
   - {fileID: 1055532897}
-  - {fileID: 1482185402}
   m_Father: {fileID: 1222820929}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -12016,6 +12016,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 129.48, y: 100}
   m_EdgeRadius: 0
+--- !u!114 &907618203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907618198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7eb5d9eca9a0b4a9f8c69f774aa579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6664960311811703741, guid: efdb9e832eae43c419554c329f5cd447, type: 3}
+  spawnedCells: []
+  windowCollider: {fileID: 907618202}
+  startPos: {x: -170, y: 27, z: 0}
+  defaultOffset: 13
+  scaleKoef: 3
+  maxDefaultElements: 9
 --- !u!1001 &909287341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19274,61 +19293,6 @@ RectTransform:
   m_AnchoredPosition: {x: -3.0000207, y: 31.146744}
   m_SizeDelta: {x: 25, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1482185401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1482185402}
-  - component: {fileID: 1482185403}
-  m_Layer: 5
-  m_Name: ImageSortButtons
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1482185402
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482185401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 907618199}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 22.8}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1482185403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482185401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e7eb5d9eca9a0b4a9f8c69f774aa579, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 6664960311811703741, guid: efdb9e832eae43c419554c329f5cd447, type: 3}
-  spawnedCells: []
-  windowCollider: {fileID: 907618202}
-  startPos: {x: -53.4, y: 8.5, z: 0}
-  defaultOffset: 13
-  scaleKoef: 4
-  maxDefaultElements: 9
 --- !u!1001 &1482421054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46285,6 +46249,10 @@ PrefabInstance:
     - target: {fileID: 3047066013497621055, guid: c987634d774e1da488bca7899c3c8ff0, type: 3}
       propertyPath: m_Name
       value: CellsGrid_Generated
+      objectReference: {fileID: 0}
+    - target: {fileID: 3047066013497621055, guid: c987634d774e1da488bca7899c3c8ff0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3048866580057675903, guid: c987634d774e1da488bca7899c3c8ff0, type: 3}
       propertyPath: m_SortingLayer

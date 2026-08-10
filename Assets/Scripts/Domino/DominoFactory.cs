@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using VContainer;
 
@@ -47,7 +48,6 @@ public class DominoFactory
         p2.Init(_roadManager, sigil2);
 
         return (p1,p2);
-       // CheckPartRotation();
     }
 
 
@@ -56,30 +56,35 @@ public class DominoFactory
     /// </summary>
     SigilInstance GenerateRandomSigil()
     {
+        var (sigilType, boneNumber) = GetRandomSigil();
+
         SigilInstance sigilInstance = new SigilInstance();
+        sigilInstance.Init(sigilType, boneNumber);
 
-        SigilData sigil = GetRandomSigil();
-        int variantIndex = ChooseRandomSigilVariant(sigil);
-
-        sigilInstance.Init(sigil, variantIndex);
         return sigilInstance;
     }
     /// <summary>
-    /// Получить случайный тип сигила из всех доступных игроку.
+    /// Получить случайный сигил с номером из всех доступных игроку.
     /// </summary>
-    public SigilData GetRandomSigil()
+    public (SigilData,int) GetRandomSigil()
     {
-        List<SigilData> allAvailable = _sigils.GetAllAvailable();
+        Dictionary<SigilData, HashSet<int>> availableSigils = _sigils.GetAvailableTypes();
+        List<SigilData> keys = new List<SigilData>(availableSigils.Keys);
 
-        int indx = Random.Range(0, allAvailable.Count);
-        return allAvailable[indx];
+        int indx = Random.Range(0, availableSigils.Count);
+
+        SigilData randSigil = keys[indx];
+        int boneNumber = ChooseRandomBoneNumber(availableSigils[randSigil]);
+
+        return (randSigil, boneNumber);
     }
 
-    int ChooseRandomSigilVariant(SigilData sigil)
+    int ChooseRandomBoneNumber(HashSet<int> availableNumbers)
     {
-        int spritesCnt = sigil.sprites.Length;
-        int indx = Random.Range(0, spritesCnt);
-        return indx;
+        int indx = Random.Range(0, availableNumbers.Count);
+        int randNumber = availableNumbers.ElementAt(indx);
+
+        return randNumber;
     }
 
     

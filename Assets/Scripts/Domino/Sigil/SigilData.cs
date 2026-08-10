@@ -11,5 +11,4 @@ public class SigilData : ScriptableObject
 
     public Sprite[] sprites;
     [field: SerializeField] public GameObject prefab { get; private set; }
-    [SerializeField] public GameObject UIprefab; // это убрать!
 }

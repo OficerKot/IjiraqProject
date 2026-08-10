@@ -6,14 +6,13 @@ using UnityEngine;
 public class SigilInstance
 {
     public SigilData sigilTypeData { get; private set; }
-    public int variantIndex { get; private set; }
-    public int boneNumber => sigilTypeData.sprites.Length > 1 ? variantIndex + 1 : 0; // 0 если инструмент или что то другое, что не может иметь номера
-    public Sprite Sprite => sigilTypeData.sprites[variantIndex];
+    public int boneNumber { get; private set; }
+    public Sprite Sprite => boneNumber == 0? sigilTypeData.sprites[0] : sigilTypeData.sprites[boneNumber-1];
 
-    public void Init(SigilData data, int variantIndex)
+    public void Init(SigilData data, int boneNumber)
     {
         this.sigilTypeData = data;
-        this.variantIndex = variantIndex;
+        this.boneNumber = sigilTypeData.sprites.Length > 1 ? boneNumber : 0;
     }
 
 }

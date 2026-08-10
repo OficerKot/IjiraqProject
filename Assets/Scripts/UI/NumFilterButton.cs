@@ -26,7 +26,7 @@ public class NumFilterButton : MonoBehaviour
     /// </summary>
     void ApplyFilter()
     {
-       //  menu.ApplyFilter(number); 
+        menu.ToggleFilter(number); 
         if (clicked)
         {
             clicked = false;

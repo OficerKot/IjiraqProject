@@ -2,32 +2,33 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using VContainer;
+using UnityEngine.UI;
 
 public class SigilsMenu : MonoBehaviour, IMenu
 {
     SigilsState _sigilsState;
-    SigilsMenuIconsPlacer menuCells;
+    SigilsMenuIconsPlacer _icons;
+    DominoConfig _config;
 
     [SerializeField] float scaleKoefficient = 2.5f;
     [SerializeField] List<Transform> cells;
     [SerializeField] GameObject menu;
 
     List<GameObject> spawnedIcons = new List<GameObject>();
-    List<SigilData> sortedDominoList = new List<SigilData>();
-    HashSet<Sprite> sigilsFilters = new HashSet<Sprite>();
-
-    //HashSet<int> numberFilters = new HashSet<int>();
-
-    int prevAvailableCount;
+    List<SigilData> sigilsList = new List<SigilData>(); 
+    HashSet<SigilData> sigilsFilters = new HashSet<SigilData>();
+    HashSet<int> numbersFilters = new HashSet<int>();
 
     [Inject]
-    public void Construct(SigilsState sigilsState)
+    public void Construct(SigilsState sigilsState, DominoConfig dominoConfig, SigilsMenuIconsPlacer icons)
     {
         _sigilsState = sigilsState;
+        _sigilsState.OnUnlockedSigilsChanged += OnSigilsStateChanged;
+        _config = dominoConfig;
+        _icons = icons;
 
-        prevAvailableCount = sigilsState.GetAllAvailable().Count;
         FillAvailable();
-
+        icons.UpdateButtons();
     }
     public void Open()
     {
@@ -38,31 +39,25 @@ public class SigilsMenu : MonoBehaviour, IMenu
     {
         menu.SetActive(false);
     }
-    private void Update()
+    private void OnSigilsStateChanged()
     {
-        if (prevAvailableCount != _sigilsState.GetAllAvailable().Count) 
-        {
-            Debug.Log("Update");
-            UpdateAvailable();
-            menuCells.UpdateButtons();
-            prevAvailableCount = _sigilsState.GetAllAvailable().Count;
-        }
-
+        UpdateAvailable();
+        _icons.UpdateButtons();
     }
 
-    //public void ApplyFilter(int num)
-    //{
-    //    if (numberFilters.Contains(num))
-    //    {
-    //        numberFilters.Remove(num);
-    //    }
-    //    else
-    //    {
-    //        numberFilters.Add(num);
-    //    }
-    //    UpdateAvailable();
-    //}
-    public void ApplyFilter(Sprite im)
+    public void ToggleFilter(int num)
+    {
+        if (numbersFilters.Contains(num))
+        {
+            numbersFilters.Remove(num);
+        }
+        else
+        {
+            numbersFilters.Add(num);
+        }
+        UpdateAvailable();
+    }
+    public void ToggleFilter(SigilData im)
     {
         if (sigilsFilters.Contains(im))
         {
@@ -75,24 +70,41 @@ public class SigilsMenu : MonoBehaviour, IMenu
         UpdateAvailable();
     }
 
+    void UpdateAvailable()
+    {
+        ClearAvailable();
+        FillAvailable();
+    }
     void FillAvailable() 
     {
-        if (_sigilsState.HasAvailable())
+        if (_sigilsState.GetAvailableTypes().Count > 0)
         {
-            int curIndx = 0;
-            sortedDominoList = _sigilsState.GetAllAvailable();
-            sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
+            var sigils = _sigilsState.GetAvailableTypes();
 
-            foreach (SigilData d in sortedDominoList)
+            int curIndx = 0;
+            sigilsList = new List<SigilData>(sigils.Keys);
+
+            foreach (SigilData d in sigilsList)
             {
-                bool isTypeOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.sprites[0]);
-                if (isTypeOk)
-                {
-                    cells[curIndx].gameObject.SetActive(true);
-                    GameObject icon = Instantiate(d.UIprefab, menu.transform);
-                    icon.transform.position = cells[curIndx++].position;
-                    icon.transform.localScale *= scaleKoefficient;
-                    spawnedIcons.Add(icon);
+                List<int> allBoneNumbers = new List<int>(sigils[d]);
+                allBoneNumbers.Sort((a,b) => a.CompareTo(b));
+
+                bool isTypeOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d);
+
+                foreach (int num in allBoneNumbers) {
+                    if (curIndx >= cells.Count) return;
+                    bool isNumberOk = numbersFilters.Count == 0 || numbersFilters.Contains(num);
+
+                    if (isTypeOk && isNumberOk)
+                    {
+                        cells[curIndx].gameObject.SetActive(true);
+                        GameObject icon = Instantiate(_config.UISigilPrefab, menu.transform);
+                        icon.GetComponent<Image>().sprite = d.sprites.Length > 1 ? d.sprites[num-1] : d.sprites[0];
+
+                        icon.transform.position = cells[curIndx++].position;
+                        icon.transform.localScale *= scaleKoefficient;
+                        spawnedIcons.Add(icon);
+                    }
                 }
             }
         }
@@ -109,12 +121,5 @@ public class SigilsMenu : MonoBehaviour, IMenu
         }
         spawnedIcons.Clear();
     }
-
-    void UpdateAvailable()
-    {
-        ClearAvailable();
-        FillAvailable();
-    }
- 
 
 }

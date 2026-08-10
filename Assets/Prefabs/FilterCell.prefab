@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 6773634182891245504}
   - component: {fileID: 1276313647635517661}
   - component: {fileID: 4419982514640373884}
+  - component: {fileID: 3369338982813524815}
   m_Layer: 5
   m_Name: FilterCell
   m_TagString: Untagged
@@ -257,4 +258,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blurObject: {fileID: 3446852240145666732}
-  image: 1
+  sigil: {fileID: 0}
+--- !u!210 &3369338982813524815
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664960311811703741}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
 public class SigilsState
 {
-    [field: SerializeField] public List<SigilData> available { get; private set; } = new List<SigilData>();
+    [field: SerializeField] public Dictionary<SigilData, HashSet<int>> unlocked { get; private set; } = new Dictionary<SigilData, HashSet<int>>();
     [field: SerializeField] public List<SigilData> basic { get; private set; } = new List<SigilData>();
+
+    public event Action OnUnlockedSigilsChanged;
 
     DominoManager _dominoManager;
     [Inject]
@@ -31,13 +35,34 @@ public class SigilsState
     /// <summary>
     /// ѕолучить все сигилы, доступные игроку, включа€ базовые
     /// </summary>
-    /// <returns>Cписок сигилов SigilData</returns>
-    public List<SigilData> GetAllAvailable()
+    /// <returns>—игилы и соответствующие им доступные номера</returns>
+    public Dictionary<SigilData, HashSet<int>> GetAvailableTypes()
     {
-        List<SigilData> result = new List<SigilData>(basic);
-        result.AddRange(available);
+        Dictionary<SigilData, HashSet<int>> result = new Dictionary<SigilData, HashSet<int>>();
+
+        foreach (var sigil in basic)
+        {
+            if(sigil.sprites.Length == 1)
+            {
+                result.Add(sigil, new HashSet<int>() {0});
+            }
+            else
+            {
+                result.Add(sigil, new HashSet<int>() { 1, 2, 3, 4, 5, 6 });
+            }
+        }
+        result.AddRange(unlocked);
+
         return result;
     }
+
+    //public List<SigilData> GetAvailableTypes()
+    //{
+    //    List<SigilData> res = new List<SigilData>(basic);
+    //    res.AddRange(unlocked.Keys);
+
+    //    return res;
+    //}
 
     /// <summary>
     /// ѕровер€ет, есть ли доступные сигилы (кроме базовых).
@@ -45,17 +70,38 @@ public class SigilsState
     /// <returns>True если есть доступные сигилы.</returns>
     public bool HasAvailable()
     {
-        return available.Count > 0;
+        return unlocked.Count > 0;
     }
 
-    public void AddToAvailable(SigilData data)
+    public void UnlockSigil(SigilData data, int num)
     {
-        throw new System.NotImplementedException();
+        if (!unlocked.TryGetValue(data, out HashSet<int> result))
+        {
+            unlocked.Add(data, new HashSet<int>());
+        }
+        
+        if(result.Add(num))
+        {
+            OnUnlockedSigilsChanged?.Invoke();
+        }
+            
     }
 
-    public void RemoveFromAvailable(SigilData data)
+    public void LockSigil(SigilData data, int num)
     {
-        throw new System.NotImplementedException();
+        if(!unlocked.TryGetValue(data, out HashSet<int> result))
+        {
+            return;
+        }
+
+        if (!result.Remove(num)) return;
+
+        if (result.Count == 0)
+        {
+            unlocked.Remove(data);
+        }
+
+        OnUnlockedSigilsChanged?.Invoke();
     }
 
 
