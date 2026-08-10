@@ -9,7 +9,7 @@ public class ImageFilterButton : MonoBehaviour
     SigilsMenu menu;
     public GameObject blurObject;
     bool clicked;
-    public SigilType image;
+    public Sprite image;
     Button b;
     void Start()
     {

@@ -46,6 +46,11 @@ public class MenuManager : PauseBehaviour
         isActive = !isGamePaused;
     }
 
+    public void CloseMenu()
+    {
+        openedMenu.Close();
+        openedMenu = null;
+    }
     public void ToggleMenu(IMenu menu)
     {
         if (!isActive && GameManager.Instance.gameEnd) return;

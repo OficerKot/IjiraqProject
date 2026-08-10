@@ -27,11 +27,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] public const int DOMINO_CNT = 5;
     [SerializeField] GameObject dominoPrefab;
   
-    UISelectionPanel _uiSelectionPanel;
+    DominoPanel _uiSelectionPanel;
     DominoPool _dominoPool;
 
     [Inject]
-    void Construct(UISelectionPanel uiSelectionPanel, DominoPool dominoPool)
+    void Construct(DominoPanel uiSelectionPanel, DominoPool dominoPool)
     {
         _uiSelectionPanel = uiSelectionPanel;
         _dominoPool = dominoPool;

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer; 
 
-public class CellsPlacer : MonoBehaviour
+public class SigilsMenuIconsPlacer : MonoBehaviour
 {
-    SigilsState sigilsState;
+    SigilsState _sigilsState;
+    DominoConfig _config;
 
     public GameObject prefab;
     public List<GameObject> spawnedCells = new List<GameObject>();
-    HashSet<SigilType> uniqueImages = new HashSet<SigilType>();
+    HashSet<Sprite> icons = new HashSet<Sprite>();
     public BoxCollider2D windowCollider;
 
     public Vector3 startPos;
@@ -26,11 +28,13 @@ public class CellsPlacer : MonoBehaviour
 
     //Чем больше количество элементов, тем меньше отступ
     //При этом если элементов <= maxDefaultElements, отступ будет не больше defaultOffset
-   
 
-    public void Init(SigilsState state)
+
+    [Inject]
+    public void Init(SigilsState state, DominoConfig config)
     {
-        sigilsState = state;
+        _sigilsState = state;
+        _config = config;
     }
     public void UpdateButtons()
     {
@@ -59,8 +63,8 @@ public class CellsPlacer : MonoBehaviour
 
     void PlaceElements()
     {
-        FindUniqueImages();
-        elementsCnt = uniqueImages.Count;
+        FillImages();
+        elementsCnt = icons.Count;
 
         if (elementsCnt < maxDefaultElements)
         {
@@ -87,26 +91,25 @@ public class CellsPlacer : MonoBehaviour
     void FillIcons()
     {
         int indx = 0;
-        foreach (SigilType type in uniqueImages)
+        foreach (var i in icons)
         {
-            GameObject icon = Instantiate(DominoManager.Instance.GetSigil(type).UIprefab, spawnedCells[indx].transform);
-            icon.transform.SetAsFirstSibling();
-            spawnedCells[indx].GetComponent<ImageFilterButton>().image = type;
-            icon.transform.localPosition = Vector3.zero;
-            icon.transform.localScale *= scaleKoef;
+            GameObject newIcon = Instantiate(_config.UISigilPrefab, spawnedCells[indx].transform);
+            newIcon.GetComponent<Image>().sprite = i;
+
+            newIcon.transform.SetAsFirstSibling();
+            spawnedCells[indx].GetComponent<ImageFilterButton>().image = i;
+            newIcon.transform.localPosition = Vector3.zero;
+            newIcon.transform.localScale *= scaleKoef;
             indx++;
         }
 
     }
 
-    void FindUniqueImages()
+    void FillImages()
     {
-        foreach (SigilData d in sigilsState.GetAllAvailable())
+        foreach (var sigil in _sigilsState.GetAllAvailable())
         {
-            if (!uniqueImages.Contains(d.characteristics.sigilType))
-            {
-                uniqueImages.Add(d.characteristics.sigilType);
-            }
+            icons.Add(sigil.sprites[0]);
         }
     }
     void ClearElements()
@@ -116,7 +119,7 @@ public class CellsPlacer : MonoBehaviour
             Destroy(spawnedCells[i]);
         }
         spawnedCells.Clear();
-        uniqueImages.Clear();
+        icons.Clear();
     }
 
 }

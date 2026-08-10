@@ -6,7 +6,7 @@ using VContainer;
 public class SigilsMenu : MonoBehaviour, IMenu
 {
     SigilsState _sigilsState;
-    CellsPlacer menuCells;
+    SigilsMenuIconsPlacer menuCells;
 
     [SerializeField] float scaleKoefficient = 2.5f;
     [SerializeField] List<Transform> cells;
@@ -14,7 +14,7 @@ public class SigilsMenu : MonoBehaviour, IMenu
 
     List<GameObject> spawnedIcons = new List<GameObject>();
     List<SigilData> sortedDominoList = new List<SigilData>();
-    HashSet<SigilType> sigilsFilters = new HashSet<SigilType>();
+    HashSet<Sprite> sigilsFilters = new HashSet<Sprite>();
 
     //HashSet<int> numberFilters = new HashSet<int>();
 
@@ -62,7 +62,7 @@ public class SigilsMenu : MonoBehaviour, IMenu
     //    }
     //    UpdateAvailable();
     //}
-    public void ApplyFilter(SigilType im)
+    public void ApplyFilter(Sprite im)
     {
         if (sigilsFilters.Contains(im))
         {
@@ -82,13 +82,11 @@ public class SigilsMenu : MonoBehaviour, IMenu
             int curIndx = 0;
             sortedDominoList = _sigilsState.GetAllAvailable();
             sortedDominoList.Sort((a, b) => DominoManager.Instance.order[a.characteristics.sigilType].CompareTo(DominoManager.Instance.order[b.characteristics.sigilType]));
-            // sortedDominoList.Sort((a, b) => a.characteristics.boneNumber.CompareTo(b.characteristics.number));
 
             foreach (SigilData d in sortedDominoList)
             {
-                bool isTypeOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.characteristics.sigilType);
-               // bool isNumberOk = numberFilters.Count == 0 || numberFilters.Contains(d.characteristics.number);
-                if (isTypeOk) // && isNumberOk)
+                bool isTypeOk = sigilsFilters.Count == 0 || sigilsFilters.Contains(d.sprites[0]);
+                if (isTypeOk)
                 {
                     cells[curIndx].gameObject.SetActive(true);
                     GameObject icon = Instantiate(d.UIprefab, menu.transform);

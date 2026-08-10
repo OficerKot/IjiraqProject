@@ -665,12 +665,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 974587246}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ToggleMenu
-        m_Mode: 2
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: CloseMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1222820930}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -19290,7 +19290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1482185402
 RectTransform:
   m_ObjectHideFlags: 0
@@ -100352,7 +100352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1608696413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -103657,6 +103657,27 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   duplicationBlockers: 0
+--- !u!1 &1851605009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2557412337824826820, guid: 08feedbc0736e7c499c8c8cbcc9fb902, type: 3}
+  m_PrefabInstance: {fileID: 7296297957419020335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1851605012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851605009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfdfff5395e4cf442943bc3c342cd511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnedUIDomino: []
+  YPos: -170
+  XPos: -105
+  XOffset: 50
 --- !u!1001 &1851983985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107194,13 +107215,17 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.4264151
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7309935858415163007, guid: 08feedbc0736e7c499c8c8cbcc9fb902, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6677448572472970411, guid: 08feedbc0736e7c499c8c8cbcc9fb902, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1541482109}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2557412337824826820, guid: 08feedbc0736e7c499c8c8cbcc9fb902, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1851605012}
   m_SourcePrefab: {fileID: 100100000, guid: 08feedbc0736e7c499c8c8cbcc9fb902, type: 3}
 --- !u!1001 &8320498519245187315
 PrefabInstance:

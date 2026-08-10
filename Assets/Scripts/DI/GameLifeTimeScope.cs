@@ -41,8 +41,9 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<PerlinNoiseMap>();
         builder.RegisterComponentInHierarchy<GameManager>();
         builder.RegisterComponentInHierarchy<SigilsMenu>();
-        builder.RegisterComponentInHierarchy<UISelectionPanel>();
+        builder.RegisterComponentInHierarchy<DominoPanel>();
         builder.RegisterComponentInHierarchy<UIInventory>();
+        builder.RegisterComponentInHierarchy<SigilsMenuIconsPlacer>();
         builder.RegisterComponentInHierarchy<CharacterMovement>(); //он вообще не должен быть MonoBehaviour, потом исправить
     }
 }

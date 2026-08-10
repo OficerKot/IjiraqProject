@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using VContainer;
 
 
-public class UISelectionPanel : PauseBehaviour
+public class DominoPanel : PauseBehaviour
 {
     [SerializeField] List<UIDomino> spawnedUIDomino = new List<UIDomino>();
     DominoConfig _config;
@@ -47,7 +47,7 @@ public class UISelectionPanel : PauseBehaviour
         }
     }
 
-    void UpdateHunger()
+    void UpdateHunger() // убрать
     {
         if (spawnedUIDomino.Count != 0)
         {
@@ -63,7 +63,7 @@ public class UISelectionPanel : PauseBehaviour
         foreach (var c in spawnedUIDomino)
         {
             c.OnDestroyed -= RemoveDomino;
-            Destroy(c);
+            Destroy(c.gameObject);
         }
         spawnedUIDomino.Clear();
     }

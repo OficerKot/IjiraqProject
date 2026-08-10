@@ -4,7 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public class PlacementRequirements
 {
-    public bool emptyCell = false;
     public ObjectType objectType = ObjectType.Any;
     public SigilType sigilType = SigilType.Any;
 
@@ -16,7 +15,7 @@ public class PlacementRequirements
     
     public bool ValidateCell(Cell cell)
     {
-        if (emptyCell && !cell.IsFree()) return false;
+        if (!cell.IsFreeForDomino()) return false;
 
         ICellContent content = cell.GetCurContent();
  
