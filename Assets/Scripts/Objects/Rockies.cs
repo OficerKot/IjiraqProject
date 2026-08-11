@@ -24,11 +24,10 @@ public class Rockies : ResourceSource
     /// <summary>
     /// Подбирает камешки с учетом сгенерированного количества.
     /// </summary>
-    public override void Pick()
+    public override void PickAndDestroy()
     {
         _inventory.AddItems(resource, generator.GetCount());
-        curCell.SetCurContent(null);
-        Destroy(gameObject);
+        Destroy();
     }
 
     /// <summary>

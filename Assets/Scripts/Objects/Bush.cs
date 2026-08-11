@@ -10,29 +10,15 @@ using VContainer;
 /// 
 /// Дополнительная настройка: Не требуется. Установить на префаб Куст и не трогать.
 /// </summary>
-public class Bush : MonoBehaviour
+public class Bush : ResourceSource
 {
     public float minDistanceToInteract;
-    private SpriteAnimator sprAnim;
-    private string itemID = "berry";
-
-    private IInventory _inventory;
-
-    [Inject]
-    private void Construct(IInventory inventory)
+    public override void OnClick()
     {
-        _inventory = inventory;
-    }
-
-    private void Awake()
-    {
-        sprAnim = GetComponent<SpriteAnimator>();
-    }
-    private void OnMouseDown()
-    {
-        if (IsNearbyPlayer() && (_inventory.Contains(ItemsDataBase.Instance.GetItemByID(itemID)) || !_inventory.IsFull()) )
+        if (IsNearbyPlayer())
         {
-            Interact();
+            base.Pick();
+            SetEmptyState();
         }
     }
     bool IsNearbyPlayer()
@@ -44,10 +30,9 @@ public class Bush : MonoBehaviour
         return dist <= Mathf.Pow(minDistanceToInteract, 2);
     }
 
-    void Interact()
+    void SetEmptyState()
     {
-        _inventory.AddItem(ItemsDataBase.Instance.GetItemByID(itemID));
-        sprAnim.ForcePlay("BushEmpty");
+        GetComponent<SpriteAnimator>().ForcePlay("BushEmpty");
         Destroy(this);
     }
 

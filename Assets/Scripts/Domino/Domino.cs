@@ -75,13 +75,9 @@ public class Domino : PauseBehaviour, ILayerSortable
         Vector2 centerPosition = GetComponent<SpriteRenderer>().bounds.center;
 
         pivot = new GameObject("Pivot");
+      
         pivot.transform.position = centerPosition;
-        pivot.transform.rotation = transform.rotation;
-
-        pivot.AddComponent<SortingGroup>();
-
-        part1.transform.SetParent(pivot.transform);
-        part2.transform.SetParent(pivot.transform);
+        pivot.transform.rotation = Quaternion.identity;
 
         transform.SetParent(pivot.transform);
     }
@@ -105,7 +101,7 @@ public class Domino : PauseBehaviour, ILayerSortable
     private void OnDestroy()
     {
         ClearCellData();
-        _layerSorter.Unregister(this);
+        _layerSorter?.Unregister(this);
     }
 
     /// <summary>
@@ -190,7 +186,7 @@ public class Domino : PauseBehaviour, ILayerSortable
     /// <summary>
     /// ќчищает данные о текущих клетках и снимает выделение.
     /// </summary>
-    void ClearCellData()
+    void ClearCellData() // по моему клетка сама должна это делать
     {
         if (curCell1)
         {
@@ -227,8 +223,8 @@ public class Domino : PauseBehaviour, ILayerSortable
 
         _handManager.Take(null);
 
-        curCell1.GetCurContent()?.Pick();
-        curCell2.GetCurContent()?.Pick();
+        curCell1.GetCurContent()?.PickAndDestroy();
+        curCell2.GetCurContent()?.PickAndDestroy();
 
         Collider2D collider1 = curCell1.GetComponent<BoxCollider2D>();
         Collider2D collider2 = curCell2.GetComponent<BoxCollider2D>();
@@ -322,7 +318,15 @@ public class Domino : PauseBehaviour, ILayerSortable
     /// <param name="degree">”гол вращени€ в градусах.</param>
     void Rotate(float degree = 90)
     {
+        Debug.Log($"BEFORE Pivot: {pivot.transform.eulerAngles.z}");
+        Debug.Log($"BEFORE Domino world: {transform.eulerAngles.z}");
+        Debug.Log($"BEFORE Domino local: {transform.localEulerAngles.z}");
+
         pivot.transform.Rotate(0, 0, degree);
+
+        Debug.Log($"AFTER Pivot: {pivot.transform.eulerAngles.z}");
+        Debug.Log($"AFTER Domino world: {transform.eulerAngles.z}");
+        Debug.Log($"AFTER Domino local: {transform.localEulerAngles.z}");
     }
 
     /// <summary>

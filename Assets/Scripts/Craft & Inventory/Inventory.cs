@@ -85,6 +85,7 @@ public class Inventory : IInventory
     /// <returns></returns>
     public bool Contains(ItemData i)
     {
+        UnityEngine.Debug.Log(i.ToString());
         return items.ContainsKey(i);
     }
 

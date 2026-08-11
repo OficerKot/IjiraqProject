@@ -10,9 +10,11 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
     [SerializeField] public ItemData resource;
     [SerializeField] ObjectType type;
     [SerializeField] ToolType toolToDestroy;
+    [SerializeField] bool isClickable;
     [SerializeField] public Cell curCell;
 
     private IInventory _inventory;
+    public event Action Destroyed;
 
     [Inject]
     private void Construct(IInventory inventory)
@@ -20,27 +22,40 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
         _inventory = inventory;
     }
 
+    private void OnMouseDown()
+    {
+        if (isClickable)
+        {
+            OnClick();
+        }
+    }
+
+    protected void Destroy()
+    {
+        Destroyed?.Invoke();
+        Destroy(gameObject);
+    }
+    public virtual void OnClick()
+    {
+        Pick();
+    }
+
     /// <summary>
     /// Подбирает ресурс, добавляет его в инвентарь и уничтожает объект.
     /// </summary>
-    public virtual void Pick()
+    public virtual void PickAndDestroy()
+    {
+        Pick();
+        Destroyed?.Invoke();
+        Destroy(gameObject);
+    }
+
+    protected virtual void Pick()
     {
         if (resource)
         {
             _inventory.AddItem(resource);
         }
-        curCell.SetCurContent(null);
-        Destroy(gameObject);
-    }
-
-    /// <summary>
-    /// Размещает источник в указанной клетке.
-    /// </summary>
-    /// <param name="cell">Клетка для размещения ресурса.</param>
-    public virtual void PutInCell(Cell cell)
-    {
-        curCell = cell;
-        PutInCell();
     }
 
     /// <summary>
@@ -54,6 +69,16 @@ public class ResourceSource : MonoBehaviour, IInteractable, ICellContent
         DominoPart p1 = d.part1;
         DominoPart p2 = d.part2;
         return p1.sigilVariantData.sigilTypeData.characteristics.tool == toolToDestroy || p2.sigilVariantData.sigilTypeData.characteristics.tool == toolToDestroy || toolToDestroy == ToolType.Any;
+    }
+
+    /// <summary>
+    /// Размещает источник в указанной клетке.
+    /// </summary>
+    /// <param name="cell">Клетка для размещения ресурса.</param>
+    public virtual void PutInCell(Cell cell)
+    {
+        curCell = cell;
+        PutInCell();
     }
 
     /// <summary>

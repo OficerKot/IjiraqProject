@@ -24,6 +24,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
     bool isPlaced = true;
 
     public event Action OnItemPlaced;
+    public event Action Destroyed;
 
     #region Sort
     public event Action<ILayerSortable> Picked;
@@ -54,7 +55,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
     {
         if (isPlaced && (_inventory.Contains(data) || !_inventory.IsFull()))
         {
-            Pick();
+            PickAndDestroy();
         }
 
         else if (Input.GetKeyDown(KeyCode.Mouse0) && curCell)
@@ -68,7 +69,7 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
     /// <summary>
     /// —бор предмета в инвентарь
     /// </summary>
-    public void Pick()
+    public void PickAndDestroy()
     {
         _inventory.AddItem(data);
         Destroy(gameObject);
@@ -76,12 +77,17 @@ public class Item : PauseBehaviour, IInteractable, ICellContent, ILayerSortable
 
     private void OnDestroy()
     {
-        if(curCell)
-        {
-            curCell.SetFree();
-        }
-       // _layerSorter.Unregister(this);
+        Destroyed?.Invoke();
+        Destroy(gameObject);
     }
+    //private void OnDestroy()
+    //{
+    //    if(curCell)
+    //    {
+    //        curCell.SetFree();
+    //    }
+    //   // _layerSorter.Unregister(this);
+    //}
     private void OnTriggerStay2D(Collider2D collision)
     {
         Cell cell = collision.GetComponent<Cell>();

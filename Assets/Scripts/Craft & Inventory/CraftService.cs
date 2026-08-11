@@ -45,7 +45,7 @@ public class CraftService : ICraftService
 
             // это тоже вынести 
             GameObject spawnedObj = GameObject.Instantiate(obj.prefab);
-            spawnedObj.GetComponent<Item>().Pick();
+            spawnedObj.GetComponent<Item>().PickAndDestroy();
             // где добавление в инвентарь..
             UpdateRecipes();
         }

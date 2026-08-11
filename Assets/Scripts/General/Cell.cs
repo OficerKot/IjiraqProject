@@ -96,8 +96,18 @@ public class Cell : MonoBehaviour, ICell
             return;
         }
         curContent = i;
+        curContent.Destroyed += RemoveContent;
     }
 
+    private void RemoveContent()
+    {
+        if (curContent != null)
+        {
+            curContent.Destroyed -= RemoveContent;
+            curContent = null;
+        }
+
+    }
     /// <summary>
     /// ќсвобождает клетку, удал€€ домино и содержимое.
     /// </summary>
