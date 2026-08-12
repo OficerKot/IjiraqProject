@@ -1,27 +1,24 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer; 
 
-public class SigilsMenuIconsPlacer : MonoBehaviour
+public class SigilsMenuFilterButtonsPlacer : MonoBehaviour
 {
     SigilsState _sigilsState;
     DominoConfig _config;
 
-    public GameObject prefab;
+    public GameObject buttonPrefab;
     public List<GameObject> spawnedCells = new List<GameObject>();
     HashSet<SigilData> sigils = new HashSet<SigilData>();
-    public BoxCollider2D windowCollider;
 
-    public Vector3 startPos;
-    Vector3 curStartPos;
+    [SerializeField] float yPos;
+    Vector2 startPos;
 
     [SerializeField] float defaultOffset;
     [SerializeField] float scaleKoef = 3f;
     float offsetX;
-    float midX;
 
     [SerializeField] int maxDefaultElements = 9;
     int elementsCnt;
@@ -39,8 +36,25 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
     public void UpdateButtons()
     {
         ClearElements();
+
+        FillImages();
+        elementsCnt = sigils.Count;
+
+        CountOffset();
+        CountStartPosXForCenter();
+
         PlaceElements();
         FillIcons();
+    }
+
+    void ClearElements()
+    {
+        for (int i = 0; i < spawnedCells.Count; i++)
+        {
+            Destroy(spawnedCells[i].gameObject);
+        }
+        spawnedCells.Clear();
+        sigils.Clear();
     }
     void CountOffset()
     {
@@ -56,33 +70,35 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
         }
     }
 
+    void CountStartPosXForCenter()
+    {
+        float cellWidth = buttonPrefab.GetComponent<RectTransform>().rect.width;
+
+        float rowWidth =
+            elementsCnt * cellWidth +
+            (elementsCnt - 1) * offsetX;
+
+        float startX =
+            -rowWidth / 2f +
+            cellWidth / 2f;
+
+        startPos = new Vector2(startX, yPos);
+    }
     void PlaceElements()
     {
-        FillImages();
-        elementsCnt = sigils.Count;
+        float cellWidth = buttonPrefab.GetComponent<RectTransform>().rect.width;
 
-        if (elementsCnt < maxDefaultElements)
-        {
-            float cellWidth = prefab.GetComponent<BoxCollider2D>().size.x * prefab.transform.lossyScale.x;
-            midX = windowCollider.transform.localPosition.x;
-            curStartPos = new Vector3(midX - cellWidth * (elementsCnt - 1) / 2, startPos.y, startPos.z);
-
-        }
-        else
-        {
-            curStartPos = startPos;
-        }
-
-        CountOffset();
         for (int i = 0; i < elementsCnt; i++)
         {
-            GameObject newObj = Instantiate(prefab, transform);
-            newObj.transform.SetParent(transform);
+            GameObject newObj = Instantiate(buttonPrefab, transform);
 
-            newObj.transform.localPosition = curStartPos + new Vector3(offsetX * i, 0, 0);
+            RectTransform rect = newObj.GetComponent<RectTransform>();
+
+            rect.anchoredPosition =
+                startPos + new Vector2((cellWidth + offsetX) * i, 0);
+
             spawnedCells.Add(newObj);
         }
-
     }
 
     void FillIcons()
@@ -109,15 +125,6 @@ public class SigilsMenuIconsPlacer : MonoBehaviour
             SigilData data = sigil.Key;
             sigils.Add(data);
         }
-    }
-    void ClearElements()
-    {
-        for (int i = 0; i < spawnedCells.Count; i++)
-        {
-            Destroy(spawnedCells[i].gameObject);
-        }
-        spawnedCells.Clear();
-        sigils.Clear();
     }
 
 }

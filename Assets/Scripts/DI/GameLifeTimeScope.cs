@@ -43,7 +43,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<SigilsMenu>();
         builder.RegisterComponentInHierarchy<DominoPanel>();
         builder.RegisterComponentInHierarchy<UIInventory>();
-        builder.RegisterComponentInHierarchy<SigilsMenuIconsPlacer>();
+        builder.RegisterComponentInHierarchy<SigilsMenuFilterButtonsPlacer>();
         builder.RegisterComponentInHierarchy<CharacterMovement>(); //он вообще не должен быть MonoBehaviour, потом исправить
     }
 }

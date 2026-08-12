@@ -2,7 +2,7 @@
 - Project name: Project
 - Unity version: Unity 6000.1.15f1
 - Active game object:
-  - Name: cell_x78_y89
+  - Name: Filter7
   - Tag: Untagged
-  - Layer: Cell
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
