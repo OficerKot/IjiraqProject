@@ -7,7 +7,7 @@ using VContainer;
 public class DominoPanel : PauseBehaviour
 {
     [SerializeField] List<UIDomino> spawnedUIDomino = new List<UIDomino>();
-    DominoConfig _config;
+    UIConfig _config;
     DominoPool _dominoPool;
     HandManager _handManager;
     bool isActive = true;
@@ -18,7 +18,7 @@ public class DominoPanel : PauseBehaviour
     [SerializeField] public float XOffset = 50;
 
     [Inject]
-    public void Construct(DominoPool dominoPool, DominoConfig config, HandManager handManager)
+    public void Construct(DominoPool dominoPool, UIConfig config, HandManager handManager)
     {
         _dominoPool = dominoPool;
         _config = config;
@@ -75,7 +75,7 @@ public class DominoPanel : PauseBehaviour
     }
     public void DisplayDomino(Domino domino, Vector3 pos)
     {
-        UIDomino uiDomino = Instantiate(_config.UIDominoPrefab, transform).GetComponent<UIDomino>();
+        UIDomino uiDomino = Instantiate(_config.dominoBase, transform).GetComponent<UIDomino>();
         uiDomino.Init(_handManager, domino, _config);
 
         uiDomino.OnDestroyed += RemoveDomino;

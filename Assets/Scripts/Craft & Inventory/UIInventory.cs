@@ -119,7 +119,7 @@ public class UIInventory : PauseBehaviour
     }
     ItemIcon CreateAndInitIcon(ItemData item)
     {
-        ItemIcon icon = Instantiate(_config.itemIconPrefab, inventory.transform).GetComponent<ItemIcon>();
+        ItemIcon icon = Instantiate(_config.itemIcon, inventory.transform).GetComponent<ItemIcon>();
         icon.Init(item);
 
         return icon;

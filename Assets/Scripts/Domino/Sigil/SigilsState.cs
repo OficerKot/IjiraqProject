@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
 public class SigilsState
 {
-    [field: SerializeField] public Dictionary<SigilData, HashSet<int>> unlocked { get; private set; } = new Dictionary<SigilData, HashSet<int>>();
-    [field: SerializeField] public List<SigilData> basic { get; private set; } = new List<SigilData>();
+    [field: SerializeField] Dictionary<SigilData, HashSet<int>> unlocked  = new Dictionary<SigilData, HashSet<int>>();
+    [field: SerializeField] List<SigilData> basic = new List<SigilData>();
 
     public event Action OnUnlockedSigilsChanged;
 
@@ -36,7 +37,7 @@ public class SigilsState
     /// Получить все сигилы, доступные игроку, включая базовые
     /// </summary>
     /// <returns>Сигилы и соответствующие им доступные номера</returns>
-    public Dictionary<SigilData, HashSet<int>> GetAvailableTypes()
+    public Dictionary<SigilData, HashSet<int>> GetAvailableVariants()
     {
         Dictionary<SigilData, HashSet<int>> result = new Dictionary<SigilData, HashSet<int>>();
 
@@ -56,13 +57,17 @@ public class SigilsState
         return result;
     }
 
-    //public List<SigilData> GetAvailableTypes()
-    //{
-    //    List<SigilData> res = new List<SigilData>(basic);
-    //    res.AddRange(unlocked.Keys);
+    /// <summary>
+    /// Получить все типы сигилов, доступных игроку, включая базовые
+    /// </summary>
+    /// <returns>Типы сигилов</returns>
+    public List<SigilData> GetAvailableTypes()
+    {
+        List<SigilData> res = new List<SigilData>(basic);
+        res.AddRange(unlocked.Keys);
 
-    //    return res;
-    //}
+        return res;
+    }
 
     /// <summary>
     /// Проверяет, есть ли доступные сигилы (кроме базовых).

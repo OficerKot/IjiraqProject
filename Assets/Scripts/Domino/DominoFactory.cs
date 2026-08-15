@@ -41,7 +41,7 @@ public class DominoFactory
     /// </summary>
     (DominoPart, DominoPart) SpawnParts(SigilInstance sigil1, SigilInstance sigil2)
     {
-        DominoPart p1 = GameObject.Instantiate(sigil1.sigilTypeData.prefab).GetComponent<DominoPart>(); 
+        DominoPart p1 = GameObject.Instantiate(sigil1.sigilTypeData.prefab).GetComponent<DominoPart>();
         DominoPart p2 = GameObject.Instantiate(sigil2.sigilTypeData.prefab).GetComponent<DominoPart>();
 
         p1.Init(_roadManager, sigil1);
@@ -68,7 +68,7 @@ public class DominoFactory
     /// </summary>
     public (SigilData,int) GetRandomSigil()
     {
-        Dictionary<SigilData, HashSet<int>> availableSigils = _sigils.GetAvailableTypes();
+        Dictionary<SigilData, HashSet<int>> availableSigils = _sigils.GetAvailableVariants();
         List<SigilData> keys = new List<SigilData>(availableSigils.Keys);
 
         int indx = Random.Range(0, availableSigils.Count);

@@ -1,43 +1,61 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
 /// Кнопка фильтрации по номерам в меню сигилов. При нажатии в меню остаются только сигилы с соответствующим номером.
 /// </summary>
-public class NumFilterButton : MonoBehaviour
+public class NumFilterButton : MonoBehaviour, IPointerClickHandler
 {
-    SigilsMenu menu;
-    Image imageComponent;
-    bool clicked;
-    public int number;
-    Button b;
-    void Start()
-    {
-        menu = GetComponentInParent<SigilsMenu>();
+    bool clicked = false;
+    int _num;
+    public event Action<int> OnFilterToggled;
 
-        clicked = false;
-        b = GetComponent<Button>();
-        imageComponent = GetComponent<Image>();
-        b.onClick.AddListener(ApplyFilter);
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Toggle();
     }
-
-    /// <summary>
-    /// Нажатие/отпускание кнопки и последующая активация/деактивация фильтра в SigilsMenu.
-    /// </summary>
-    void ApplyFilter()
+    public void Init(int num, List<Sprite> sprites)
     {
-        menu.ToggleFilter(number); 
+        if (num < 0 || num >= sprites.Count)
+        {
+            Debug.LogError(
+                $"Cannot initialize NumFilterButton: " +
+                $"number {num} has no corresponding sprite.",
+                this);
+
+            return;
+        }
+
+        _num = num;
+        GetComponent<Image>().sprite = sprites[num];
+    }
+    void Toggle()
+    {
         if (clicked)
         {
             clicked = false;
-            imageComponent.color = Color.white;
+            MakeBright();
         }
         else
         {
             clicked = true;
-            imageComponent.color = Color.gray6;
+            MakeDark();
         }
 
+        OnFilterToggled?.Invoke(_num);
+    }
+
+    void MakeBright()
+    {
+        GetComponent<Image>().color = Color.white;
+    }
+
+    void MakeDark()
+    {
+        GetComponent<Image>().color = Color.darkGray;
     }
 }
 

@@ -14,14 +14,14 @@ public class UIDomino : MonoBehaviour, IPointerClickHandler
     public event Action<UIDomino> OnDestroyed;
     HandManager _handManager;
 
-    public void Init(HandManager handManager, Domino domino, DominoConfig config)
+    public void Init(HandManager handManager, Domino domino, UIConfig config)
     {
         _handManager = handManager;
         this.domino = domino;
         domino.OnPlaced += OnDominoPlaced;
 
-        part1 = Instantiate(config.UISigilPrefab, transform);
-        part2 = Instantiate(config.UISigilPrefab, transform);
+        part1 = Instantiate(config.sigil, transform);
+        part2 = Instantiate(config.sigil, transform);
 
         part1.transform.SetParent(transform);
         part2.transform.SetParent(transform);

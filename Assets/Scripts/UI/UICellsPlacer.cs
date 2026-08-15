@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -22,15 +21,13 @@ public class UICellsPlacer
     /// </summary>
     /// <param name="columns">Количество клеток в ширину</param>
     /// <param name="rows">Количество клеток в высоту</param>
-    /// <param name="offsetX">Отступ между клетками по оси Х</param>
-    /// <param name="offsetY">Отступ между клетками по оси Y</param>
     /// <param name="startPosition">Позиция левого верхнего угла сетки</param>
-    public List<GameObject> PlaceCells(
+    /// <param name="spacing">Отступы между клетками по осям x и y</param>
+    public List<GameObject> CreateGrid(
         int columns,
         int rows,
-        float offsetX,
-        float offsetY,
-        Vector2 startPosition)
+        Vector2 startPosition,
+        Vector2 spacing)
     {
         float cellWidth = GetCellWidth();
         float cellHeight = GetCellHeight();
@@ -43,10 +40,9 @@ public class UICellsPlacer
                     column,
                     row,
                     startPosition,
+                    spacing,
                     cellWidth,
-                    cellHeight,
-                    offsetX,
-                    offsetY
+                    cellHeight                  
                 );
 
                 spawnedCells.Add(CreateCell(position));
@@ -56,19 +52,53 @@ public class UICellsPlacer
         return spawnedCells;
     }
 
+    public List<GameObject> CreateRow(
+      int rowWidth,
+      float spacing,
+      Vector2 startPosition)
+    {
+        float cellWidth = GetCellWidth();
+        float cellHeight = GetCellHeight();
+
+        for (int column = 0; column < rowWidth; column++)
+        {
+                Vector2 position = CalculatePosition(
+                    column,
+                    startPosition,
+                    spacing,
+                    cellWidth,
+                    cellHeight
+                );
+                spawnedCells.Add(CreateCell(position));
+        }
+
+        return spawnedCells;
+    }
+
     private Vector2 CalculatePosition(
         int column,
         int row,
         Vector2 startPosition,
+        Vector2 spacing,
         float cellWidth,
-        float cellHeight,
-        float offsetX,
-        float offsetY)
+        float cellHeight
+        )
     {
         return startPosition + new Vector2(
-            column * (cellWidth + offsetX),
-            row * (cellHeight + offsetY)
+            column * (cellWidth + spacing.x),
+            row * (cellHeight + spacing.y)
         );
+    }
+
+    private Vector2 CalculatePosition(
+        int column,
+        Vector2 startPosition,
+        float spacing,
+        float cellWidth,
+        float cellHeight
+        )
+    {
+        return startPosition + new Vector2(column * (cellWidth + spacing), startPosition.y);
     }
 
     private GameObject CreateCell(Vector2 position)
@@ -76,7 +106,7 @@ public class UICellsPlacer
         GameObject cell = Object.Instantiate(_cellPrefab, _parent);
 
         RectTransform rectTransform = cell.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = position;
+        rectTransform.localPosition = position;
 
         return cell;
     }

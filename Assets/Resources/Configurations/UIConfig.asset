@@ -9,7 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1b87ce354ba474095eba62a8eeff3b, type: 3}
+  m_Script: {fileID: 11500000, guid: be92793d36e78c54db482e1c6b0a6eb8, type: 3}
   m_Name: UIConfig
   m_EditorClassIdentifier: 
-  itemIconPrefab: {fileID: 2342191990407282095, guid: cf66363d635a7914b8ed335bdf4c95f7, type: 3}
+  itemIcon: {fileID: 2342191990407282095, guid: cf66363d635a7914b8ed335bdf4c95f7, type: 3}
+  dominoBase: {fileID: 1710019895863560010, guid: 13f03177fa8674a43ab0cdc09229632e, type: 3}
+  sigil: {fileID: 6806147685944260444, guid: e92e7e68621328a419d3ab4617819fd9, type: 3}
+  sigilFilterButton: {fileID: 6664960311811703741, guid: efdb9e832eae43c419554c329f5cd447, type: 3}
+  sigilCell: {fileID: 3070886467796764868, guid: 7101bb649d48e094fb916cddd3a53a6b, type: 3}
+  numberFilterButton: {fileID: 4485523114499173236, guid: 892ef6e54496de14abaf828309edbf41, type: 3}
+  numberFiltersSprites:
+  - {fileID: 1730799645, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: 2074309128, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: -937096535, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: 328975671, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: -1039496473, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: -815376225, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
+  - {fileID: -3344871471023955655, guid: 2046f9d32933a7449b0c95f3d6e9f89c, type: 3}
